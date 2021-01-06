@@ -10,6 +10,8 @@
 #' @export
 #' @examples
 #'
+#' regionkey <- get_regionkey(year = 2020)
+#'
 
 get_regionkey <- function(region = "kunta", only_codes = FALSE, only_names = FALSE, year) {
 
@@ -27,7 +29,6 @@ get_regionkey <- function(region = "kunta", only_codes = FALSE, only_names = FAL
                       source_name = unlist(lapply(key$sourceItem$classificationItemNames, '[', "name")),
                       target_code = key$targetItem$code,
                       target_name = unlist(lapply(key$targetItem$classificationItemNames, '[', "name")))
-
     # There are encoding errors, fix these.
     key <- fix_encoding(key)
 
@@ -56,4 +57,6 @@ get_regionkey <- function(region = "kunta", only_codes = FALSE, only_names = FAL
   }
   regionkey <- regionkey[,as.double(alueet[alueet == region]) <= as.double(alueet)]
   regionkey[!duplicated(regionkey),]
+  dplyr::mutate_all(regionkey, as.factor)
+
 }

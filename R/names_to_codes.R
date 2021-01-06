@@ -9,6 +9,15 @@
 #'
 #' @examples
 #'
+#'#' # Replace municipality names by their codes
+#'
+#'     # Generate random municipal data
+#'        data <- get_regionkey(year = 2020) %>%
+#'                dplyr::select(kunta_name) %>%
+#'                mutate(values = rnorm(n()))
+#'
+#'     names_to_codes(data, region = "kunta", year = 2020)
+#'
 names_to_codes <- function(data, region, year) {
 
   if(!(region %in% c("kunta", "seutukunta", "maakunta", "suuralue"))) {
