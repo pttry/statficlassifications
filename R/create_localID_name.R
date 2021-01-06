@@ -5,7 +5,7 @@
 #' @param source character
 #' @param target character
 #' @param year integer
-#' @param date character
+#' @param date character defaults to "0101" which the most correspondence tables have.
 #'
 #' @return character
 #' @export

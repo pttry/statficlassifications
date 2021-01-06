@@ -13,7 +13,7 @@ create_localID_name(source, target, year, date = "0101")
 
 \item{year}{integer}
 
-\item{date}{character}
+\item{date}{character defaults to "0101" which the most correspondence tables have.}
 }
 \value{
 character

@@ -8,7 +8,7 @@
 #' @export
 #'
 #' @examples
-statficlassifications_api <- function(localID) {
+get_correspondencetable <- function(localID) {
 
   url <- paste0("https://data.stat.fi/api/classifications/v2/correspondenceTables/", localID, "/maps")
   as.data.frame(jsonlite::fromJSON(rawToChar(httr::GET(url,query = list(content = "data", meta = "min"))$content)))
