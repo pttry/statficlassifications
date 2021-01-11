@@ -2,23 +2,32 @@
 % Please edit documentation in R/names_to_codes.R
 \name{names_to_codes}
 \alias{names_to_codes}
-\title{Changes region names to region codes}
+\title{Change region names to region codes}
 \usage{
 names_to_codes(data, region, year)
 }
 \arguments{
-\item{data}{data.frame}
+\item{data}{data.frame, the input data that contains a variable of region names.}
 
-\item{region}{character}
+\item{region}{character, the name of the variable of region names.}
 
-\item{year}{integer}
+\item{year}{integer, the year of the applied classification key.}
 }
 \value{
-
+data.frame
 }
 \description{
-Changes region names to region codes
+#' A wrapper that uses the statficlassifications::recode-function.
 }
 \examples{
+
+#' # Replace municipality names by their codes
+
+    # Generate random municipal data
+       data <- get_regionkey(year = 2020) \%>\%
+               dplyr::select(kunta_name) \%>\%
+               mutate(values = rnorm(n()))
+
+    names_to_codes(data, region = "kunta", year = 2020)
 
 }

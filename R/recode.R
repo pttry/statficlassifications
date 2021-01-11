@@ -1,12 +1,16 @@
-#' Recode regional variables.
+#' Recode regional variables
 #'
-#' @param data
-#' @param from
-#' @param to
-#' @param year
-#' @param leave
+#' Recodes regional variables by e.g. changing kunnat to seutukunnat or changing names to codes
+#' and vice versa. Uses the 'get_regionkey'-function.
 #'
-#' @return
+#' @param data data.frame, the input data that contains the regional variable.
+#' @param from character, the regional variable name in the input data.
+#' @param to character, the desired target in the classification key
+#' @param year character or numeric, the year of the
+#' @param leave logical, whether to leave the original 'from' variable in to the returing
+#'    data.frame. Defaults to FALSE.
+#'
+#' @return data.frame
 #' @export
 #'
 #' @examples
@@ -30,7 +34,7 @@ recode <- function(data, from, to, year, leave = FALSE) {
     stop("input to argument 'from' not in the data!")
   }
   df <- dplyr::left_join(data,
-                   select(get_regionkey(year = year), from, to),
+                   dplyr::select(get_regionkey(year = year), from, to),
                    by = from)
   df <- dplyr::relocate(df, to)
   if(leave == FALSE) {

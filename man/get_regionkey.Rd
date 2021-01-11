@@ -2,24 +2,28 @@
 % Please edit documentation in R/get_regionkey.R
 \name{get_regionkey}
 \alias{get_regionkey}
-\title{Region classification keys}
+\title{Import region classification key}
 \usage{
 get_regionkey(region = "kunta", only_codes = FALSE, only_names = FALSE, year)
 }
 \arguments{
 \item{region}{character, the smallest region desired in the resulting classification key.}
 
-\item{year}{character or numerical, the year of desired classification key.}
+\item{only_codes}{logical, whether the key should contain only the region codes. Defaults to FALSE.}
 
-\item{codes}{logical, whether the classification key contains region names or region codes. Defaults to FALSE.}
+\item{only_names}{logical, whether the key should contain only the region names. Defaults to FALSE.}
+
+\item{year}{character or numerical, the year of the desired classification key.}
 }
 \value{
 data.frame Returns a classification key as a data.frame.
 }
 \description{
-Imports NUTS-region classification keys from Statistics Finland. Use together with 'dplyr::left_join'
+Imports NUTS-region classification keys from Statistics Finland API. Use together with 'dplyr::left_join'
 to add regions to data.
 }
 \examples{
+
+regionkey <- get_regionkey(year = 2020)
 
 }

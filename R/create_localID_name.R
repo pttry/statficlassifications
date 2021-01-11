@@ -1,6 +1,7 @@
 #' Create correspondence table local ID
 #'
-#' Given the inputs creates the local ID of a correspondence table. For internal use.
+#' Given the inputs creates the local ID of a correspondence table to be used as an argument of the
+#' 'get_correspondencetable'-function. For internal use.
 #'
 #' @param source character
 #' @param target character

@@ -1,10 +1,12 @@
-#' Changes region names to region codes
+#' Change region names to region codes
 #'
-#' @param data data.frame
-#' @param region character
-#' @param year integer
+#' #' A wrapper that uses the statficlassifications::recode-function.
 #'
-#' @return
+#' @param data data.frame, the input data that contains a variable of region names.
+#' @param region character, the name of the variable of region names.
+#' @param year integer, the year of the applied classification key.
+#'
+#' @return data.frame
 #' @export
 #'
 #' @examples

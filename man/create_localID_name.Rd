@@ -19,7 +19,8 @@ create_localID_name(source, target, year, date = "0101")
 character
 }
 \description{
-Given the inputs creates the local ID of a correspondence table. For internal use.
+Given the inputs creates the local ID of a correspondence table to be used as an argument of the
+'get_correspondencetable'-function. For internal use.
 }
 \examples{
 

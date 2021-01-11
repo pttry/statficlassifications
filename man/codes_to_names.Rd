@@ -7,18 +7,25 @@
 codes_to_names(data, region, year)
 }
 \arguments{
-\item{data}{data.frame}
+\item{data}{data.frame, the input data that contains a variable of region codes.}
 
-\item{region}{character}
+\item{region}{character, the name of the variable of region codes.}
 
-\item{year}{integer}
+\item{year}{integer, the year of the applied classification key.}
 }
 \value{
-
+data.frame
 }
 \description{
-Changes region codes to region names
+A wrapper that uses the statficlassifications::recode-function.
 }
 \examples{
+
+    # Generate random municipal data
+       data <- get_regionkey(year = 2020) \%>\%
+               dplyr::select(kunta_code) \%>\%
+               mutate(values = rnorm(n()))
+
+       codes_to_names(data, region = "kunta", year = 2020)
 
 }

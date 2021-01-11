@@ -2,16 +2,42 @@
 % Please edit documentation in R/recode.R
 \name{recode}
 \alias{recode}
-\title{Recode regional variables.}
+\title{Recode regional variables}
 \usage{
 recode(data, from, to, year, leave = FALSE)
 }
 \arguments{
-\item{leave}{}
+\item{data}{data.frame, the input data that contains the regional variable.}
+
+\item{from}{character, the regional variable name in the input data.}
+
+\item{to}{character, the desired target in the classification key}
+
+\item{year}{character or numeric, the year of the}
+
+\item{leave}{logical, whether to leave the original 'from' variable in to the returing
+data.frame. Defaults to FALSE.}
 }
 \value{
-
+data.frame
 }
 \description{
-Recode regional variables.
+Recodes regional variables by e.g. changing kunnat to seutukunnat or changing names to codes
+and vice versa. Uses the 'get_regionkey'-function.
+}
+\examples{
+
+# Replace municipality names by their codes
+
+    # Generate random municipal data
+       data <- get_regionkey(year = 2020) \%>\%
+               dplyr::select(kunta_name) \%>\%
+               mutate(values = rnorm(n()))
+    # Recode
+    recode(data, "kunta_name", "kunta_code", year = 2020)
+
+# Add seutukunnat to municipal data
+
+    recode(data, "kunta_name", "seutukunta_name", year = 2020, leave = TRUE)
+
 }

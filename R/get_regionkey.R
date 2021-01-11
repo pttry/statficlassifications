@@ -1,11 +1,12 @@
-#' Region classification keys
+#' Import region classification key
 #'
-#' Imports NUTS-region classification keys from Statistics Finland. Use together with 'dplyr::left_join'
+#' Imports NUTS-region classification keys from Statistics Finland API. Use together with 'dplyr::left_join'
 #' to add regions to data.
 #'
 #' @param region character, the smallest region desired in the resulting classification key.
-#' @param codes logical, whether the classification key contains region names or region codes. Defaults to FALSE.
-#' @param year character or numerical, the year of desired classification key.
+#' @param only_codes logical, whether the key should contain only the region codes. Defaults to FALSE.
+#' @param only_names logical, whether the key should contain only the region names. Defaults to FALSE.
+#' @param year character or numerical, the year of the desired classification key.
 #' @return data.frame Returns a classification key as a data.frame.
 #' @export
 #' @examples
