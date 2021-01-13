@@ -20,7 +20,7 @@ data.frame Returns a classification key as a data.frame.
 }
 \description{
 Imports NUTS-region classification keys from Statistics Finland API. Use together with 'dplyr::left_join'
-to add regions to data.
+to add regions to data. A wrapper for the \code{get_key} function that it calls under the hood.
 }
 \examples{
 

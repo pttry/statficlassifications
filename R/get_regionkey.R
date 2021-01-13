@@ -1,7 +1,7 @@
 #' Import region classification key
 #'
 #' Imports NUTS-region classification keys from Statistics Finland API. Use together with 'dplyr::left_join'
-#' to add regions to data.
+#' to add regions to data. A wrapper for the \code{get_key} function that it calls under the hood.
 #'
 #' @param region character, the smallest region desired in the resulting classification key.
 #' @param only_codes logical, whether the key should contain only the region codes. Defaults to FALSE.
@@ -24,14 +24,8 @@ get_regionkey <- function(region = "kunta", only_codes = FALSE, only_names = FAL
 
   for(target_region in hallintoalueet) {
 
-    table <- create_localID_name(source_region, target_region, year)
-    key <- get_correspondencetable(table)
-    key <- data.frame(source_code = key$sourceItem$code,
-                      source_name = unlist(lapply(key$sourceItem$classificationItemNames, '[', "name")),
-                      target_code = key$targetItem$code,
-                      target_name = unlist(lapply(key$targetItem$classificationItemNames, '[', "name")))
-    # There are encoding errors, fix these.
-    key <- fix_encoding(key)
+    localID <- create_localID_name(source_region, target_region, year)
+    key <- get_key(localID)
 
     # The codes in classification tables have only the numbers, not the region marker (e.g. MK, SK). Add
     # these region markers.

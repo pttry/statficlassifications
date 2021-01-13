@@ -2,20 +2,35 @@
 #'
 #' A function to search and browse Statistics Finland Classifications correspondence tables.
 #'
-#' @param ... character, the search words.
+#' @param ... character, search words.
 #' @param search_source logical, whether search only among the sources.
 #' @param search_target logical, whether search only among the targets.
+#' @param searchword_source character, a search word to use in search only among the sources.
+#' @param searchword_target character, a search word to use in search only among the targets.
 #' @param year character or numerical, search for specific years.
-#' @param return character vector
 #' @param as_localID logical, whether returns the localID of the found table. Defaults to FALSE.
 #'
-#' @return
+#' @return character vector
 #' @export
 #'
 #' @examples
 #'
 #' # Browse all keys
 #'    search_keys()
+#'
+#' # Search for keys with search word "maakunta"
+#'    search_keys("maakunta)
+#'
+#' # Search for keys that have "maakunta" as source
+#'    search_keys(search_source = "maakunta)
+#'
+#' # Search for keys that map "kunta" to "maakunta"
+#'    search_keys(searchword_source = "kunta", searchword_target = "maakunta")
+#'
+#' # Search for keys that map "kunta" to "maakunta" for year 2016 and print as localID
+#'   search_keys(searchword_source = "kunta", searchword_target = "maakunta",
+#'               year = 2016, as_localID = TRUE)
+#'
 #'
 search_keys <- function(...,
                         search_source = FALSE,
@@ -25,18 +40,15 @@ search_keys <- function(...,
                         year = NULL,
                         as_localID = FALSE) {
 
-  url <- "https://data.stat.fi/api/classifications/v2/correspondenceTables"
-  endpoints <- as.data.frame(
-             jsonlite::fromJSON(
-                  rawToChar(
-                    httr::GET(url,query = list(content = "url", meta = "min"))$content)
-                  )
-             )
-  endpoints <- as.data.frame(sapply(endpoints, stringr::str_remove, paste0(url, "/")))
-  names(endpoints) <- "endpoint"
-  nros <- as.data.frame(matrix(unlist(lapply(endpoints, stringr::str_extract_all, "_\\d+_")), ncol = 2, byrow = TRUE))
+  # Get a list of all correspondence table urls and create a data.frame that isolates the components
+  # of the endpoints
+
+  urls <- get_url()
+  urls <- as.data.frame(sapply(urls, stringr::str_remove,
+                               paste0("https://data.stat.fi/api/classifications/v2/correspondenceTables/")))
+  nros <- as.data.frame(matrix(unlist(lapply(urls, stringr::str_extract_all, "_\\d+_")), ncol = 2, byrow = TRUE))
   names(nros) <- paste0("nro", 1:2)
-  results <- tidyr::separate(endpoints, endpoint, c("source", "temp_var", "date2"), sep = "_\\d+_") %>%
+  results <- tidyr::separate(urls, url, c("source", "temp_var", "date2"), sep = "_\\d+_") %>%
              tidyr::separate(temp_var, c("date1", "target"), sep = "#") %>%
              dplyr::mutate(year1 = substring(date1, 1,4),
                            date1 = substring(date1, 5,8),
@@ -58,7 +70,7 @@ search_keys <- function(...,
           match_indicator_source <- sapply(results$source, grepl, pattern = word)
        }
        if(!search_source) {
-       match_indicator_target <- sapply(results$target, grepl, pattern = word)
+          match_indicator_target <- sapply(results$target, grepl, pattern = word)
        }
        results_temp <- rbind(results_temp,
                              results[match_indicator_source,],
@@ -82,16 +94,13 @@ search_keys <- function(...,
    if(dim(results)[1] == 0) {
      return("No search results!")
    }
+
   # Format output
 
    output <- character(dim(results)[1])
    if(as_localID) {
      for(i in 1:dim(results)[1]) {
-     output[i] <- paste0(results[i, "source"],
-            results[i, "nro1"],
-            paste0(paste0(results[i, "year1"], results[i, "date1"]),"%23", results[i, "target"]),
-            results[i, "nro2"],
-            paste0(paste0(results[i, "year2"], results[i, "date2"])))
+     output[i] <- create_localID_name(input_vector = results[i,])
      }
     } else {
        for(i in 1:dim(results)[1]) {
@@ -99,15 +108,10 @@ search_keys <- function(...,
                             results[i, "year1"],
                             "->",
                             results[i, "target"],
-                            results[i, "year1"], sep = " ")
+                            results[i, "year2"], sep = " ")
        }
      }
 
    output
 }
-
-
-
-
-
 

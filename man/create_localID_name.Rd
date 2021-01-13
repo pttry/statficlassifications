@@ -4,7 +4,19 @@
 \alias{create_localID_name}
 \title{Create correspondence table local ID}
 \usage{
-create_localID_name(source, target, year, date = "0101")
+create_localID_name(
+  source,
+  target,
+  year,
+  year1 = year,
+  year2 = year,
+  date = "0101",
+  date1 = date,
+  date2 = date,
+  nro1 = "_1_",
+  nro2 = "_1_",
+  input_vector = NULL
+)
 }
 \arguments{
 \item{source}{character}
@@ -13,7 +25,21 @@ create_localID_name(source, target, year, date = "0101")
 
 \item{year}{integer}
 
+\item{year1}{integer}
+
+\item{year2}{integer}
+
 \item{date}{character defaults to "0101" which the most correspondence tables have.}
+
+\item{date1}{character}
+
+\item{date2}{character}
+
+\item{nro1, }{character, defaults to "\emph{1}".}
+
+\item{nro2, }{character, defaults to "\emph{1}".}
+
+\item{input_vector}{named vector}
 }
 \value{
 character
@@ -23,5 +49,8 @@ Given the inputs creates the local ID of a correspondence table to be used as an
 'get_correspondencetable'-function. For internal use.
 }
 \examples{
+
+# Create a local ID for the key that maps "kunta" to "maakunta" for year 2015
+   create_localID_name("kunta", "maakunta", year = 2015)
 
 }
