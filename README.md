@@ -8,7 +8,8 @@
 <!-- badges: end -->
 
 The `statficlassifications` allows the access of Statistics Finland
-classifications API from within R.
+classifications API from within R. Gets correspondence tables or
+classification keys.
 
 ## Installation
 
@@ -21,10 +22,10 @@ library(statficlassifications)
 library(dplyr)
 ```
 
-## Browse available classifications
+## List all available classification keys
 
 ``` r
-search_keys()[1:5]
+search_keys()
 ```
 
 ## Search for available classifications
@@ -67,7 +68,7 @@ key <- get_regionkey(only_codes = FALSE, only_names = FALSE)
 Generate random municipal data
 
 ``` r
-data <- get_regionkey(year = 2020) %>%
+data <- get_regionkey() %>%
         dplyr::select(kunta_name) %>%
         mutate(values = rnorm(n()))
 ```
