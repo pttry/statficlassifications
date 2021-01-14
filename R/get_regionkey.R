@@ -14,13 +14,17 @@
 #' regionkey <- get_regionkey(year = 2020)
 #'
 
-get_regionkey <- function(region = "kunta", only_codes = FALSE, only_names = FALSE, year) {
+get_regionkey <- function(region = "kunta", only_codes = FALSE, only_names = FALSE, year = NULL) {
 
   alueet <- factor(c("kunta", "seutukunta", "maakunta", "suuralue"), levels = c("kunta", "seutukunta", "maakunta", "suuralue"))
   hallintoalueet <- c("seutukunta", "maakunta", "suuralue")
   hallintoalueet_codes <- c("SK", "MK", "SA")
   source_region = "kunta"
   hallintoaluekey <- data.frame()
+
+  if(is.null(year)) {
+    year <- get_latest_year()
+  }
 
   for(target_region in hallintoalueet) {
 

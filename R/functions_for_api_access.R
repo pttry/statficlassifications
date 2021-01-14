@@ -81,3 +81,22 @@ get_key <- function(localID) {
   key <- fix_encoding(key)
   key
 }
+
+
+#' Get the year of the newest correspondence table
+#'
+#' @return double, the year of the newest correspondence table
+#' @export
+#'
+#' @examples
+get_latest_year <- function() {
+
+  urls <- get_url()
+  urls <- as.data.frame(sapply(urls, stringr::str_remove,
+                               paste0("https://data.stat.fi/api/classifications/v2/correspondenceTables/")))
+  results <- tidyr::separate(urls, url, c("source", "temp_var", "date2"), sep = "_\\d+_") %>%
+    tidyr::separate(temp_var, c("date1", "target"), sep = "#") %>%
+    dplyr::mutate(year1 = as.double(substring(date1, 1,4)),
+                  year2 = as.double(substring(date2, 1,4)))
+  max(c(results$year1, results$year2))
+}

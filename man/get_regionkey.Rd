@@ -4,7 +4,12 @@
 \alias{get_regionkey}
 \title{Import region classification key}
 \usage{
-get_regionkey(region = "kunta", only_codes = FALSE, only_names = FALSE, year)
+get_regionkey(
+  region = "kunta",
+  only_codes = FALSE,
+  only_names = FALSE,
+  year = NULL
+)
 }
 \arguments{
 \item{region}{character, the smallest region desired in the resulting classification key.}
