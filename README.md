@@ -62,7 +62,7 @@ Load the complete regionkey
 key <- get_regionkey(only_codes = FALSE, only_names = FALSE)
 ```
 
-## Manipulate region information in data.
+## Manipulate region information in data
 
 Generate random municipal data
 
@@ -72,11 +72,19 @@ data <- get_regionkey(year = 2020) %>%
         mutate(values = rnorm(n()))
 ```
 
-Use  with this regionkey to add regions to your
-data
+Use  with this regionkey to add regions to your data
 
 ``` r
-data <- left_join(data, get_regionkey(only_names = TRUE), by = "kunta_name")
+left_join(data, get_regionkey(only_names = TRUE), by = "kunta_name")
+```
+
+Compute the region (maakunta) -level
+means.
+
+``` r
+data %>% left_join(get_regionkey(only_names = TRUE), by = "kunta_name") %>% 
+         group_by(maakunta_name) %>%
+         summarize(maakunta_mean = mean(values)) 
 ```
 
 Change municipality names to municipality codes
