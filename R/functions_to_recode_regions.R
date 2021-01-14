@@ -28,7 +28,7 @@
 #'
 #'     recode(data, "kunta_name", "seutukunta_name", year = 2020, leave = TRUE)
 #'
-recode <- function(data, from, to, year, leave = FALSE) {
+recode <- function(data, from, to, year = NULL, leave = FALSE) {
 
   if(!(from %in% names(data))) {
     stop("input to argument 'from' not in the data!")
@@ -66,7 +66,7 @@ recode <- function(data, from, to, year, leave = FALSE) {
 #'
 #'     names_to_codes(data, region = "kunta", year = 2020)
 #'
-names_to_codes <- function(data, region, year) {
+names_to_codes <- function(data, region, year = NULL) {
 
   if(!(region %in% c("kunta", "seutukunta", "maakunta", "suuralue"))) {
     stop("Argument 'region' has to be one of the following: 'kunta', 'seutukunta', 'maakunta' or 'suuralue")
@@ -97,7 +97,7 @@ names_to_codes <- function(data, region, year) {
 #'
 #'        codes_to_names(data, region = "kunta", year = 2020)
 #'
-codes_to_names <- function(data, region, year) {
+codes_to_names <- function(data, region, year = NULL) {
 
   if(!(region %in% c("kunta", "seutukunta", "maakunta", "suuralue"))) {
     stop("Argument 'region' has to be one of the following: 'kunta', 'seutukunta', 'maakunta' or 'suuralue")

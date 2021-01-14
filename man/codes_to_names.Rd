@@ -4,7 +4,7 @@
 \alias{codes_to_names}
 \title{Changes region codes to region names}
 \usage{
-codes_to_names(data, region, year)
+codes_to_names(data, region, year = NULL)
 }
 \arguments{
 \item{data}{data.frame, the input data that contains a variable of region codes.}
