@@ -29,7 +29,7 @@ get_regionkey <- function(region = "kunta", only_codes = FALSE, only_names = FAL
   for(target_region in hallintoalueet) {
 
     localID <- create_localID_name(source_region, target_region, year)
-    key <- get_key(localID)
+    key <- get_key(localID, print_key_name = FALSE)
 
     # The codes in classification tables have only the numbers, not the region marker (e.g. MK, SK). Add
     # these region markers.

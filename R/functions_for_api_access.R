@@ -60,20 +60,20 @@ get_url <- function(localID = NULL) {
 #' @export
 #'
 #' @examples
-get_key <- function(localID) {
+get_key <- function(localID, print_key_name = TRUE) {
 
   if(length(localID) > 1) {
     stop("Multiple localIDs! This function currently gives you only one key at the time.")
   }
 
   key <- access_API(localID, content = "data")
+  text <- unique(key$correspondenceTable$correspondenceTableTexts)
   key <- data.frame(source_code = key$sourceItem$code,
                     source_name = unlist(lapply(key$sourceItem$classificationItemNames, '[', "name")),
                     target_code = key$targetItem$code,
                     target_name = unlist(lapply(key$targetItem$classificationItemNames, '[', "name")))
 
-  # There may be encoding errors, fix these.
-  # key <- fix_encoding(key)
+  if(print_key_name) {message(text)}
   key
 }
 
