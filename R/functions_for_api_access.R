@@ -26,15 +26,10 @@ access_API <- function(localID = NULL, content = "data") {
                 ifelse(content == "data", "/maps", ""))
 
   # access API and return
-  as.data.frame(
-    jsonlite::fromJSON(
-      rawToChar(
-        httr::GET(
-          url,
-          query = list(content = content, meta = "min"))$content
-                )
-        )
-    )
+  resp <- httr::GET(url, query = list(content = content, meta = "min"))
+  cont <- httr::content(resp, "text", encoding = "UTF-8")
+
+  as.data.frame(jsonlite::fromJSON(cont))
 }
 
 
@@ -78,7 +73,7 @@ get_key <- function(localID) {
                     target_name = unlist(lapply(key$targetItem$classificationItemNames, '[', "name")))
 
   # There may be encoding errors, fix these.
-  key <- fix_encoding(key)
+  # key <- fix_encoding(key)
   key
 }
 
