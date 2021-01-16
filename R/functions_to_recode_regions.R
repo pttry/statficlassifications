@@ -75,7 +75,7 @@ names_to_codes <- function(data, from = NULL, year = NULL) {
 
   to <- paste(gsub("_.*", "", from[2]), "code", sep = "_")
 
-  df <- recode(data, from_orig = from[1], from = from[2], to = to, year = year)
+  df <- recode_region(data, from_orig = from[1], from = from[2], to = to, year = year)
   df <- dplyr::relocate(df, to)
   df
 }
@@ -113,7 +113,7 @@ codes_to_names <- function(data, from = NULL, year = NULL) {
 
   to <- paste(gsub("_.*", "", from[2]), "name", sep = "_")
 
-  df <- recode(data, from_orig = from[1], from = from[2], to = to, year = year)
+  df <- recode_region(data, from_orig = from[1], from = from[2], to = to, year = year)
   df <- dplyr::relocate(df, to)
   df
 }
@@ -149,7 +149,7 @@ add_region <- function(data, to, from = NULL) {
   }
   to <- paste(to, gsub(".*_", "", from[2]), sep = "_")
 
-  recode(data, from_orig = from[1], from = from[2] , to = to, leave = TRUE)
+  recode_region(data, from_orig = from[1], from = from[2] , to = to, leave = TRUE)
 }
 
 
