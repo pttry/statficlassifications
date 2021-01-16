@@ -73,9 +73,9 @@ names_to_codes <- function(data, from = NULL, year = NULL) {
     from <- rep(from, 2)
   }
 
-  to <- paste(gsub("_.*", "", from[2]), "code", sep = "_")
+  to <- paste(gsub("_.*", "", from$name_key), "code", sep = "_")
 
-  df <- recode_region(data, from_orig = from[1], from = from[2], to = to, year = year)
+  df <- recode_region(data, from_orig = from$name_orig, from = from$name_key , to = to, leave = FALSE)
   df <- dplyr::relocate(df, to)
   df
 }
@@ -111,9 +111,9 @@ codes_to_names <- function(data, from = NULL, year = NULL) {
     from <- rep(from, 2)
   }
 
-  to <- paste(gsub("_.*", "", from[2]), "name", sep = "_")
+  to <- paste(gsub("_.*", "", from$name_key), "name", sep = "_")
 
-  df <- recode_region(data, from_orig = from[1], from = from[2], to = to, year = year)
+  df <- recode_region(data, from_orig = from$name_orig, from = from$name_key , to = to, leave = FALSE)
   df <- dplyr::relocate(df, to)
   df
 }
@@ -141,15 +141,15 @@ add_region <- function(data, to, from = NULL) {
   } else if(!(from %in% names(data))) {
     stop("input to argument 'from' not in the data!")
   } else {
-    from <- rep(from, 2)
+    from <- list(name_orig = from, name_key = from)
   }
 
   if(!(to %in% c("kunta", "seutukunta", "maakunta", "suuralue"))) {
     stop("Argument to has to be either 'kunta', 'seutukunta', 'maakunta' or 'suuralue'")
   }
-  to <- paste(to, gsub(".*_", "", from[2]), sep = "_")
+  to <- paste(to, gsub(".*_", "", from$name_key), sep = "_")
 
-  recode_region(data, from_orig = from[1], from = from[2] , to = to, leave = TRUE)
+  recode_region(data, from_orig = from$name_orig, from = from$name_key , to = to, leave = TRUE)
 }
 
 
@@ -178,15 +178,23 @@ add_region <- function(data, to, from = NULL) {
 detect_region_var <- function(data) {
 
   regionkey <- get_regionkey()
-  for(var1 in names(data)) {
-    for(var2 in names(regionkey)) {
-      if(all(data[[var1]] %in% regionkey[[var2]])) {
-        i <- var1
-        j <- var2
-        return(c(i,j))
+  i <- 1
+  j <- 1
+  name_orig <- numeric()
+  name_key <- numeric()
+  for(var_orig in names(data)) {
+    for(var_key in names(regionkey)) {
+      if(all(data[[var_orig]] %in% regionkey[[var_key]])) {
+        name_orig[i] <- var_orig
+        name_key[j] <- var_key
+        i <- i + 1
+        j <- j + 1
       }
     }
   }
-
+  if(length(name_orig) == 0 | length(name_key) == 0) {
+    stop("Region variable not automatically detected!")
+  }
+  return(list(name_orig = name_orig, name_key = name_key))
 
 }
