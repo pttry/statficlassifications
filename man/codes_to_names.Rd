@@ -26,6 +26,6 @@ A wrapper that uses the statficlassifications::recode-function.
                dplyr::select(kunta_code) \%>\%
                mutate(values = rnorm(n()))
 
-       codes_to_names(data, region = "kunta", year = 2020)
+       codes_to_names(data)
 
 }

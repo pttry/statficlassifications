@@ -18,7 +18,7 @@ to NULL, in which case function tries to guess the variable in the data.}
 
 }
 \description{
-Uses \code(get_regionkey)- and \code(recode)-functions to provide a fast and simple way to
+Uses get_regionkey- and recode-functions to provide a fast and simple way to
 add regions to data. Very pipe-friendly.
 }
 \examples{

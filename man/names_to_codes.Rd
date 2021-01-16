@@ -28,6 +28,6 @@ data.frame
                dplyr::select(kunta_name) \%>\%
                mutate(values = rnorm(n()))
 
-    names_to_codes(data, region = "kunta", year = 2020)
+    names_to_codes(data)
 
 }
