@@ -121,7 +121,7 @@ codes_to_names <- function(data, from = NULL, year = NULL) {
 
 #' Add regions to data
 #'
-#' Uses \code(get_regionkey)- and \code(recode)-functions to provide a fast and simple way to
+#' Uses \code{get_regionkey}- and \code{recode}-functions to provide a fast and simple way to
 #' add regions to data. Very pipe-friendly.
 #'
 #' @param data data.frame
