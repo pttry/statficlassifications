@@ -91,11 +91,11 @@ data %>% left_join(get_regionkey(only_names = TRUE), by = "kunta_name") %>%
 Change municipality names to municipality codes
 
 ``` r
-data <- names_to_codes(data, region = "kunta")
+data <- names_to_codes(data)
 ```
 
 Change municpality codes to municipality names
 
 ``` r
-data <- codes_to_names(data, region = "kunta")
+data <- codes_to_names(data)
 ```

@@ -61,7 +61,7 @@ recode_region <- function(data, from_orig, from, to, year = NULL, leave = FALSE)
 #'                dplyr::select(kunta_name) %>%
 #'                mutate(values = rnorm(n()))
 #'
-#'     names_to_codes(data, region = "kunta", year = 2020)
+#'     names_to_codes(data)
 #'
 names_to_codes <- function(data, from = NULL, year = NULL) {
 
@@ -99,7 +99,7 @@ names_to_codes <- function(data, from = NULL, year = NULL) {
 #'                dplyr::select(kunta_code) %>%
 #'                mutate(values = rnorm(n()))
 #'
-#'        codes_to_names(data, region = "kunta", year = 2020)
+#'        codes_to_names(data)
 #'
 codes_to_names <- function(data, from = NULL, year = NULL) {
 
