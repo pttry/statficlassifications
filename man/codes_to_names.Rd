@@ -4,14 +4,14 @@
 \alias{codes_to_names}
 \title{Changes region codes to region names}
 \usage{
-codes_to_names(data, region, year = NULL)
+codes_to_names(data, from = NULL, year = NULL)
 }
 \arguments{
 \item{data}{data.frame, the input data that contains a variable of region codes.}
 
-\item{region}{character, the name of the variable of region codes.}
-
 \item{year}{integer, the year of the applied classification key.}
+
+\item{region}{character, the name of the variable of region codes.}
 }
 \value{
 data.frame

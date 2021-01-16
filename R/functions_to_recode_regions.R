@@ -28,17 +28,14 @@
 #'
 #'     recode(data, "kunta_name", "seutukunta_name", year = 2020, leave = TRUE)
 #'
-recode <- function(data, from, to, year = NULL, leave = FALSE) {
+recode <- function(data, from_orig, from, to, year = NULL, leave = FALSE) {
 
-  if(!(from %in% names(data))) {
-    stop("input to argument 'from' not in the data!")
-  }
-  df <- dplyr::left_join(data,
-                   dplyr::select(get_regionkey(year = year), from, to),
-                   by = from)
-  df <- dplyr::relocate(df, to)
+  regionkey <- dplyr::select(get_regionkey(year = year), to, from)
+  regionkey <- dplyr::rename_with(regionkey, ~from_orig, from)
+  df <- dplyr::left_join(data, regionkey, by = from_orig)
+
   if(leave == FALSE) {
-    df <- dplyr::select(df, -from)
+    df <- dplyr::select(df, -from_orig)
   }
   df
 }
@@ -66,14 +63,21 @@ recode <- function(data, from, to, year = NULL, leave = FALSE) {
 #'
 #'     names_to_codes(data, region = "kunta", year = 2020)
 #'
-names_to_codes <- function(data, region, year = NULL) {
+names_to_codes <- function(data, from = NULL, year = NULL) {
 
-  if(!(region %in% c("kunta", "seutukunta", "maakunta", "suuralue"))) {
-    stop("Argument 'region' has to be one of the following: 'kunta', 'seutukunta', 'maakunta' or 'suuralue")
+  if(is.null(from)) {
+    from <- detect_region_var(data)
+  } else if(!(from %in% names(data))) {
+    stop("input to argument 'from' not in the data!")
+  } else {
+    from <- rep(from, 2)
   }
 
-  recode(data, from = paste(region, "name", sep = "_"), to = paste(region, "code", sep = "_"), year = year)
+  to <- paste(gsub("_.*", "", from[2]), "code", sep = "_")
 
+  df <- recode(data, from_orig = from[1], from = from[2], to = to, year = year)
+  df <- dplyr::relocate(df, to)
+  df
 }
 
 
@@ -97,12 +101,92 @@ names_to_codes <- function(data, region, year = NULL) {
 #'
 #'        codes_to_names(data, region = "kunta", year = 2020)
 #'
-codes_to_names <- function(data, region, year = NULL) {
+codes_to_names <- function(data, from = NULL, year = NULL) {
 
-  if(!(region %in% c("kunta", "seutukunta", "maakunta", "suuralue"))) {
-    stop("Argument 'region' has to be one of the following: 'kunta', 'seutukunta', 'maakunta' or 'suuralue")
+  if(is.null(from)) {
+    from <- detect_region_var(data)
+  } else if(!(from %in% names(data))) {
+    stop("input to argument 'from' not in the data!")
+  } else {
+    from <- rep(from, 2)
   }
 
-  recode(data, from = paste(region, "code", sep = "_"), to = paste(region, "name", sep = "_"), year = year)
+  to <- paste(gsub("_.*", "", from[2]), "name", sep = "_")
+
+  df <- recode(data, from_orig = from[1], from = from[2], to = to, year = year)
+  df <- dplyr::relocate(df, to)
+  df
+}
+
+
+#' Add regions to data
+#'
+#' Uses \code(get_regionkey)- and \code(recode)-functions to provide a fast and simple way to
+#' add regions to data. Very pipe-friendly.
+#'
+#' @param data data.frame
+#' @param from character, variable in the data that is used to add regions to the data. Defaults
+#'    to NULL, in which case function tries to guess the variable in the data.
+#' @param to character, the region to add.
+#'
+#' @return
+#' @export
+#'
+#' @examples
+#'
+add_region <- function(data, to, from = NULL) {
+
+  if(is.null(from)) {
+    from <- detect_region_var(data)
+  } else if(!(from %in% names(data))) {
+    stop("input to argument 'from' not in the data!")
+  } else {
+    from <- rep(from, 2)
+  }
+
+  if(!(to %in% c("kunta", "seutukunta", "maakunta", "suuralue"))) {
+    stop("Argument to has to be either 'kunta', 'seutukunta', 'maakunta' or 'suuralue'")
+  }
+  to <- paste(to, gsub(".*_", "", from[2]), sep = "_")
+
+  recode(data, from_orig = from[1], from = from[2] , to = to, leave = TRUE)
+}
+
+
+
+#' Detect a region variable in data
+#'
+#' Given data, looks for the variable that contains regions. Returns the name of this variable
+#' and the corresponding variable name in get_regionkey()
+#'
+#' @param data data.frame
+#'
+#' @return character(2) Returns the region variable in the original data and the correponding region
+#'    varible in the get_regionkey()
+#' @export
+#'
+#' @examples
+#'
+#'    # Generate random municipal data with random name for the regions
+#'              data <- get_regionkey() %>%
+#'                      dplyr::select(kunta_name) %>%
+#'                      dplyr::rename_with(~paste(sample(letters, 4), collapse = "")) %>%
+#'                      dplyr::mutate(values = rnorm(n()))
+#'
+#'              detect_region_var(data)
+#'
+detect_region_var <- function(data) {
+
+  regionkey <- get_regionkey()
+  for(var1 in names(data)) {
+    for(var2 in names(regionkey)) {
+      if(all(data[[var1]] %in% regionkey[[var2]])) {
+        i <- var1
+        j <- var2
+        return(c(i,j))
+      }
+    }
+  }
+
 
 }

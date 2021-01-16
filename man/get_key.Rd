@@ -4,7 +4,7 @@
 \alias{get_key}
 \title{Get data from API}
 \usage{
-get_key(localID)
+get_key(localID, print_key_name = TRUE)
 }
 \arguments{
 \item{localID, }{character, local ID of the required correspondence table}

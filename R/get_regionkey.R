@@ -3,6 +3,11 @@
 #' Imports NUTS-region classification keys from Statistics Finland API. Use together with 'dplyr::left_join'
 #' to add regions to data. A wrapper for the \code{get_key} function that it calls under the hood.
 #'
+#' The classification keys e.g. from seutukunta to maakunta or maakunta to suuralue are not very well
+#' available. Thus, the logic of the function is to first get all keys from kunta to all other regions,
+#' construct a table that contains all municipalities with their corresponding larger regions and
+#' then apply the selection implied by the arguments set by the used possible removing duplicates.
+#'
 #' @param region character, the smallest region desired in the resulting classification key.
 #' @param only_codes logical, whether the key should contain only the region codes. Defaults to FALSE.
 #' @param only_names logical, whether the key should contain only the region names. Defaults to FALSE.
@@ -11,51 +16,69 @@
 #' @export
 #' @examples
 #'
-#' regionkey <- get_regionkey(year = 2020)
+#' regionkey <- get_regionkey()
 #'
 
-get_regionkey <- function(region = "kunta", only_codes = FALSE, only_names = FALSE, year = NULL) {
+get_regionkey <- function(source = "kunta", targets = NULL, year = NULL,
+                          only_codes = FALSE, only_names = FALSE) {
 
-  alueet <- factor(c("kunta", "seutukunta", "maakunta", "suuralue"), levels = c("kunta", "seutukunta", "maakunta", "suuralue"))
-  hallintoalueet <- c("seutukunta", "maakunta", "suuralue")
-  hallintoalueet_codes <- c("SK", "MK", "SA")
-  source_region = "kunta"
-  hallintoaluekey <- data.frame()
+  # Build a complete region key
+
+  target_regions <- c("seutukunta", "maakunta", "suuralue")
+  region_code_prefixes <- c("SK", "MK", "SA")
+  regionkey <- NULL
 
   if(is.null(year)) {
     year <- get_latest_year()
   }
 
-  for(target_region in hallintoalueet) {
+  for(target in target_regions) {
 
-    localID <- create_localID_name(source_region, target_region, year)
+    # Create local ID and get key
+    localID <- create_localID_name("kunta", target, year)
     key <- get_key(localID, print_key_name = FALSE)
 
     # The codes in classification tables have only the numbers, not the region marker (e.g. MK, SK). Add
     # these region markers.
 
       key$source_code <- paste0("KU", key$source_code)
-      key$target_code <- paste0(hallintoalueet_codes[which(hallintoalueet == target_region)], key$target_code)
+      key$target_code <- paste0(region_code_prefixes[which(target_regions == target)], key$target_code)
 
     # set the variable names, codes get prefix '_code' and names get prefix '_name'. e.g. '(maa)kunta_name'
     # and '(maa)kunta_code'.
 
-    names(key) <- c("kunta_code", "kunta_name", paste(target_region, c("code", "name"), sep = "_"))
+    names(key) <- c("kunta_code", "kunta_name", paste(target, c("code", "name"), sep = "_"))
 
-    assign(paste(target_region, "key", sep = "_"), key)
+    if(is.null(regionkey)) {
+      regionkey <- key
+    } else {
+      regionkey <- dplyr::left_join(regionkey, key, by = c("kunta_code", "kunta_name"))
+    }
 
   }
 
-  regionkey <- dplyr::left_join(seutukunta_key, maakunta_key, by = c("kunta_code", "kunta_name"))
-  regionkey <- dplyr::left_join(regionkey, suuralue_key, by = c("kunta_code", "kunta_name"))
+  # Apply potential user selection
+
+    if(is.null(targets)) {
+       targets <- target_regions
+    }
+    regionkey <- dplyr::select(regionkey, c(paste(c(source, targets), "name", sep = "_"),
+                                          paste(c(source, targets), "code", sep = "_")))
+
+  # Apply potential user selection regarding names and codes
+
+  if(only_codes & only_names) {
+    stop("Can't give you a key that has only codes but also only names!")
+  }
 
   if(only_codes) {
     regionkey <- dplyr::select(regionkey, contains("code"))
   } else if(only_names) {
     regionkey <- dplyr::select(regionkey, contains("name"))
   }
-  regionkey <- regionkey[,as.double(alueet[alueet == region]) <= as.double(alueet)]
-  regionkey[!duplicated(regionkey),]
+
+  regionkey <- regionkey[!duplicated(regionkey),]
   dplyr::mutate_all(regionkey, as.factor)
 
 }
+

@@ -4,7 +4,7 @@
 \alias{recode}
 \title{Recode regional variables}
 \usage{
-recode(data, from, to, year = NULL, leave = FALSE)
+recode(data, from_orig, from, to, year = NULL, leave = FALSE)
 }
 \arguments{
 \item{data}{data.frame, the input data that contains the regional variable.}
