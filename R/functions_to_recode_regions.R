@@ -28,7 +28,7 @@
 #'
 #'     recode(data, "kunta_name", "seutukunta_name", year = 2020, leave = TRUE)
 #'
-recode <- function(data, from_orig, from, to, year = NULL, leave = FALSE) {
+recode_region <- function(data, from_orig, from, to, year = NULL, leave = FALSE) {
 
   regionkey <- dplyr::select(get_regionkey(year = year), to, from)
   regionkey <- dplyr::rename_with(regionkey, ~from_orig, from)
