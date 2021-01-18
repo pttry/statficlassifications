@@ -4,7 +4,7 @@
 \alias{detect_region_var}
 \title{Detect a region variable in data}
 \usage{
-detect_region_var(data)
+detect_region_var(data, offline = TRUE)
 }
 \arguments{
 \item{data}{data.frame}

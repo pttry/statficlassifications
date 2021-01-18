@@ -9,7 +9,8 @@ get_regionkey(
   targets = NULL,
   year = NULL,
   only_codes = FALSE,
-  only_names = FALSE
+  only_names = FALSE,
+  offline = TRUE
 )
 }
 \arguments{

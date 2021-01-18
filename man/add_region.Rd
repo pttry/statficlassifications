@@ -4,7 +4,7 @@
 \alias{add_region}
 \title{Add regions to data}
 \usage{
-add_region(data, to, from = NULL)
+add_region(data, to, from = NULL, offline = FALSE)
 }
 \arguments{
 \item{data}{data.frame}

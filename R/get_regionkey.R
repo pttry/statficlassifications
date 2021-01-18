@@ -22,8 +22,8 @@
 get_regionkey <- function(source = "kunta", targets = NULL, year = NULL,
                           only_codes = FALSE, only_names = FALSE, offline = TRUE) {
 
-  target_regions <- c("seutukunta", "maakunta", "suuralue")
-  region_code_prefixes <- c("SK", "MK", "SA")
+  target_regions <- c("seutukunta", "maakunta", "suuralue", "ely")
+  region_code_prefixes <- c("SK", "MK", "SA", "ELY")
 
   if(offline) {
     data(regionkey)
