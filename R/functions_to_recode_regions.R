@@ -28,9 +28,15 @@
 #'
 #'     recode(data, "kunta_name", "seutukunta_name", year = 2020, leave = TRUE)
 #'
-recode_region <- function(data, from_orig, from, to, year = NULL, leave = FALSE) {
+recode_region <- function(data, from_orig, from, to, year = NULL, leave = FALSE, offline = TRUE) {
 
-  regionkey <- dplyr::select(get_regionkey(year = year), to, from)
+  if(offline) {
+    data(regionkey)
+  } else {
+    regionkey <- get_regionkey(year = year, offline = FALSE)
+  }
+
+  regionkey <- dplyr::select(regionkey, to, from)
   regionkey <- dplyr::rename_with(regionkey, ~from_orig, from)
   df <- dplyr::left_join(data, regionkey, by = from_orig)
 
@@ -134,10 +140,10 @@ codes_to_names <- function(data, from = NULL, year = NULL) {
 #'
 #' @examples
 #'
-add_region <- function(data, to, from = NULL) {
+add_region <- function(data, to, from = NULL, offline = FALSE) {
 
   if(is.null(from)) {
-    from <- detect_region_var(data)
+    from <- detect_region_var(data, offline = offline)
   } else if(!(from %in% names(data))) {
     stop("input to argument 'from' not in the data!")
   } else {
@@ -175,9 +181,13 @@ add_region <- function(data, to, from = NULL) {
 #'
 #'              detect_region_var(data)
 #'
-detect_region_var <- function(data) {
+detect_region_var <- function(data, offline = TRUE) {
 
-  regionkey <- get_regionkey()
+  if(offline) {
+    data(regionkey)
+  } else {
+    regionkey <- get_regionkey(offline = FALSE)
+  }
   i <- 1
   j <- 1
   name_orig <- numeric()

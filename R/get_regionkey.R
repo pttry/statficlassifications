@@ -20,12 +20,18 @@
 #'
 
 get_regionkey <- function(source = "kunta", targets = NULL, year = NULL,
-                          only_codes = FALSE, only_names = FALSE) {
-
-  # Build a complete region key
+                          only_codes = FALSE, only_names = FALSE, offline = TRUE) {
 
   target_regions <- c("seutukunta", "maakunta", "suuralue")
   region_code_prefixes <- c("SK", "MK", "SA")
+
+  if(offline) {
+    data(regionkey)
+  } else {
+
+
+  # Build a complete region key
+
   regionkey <- NULL
 
   if(is.null(year)) {
@@ -54,6 +60,8 @@ get_regionkey <- function(source = "kunta", targets = NULL, year = NULL,
     } else {
       regionkey <- dplyr::left_join(regionkey, key, by = c("kunta_code", "kunta_name"))
     }
+
+  }
 
   }
 
