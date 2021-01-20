@@ -183,11 +183,8 @@ add_region <- function(data, to, from = NULL, offline = FALSE) {
 #'
 detect_region_var <- function(data, offline = TRUE) {
 
-  if(offline) {
-    data(regionkey)
-  } else {
-    regionkey <- get_regionkey(offline = FALSE)
-  }
+    regionkey <- get_regionkey(offline = offline)
+
   i <- 1
   j <- 1
   name_orig <- numeric()
@@ -207,4 +204,64 @@ detect_region_var <- function(data, offline = TRUE) {
   }
   return(list(name_orig = name_orig, name_key = name_key))
 
+}
+
+
+#' Check if a region variable correspond to classification of regionkey
+#'
+#' @param data
+#' @param region_var
+#' @param offline
+#'
+#' @return
+#' @export
+#'
+#' @examples
+check_region_var_classification <- function(data, region_var, offline = TRUE) {
+
+  regionkey <- get_regionkey(offline = offline)
+
+  logical <- logical(length(names(regionkey)))
+  names(logical) <- names(regionkey)
+  for(var in names(regionkey)) {
+    if(all(data[[region_var]] %in% regionkey[[var]])) {
+      logical[var] <- TRUE
+    }
+  }
+  any(logical)
+}
+
+#' Check if region names and codes correspond as in regionkey.
+#'
+#' @param data
+#' @param region_name_var
+#' @param region_code_var
+#' @param offline
+#'
+#' @return
+#' @export
+#'
+#' @examples
+check_region_var_name_code_correspondence <- function(data,
+                                                    region_name_var, region_code_var,
+                                                    offline = TRUE) {
+
+  regions <- c("kunta", "seutukunta", "maakunta", "suuralue", "ely")
+
+  regionkey <- get_regionkey(offline = offline)
+  regionkey <- purrr::map(regions, ~unite(regionkey, !!.x, paste(.x, c("name", "code"), sep = "_"))) %>%
+               purrr::flatten() %>%
+               as.data.frame() %>%
+               dplyr::select(regions)
+
+  data <- unite(data, region_var, region_name_var, region_code_var)
+
+  logical <- logical(length(names(regionkey)))
+  names(logical) <- names(regionkey)
+  for(var in names(regionkey)) {
+    if(all(data$region_var %in% regionkey[[var]])) {
+      logical[var] <- TRUE
+    }
+  }
+  any(logical)
 }

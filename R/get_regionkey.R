@@ -22,6 +22,15 @@
 get_regionkey <- function(source = "kunta", targets = NULL, year = NULL,
                           only_codes = FALSE, only_names = FALSE, offline = TRUE) {
 
+  latest_year <- get_latest_year()
+
+  if(is.null(year)) {
+    year <- latest_year
+  } else if((year != latest_year)) {
+    offline <- FALSE
+    message("Overriding default option for offline regionkey for years other than the latest year.")
+  }
+
   target_regions <- c("seutukunta", "maakunta", "suuralue", "ely")
   region_code_prefixes <- c("SK", "MK", "SA", "ELY")
 
@@ -33,10 +42,6 @@ get_regionkey <- function(source = "kunta", targets = NULL, year = NULL,
   # Build a complete region key
 
   regionkey <- NULL
-
-  if(is.null(year)) {
-    year <- get_latest_year()
-  }
 
   for(target in target_regions) {
 
@@ -68,7 +73,14 @@ get_regionkey <- function(source = "kunta", targets = NULL, year = NULL,
   # Apply potential user selection
 
     if(is.null(targets)) {
-       targets <- target_regions
+         targets <- target_regions
+    } else {
+         targets <- tolower(targets)
+         if(any(!(targets %in% c("kunta", target_regions)))) {
+             stop(paste0("This function only produces keys between ",
+                    paste(target_regions, collapse = ", "),
+                    " and kunta."))
+         }
     }
     regionkey <- dplyr::select(regionkey, c(paste(c(source, targets), "name", sep = "_"),
                                           paste(c(source, targets), "code", sep = "_")))
@@ -90,3 +102,23 @@ get_regionkey <- function(source = "kunta", targets = NULL, year = NULL,
 
 }
 
+
+
+#' Get region name-code keys.
+#'
+#' @param region character (vector) region(s) of required keys.
+#' @param year
+#' @param offline
+#'
+#' @return data.frame key
+#' @export
+#'
+#' @examples
+#'
+#'   get_region_code_name_key("seutukunta")
+#'
+get_region_code_name_key <- function(region,
+                                     year = NULL, offline = TRUE) {
+
+  get_regionkey(source = region, targets = region, year = year, offline = offline)
+}
