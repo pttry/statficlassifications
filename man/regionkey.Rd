@@ -13,7 +13,7 @@ A data frame with 310 rows and 10 variables:
 }
 }
 \source{
-\url{http://www.diamondse.info/}
+\url{}
 }
 \usage{
 regionkey

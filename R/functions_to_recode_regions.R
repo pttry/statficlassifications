@@ -265,3 +265,84 @@ check_region_var_name_code_correspondence <- function(data,
   }
   any(logical)
 }
+
+
+
+#' Standardize region codes with prefixes
+#'
+#' @param x
+#'
+#' @return
+#' @export
+#'
+#' @examples
+#'
+#'   v <- c("020" = "Akaa", "047" = "Enontekiö", "15" = "Pohjanmaa", "133" = "Keuruu")
+#'   standardize_code_prefixes_vct(names(v))
+#'   v <- c("020" = "Akaa", "047" = "Enontekiö", "MK15" = "Pohjanmaa", "SK133" = "Keuruu")
+#'   standardize_code_prefixes_vct(names(v))
+#'
+standardize_code_prefixes <- function(x) {
+
+  # test which numbers in vector can be found among which codes and assign these numbers the
+  # correct prefix.
+  data(old_current_mun_key, package = "statficlassifications")
+  data(regionkey, package = "statficlassifications")
+
+
+  # kunnat
+  if(!any(grepl("KU", x))) {
+    kunta_codes <- sapply(old_current_mun_key$old, gsub, pattern = "[^0-9.-]", replace = "")
+    x[x %in% kunta_codes] <- paste0("KU", x[x %in% kunta_codes])
+  }
+
+  # maakunnat
+  if(!any(grepl("MK", x))) {
+    maakunta_codes <- sapply(regionkey$maakunta_code, gsub, pattern = "[^0-9.-]", replace = "")
+    x[x %in% maakunta_codes] <- paste0("MK", x[x %in% maakunta_codes])
+  }
+
+  # seutukunnat
+  if(!any(grepl("SK", names(x)))) {
+    seutukunta_codes <- sapply(regionkey$seutukunta_code, gsub, pattern = "[^0-9.-]", replace = "")
+
+    x[x %in% seutukunta_codes] <- paste0("SK", x[x %in% seutukunta_codes])
+  }
+
+  if(any(grepl("000", x))) {
+    x[x%in% c("000")] <- "SSS"
+  }
+  x
+
+}
+
+
+
+#' Join abolished municipalities
+#'
+#' @param x
+#'
+#' @return
+#' @export
+#'
+#' @examples
+#'
+#'   v <- c("KU414", "KU609", "KU429", "KU273")
+#'   join_abolished_municipalities(v)
+#'
+join_abolished_municipalities <- function(x) {
+
+  data(old_current_mun_key, package = "statficlassifications")
+  kunta_codes <- old_current_mun_key$old
+
+  # kunnat
+  kunta_names <- x[x %in% kunta_codes]
+
+  new_kunta <- dplyr::left_join(data.frame(old = kunta_names), old_current_mun_key, by = "old")$current
+  if(length(new_kunta) > length(x)) {stop("Let Juho know about this error!")}
+  x[x %in% kunta_codes] <- new_kunta
+  x
+
+  # possibly add names newly according to new codes.
+
+}
