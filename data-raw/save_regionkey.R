@@ -2,4 +2,4 @@
 
 regionkey <- get_regionkey(offline = FALSE)
 
-usethis::use_data(regionkey, overwrite = TRUE)
+usethis::use_data(regionkey, overwrite = TRUE, internal = TRUE)
