@@ -35,7 +35,7 @@ get_regionkey <- function(source = "kunta", targets = NULL, year = NULL,
   region_code_prefixes <- c("SK", "MK", "SA", "ELY")
 
   if(offline) {
-    load("R/sysdata.rda")
+    data(regionkey)
   } else {
 
 
