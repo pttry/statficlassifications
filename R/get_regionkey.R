@@ -35,7 +35,7 @@ get_regionkey <- function(source = "kunta", targets = NULL, year = NULL,
   region_code_prefixes <- c("SK", "MK", "SA", "ELY")
 
   if(offline) {
-    data(regionkey)
+    data(regionkey, package = "statficlassifications")
   } else {
 
 
@@ -148,10 +148,4 @@ get_full_region_code_name_key <- function(year = NULL, offline = TRUE, as_named_
       names(codes_names_vct) <- codes_names_df$alue_code
       codes_names_vct
   }
-}
-
-
-get_offline_regionkey <- function() {
-  data(regionkey, package = "statficlassifications")
-
 }
