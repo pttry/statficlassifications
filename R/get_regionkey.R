@@ -149,3 +149,9 @@ get_full_region_code_name_key <- function(year = NULL, offline = TRUE, as_named_
       codes_names_vct
   }
 }
+
+
+get_offline_regionkey <- function() {
+  data(regionkey, package = "statficlassifications")
+
+}
