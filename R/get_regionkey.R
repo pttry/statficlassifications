@@ -22,7 +22,7 @@
 get_regionkey <- function(source = "kunta", targets = NULL, year = NULL,
                           only_codes = FALSE, only_names = FALSE, offline = TRUE) {
 
-  latest_year <- get_latest_year()
+  latest_year <- 2020 #get_latest_year()
 
   if(is.null(year)) {
     year <- latest_year
