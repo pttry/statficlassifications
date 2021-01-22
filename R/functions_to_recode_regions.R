@@ -292,19 +292,19 @@ standardize_code_prefixes <- function(x) {
 
   # kunnat
   if(!any(grepl("KU", x))) {
-    kunta_codes <- sapply(old_current_mun_key$old, gsub, pattern = "[^0-9.-]", replace = "")
+    kunta_codes <- sapply(old_current_mun_key$old, gsub, pattern = "[^0-9.-]", replacement = "")
     x[x %in% kunta_codes] <- paste0("KU", x[x %in% kunta_codes])
   }
 
   # maakunnat
   if(!any(grepl("MK", x))) {
-    maakunta_codes <- sapply(regionkey$maakunta_code, gsub, pattern = "[^0-9.-]", replace = "")
+    maakunta_codes <- sapply(regionkey$maakunta_code, gsub, pattern = "[^0-9.-]", replacement = "")
     x[x %in% maakunta_codes] <- paste0("MK", x[x %in% maakunta_codes])
   }
 
   # seutukunnat
   if(!any(grepl("SK", names(x)))) {
-    seutukunta_codes <- sapply(regionkey$seutukunta_code, gsub, pattern = "[^0-9.-]", replace = "")
+    seutukunta_codes <- sapply(regionkey$seutukunta_code, gsub, pattern = "[^0-9.-]", replacement = "")
 
     x[x %in% seutukunta_codes] <- paste0("SK", x[x %in% seutukunta_codes])
   }
