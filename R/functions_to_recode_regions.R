@@ -313,7 +313,7 @@ set_region_codes <- function(x) {
   prefixes <- c("KU", "MK", "SK")
   codes <- lapply(list(unique(old_current_mun_key$old),
                        unique(regionkey$maakunta_code),
-                       unique(regionkey$seutukunta_code)), gsub, pattern = "[^0-9.-]", replace = "")
+                       unique(regionkey$seutukunta_code)), gsub, pattern = "[^0-9.-]", replacement = "")
   names(codes) <- prefixes
 
   # For kunta, seutukunta and maakunta, add corresponding prefixes if input does not have
