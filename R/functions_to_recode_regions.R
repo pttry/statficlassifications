@@ -69,7 +69,7 @@ recode_region <- function(data, from_orig, from, to, year = NULL, leave = FALSE,
 #'
 #'     names_to_codes(data)
 #'
-names_to_codes <- function(data, from = NULL, year = NULL) {
+names_to_codes2_df <- function(data, from = NULL, year = NULL) {
 
   if(is.null(from)) {
     from <- detect_region_var(data)
@@ -107,7 +107,7 @@ names_to_codes <- function(data, from = NULL, year = NULL) {
 #'
 #'        codes_to_names(data)
 #'
-codes_to_names <- function(data, from = NULL, year = NULL) {
+codes_to_names2_df <- function(data, from = NULL, year = NULL) {
 
   if(is.null(from)) {
     from <- detect_region_var(data)
@@ -123,28 +123,6 @@ codes_to_names <- function(data, from = NULL, year = NULL) {
   df <- dplyr::relocate(df, to)
   df
 }
-
-# ottaa vektorin koodeja ja muuttaa vektoriksi nimiä
-
-#' Change codes to names in vector
-#'
-#' @param x
-#'
-#' @return
-#' @export
-#'
-#' @examples
-#'
-#'   v <- c("SSS", "KU103", "KU061","SK213", "MK04")
-#'   codes_to_names_vct(v)
-#'
-codes_to_names_vct <- function(x) {
-
-  region_codes_names <- get_full_region_code_name_key(offline = TRUE)
-  dplyr::left_join(data.frame(alue_code = x), region_codes_names, by = "alue_code")$alue_name
-
-}
-
 
 #' Add regions to data
 #'
@@ -228,149 +206,3 @@ detect_region_var <- function(data, offline = TRUE) {
 }
 
 
-#' Check if a region variable correspond to classification of regionkey
-#'
-#' @param data
-#' @param region_var
-#' @param offline
-#'
-#' @return
-#' @export
-#'
-#' @examples
-check_region_var_classification <- function(data, region_var, offline = TRUE) {
-
-  regionkey <- get_regionkey(offline = offline)
-
-  logical <- logical(length(names(regionkey)))
-  names(logical) <- names(regionkey)
-  for(var in names(regionkey)) {
-    if(all(data[[region_var]] %in% regionkey[[var]])) {
-      logical[var] <- TRUE
-    }
-  }
-  any(logical)
-}
-
-#' Check if region names and codes correspond as in regionkey.
-#'
-#' @param data
-#' @param region_name_var
-#' @param region_code_var
-#' @param offline
-#'
-#' @return
-#' @export
-#'
-#' @examples
-check_region_var_name_code_correspondence <- function(data,
-                                                      region_name_var, region_code_var,
-                                                      offline = TRUE) {
-
-  regions <- c("kunta", "seutukunta", "maakunta", "suuralue", "ely")
-
-  regionkey <- get_regionkey(offline = offline)
-  regionkey <- purrr::map(regions, ~tidyr::unite(regionkey, !!.x, paste(.x, c("name", "code"), sep = "_"))) %>%
-    purrr::flatten() %>%
-    as.data.frame() %>%
-    dplyr::select(regions)
-
-  data <- tidyr::unite(data, region_var, region_name_var, region_code_var)
-
-  logical <- logical(length(names(regionkey)))
-  names(logical) <- names(regionkey)
-  for(var in names(regionkey)) {
-    if(all(data$region_var %in% regionkey[[var]])) {
-      logical[var] <- TRUE
-    }
-  }
-  any(logical)
-}
-
-
-
-#' Standardize region codes with prefixes
-#'
-#' @param x character vector of region codes
-#'
-#' @return
-#' @export
-#'
-#' @examples
-#'
-#'   v <- c("020" = "Akaa", "047" = "Enontekiö", "15" = "Pohjanmaa", "133" = "Keuruu")
-#'   set_region_codes(names(v))
-#'   v <- c("020" = "Akaa", "047" = "Enontekiö", "MK15" = "Pohjanmaa", "SK133" = "Keuruu")
-#'   set_region_codes(names(v))
-#'   v <- c("020" = "Akaa", "KU047" = "Enontekiö", "15" = "Pohjanmaa", "133" = "Keuruu")
-#'   set_region_codes(names(v))
-#'
-set_region_codes <- function(x) {
-
-  # construct a list with all kunta, seutukunta, maakunta codes without prefixes
-  data(old_current_mun_key, package = "statficlassifications")
-  data(regionkey, package = "statficlassifications")
-  prefixes <- c("KU", "MK", "SK")
-  codes <- lapply(list(unique(old_current_mun_key$old),
-                       unique(regionkey$maakunta_code),
-                       unique(regionkey$seutukunta_code)), gsub, pattern = "[^0-9.-]", replacement = "")
-  names(codes) <- prefixes
-
-  # For kunta, seutukunta and maakunta, add corresponding prefixes if input does not have
-  # prefixes
-
-  for(prefix in prefixes) {
-    x[(x %in% codes[[prefix]]) & !grepl(prefix,x)] <- paste0(prefix, x[x %in% codes[[prefix]]])
-  }
-
-  # Tranform any "000"s to "SSS"s
-  if(any(grepl("000", x))) {
-    x[x%in% c("000")] <- "SSS"
-  }
-  x
-
-}
-
-
-#' Join abolished municipalities
-#'
-#' Takes a vector of municipality codes with KU-prefixes and transforms the codes of
-#' the abolished municipalities to the codes of the municipality to which they have
-#' joined.
-#'
-#' @param x, a character vector of municipality codes.
-#'
-#' @return
-#' @export
-#'
-#' @examples
-#'
-#'   v <- c("KU414", "KU609", "KU429", "KU273")
-#'   join_abolished_mun(v)
-#'
-join_abolished_mun <- function(x) {
-
-  # if(!all(grepl("KU", x))) {
-  #    stop("This function understands only prefixed municipality codes!")
-  #   #  x <- standardize_code_prefixes(x)
-  #    #  message("Code prefixes added!")
-  # }
-
-  # Load a vector with all past and current municipality codes
-  data(old_current_mun_key, package = "statficlassifications")
-  kunta_codes <- old_current_mun_key$old
-
-  # From the argument, extract elements that are past or current
-  # municipality codes
-  kunta_names <- x[x %in% kunta_codes]
-
-  # Use old_current_mun_key to create a vector of corresponding current codes
-  new_kunta <- dplyr::left_join(data.frame(old = kunta_names), old_current_mun_key, by = "old")$current
-  if(length(new_kunta) > length(x)) {stop("Let Juho know about this error!")}
-
-  # Assign the newly created vector to the position of the original codes
-  x[x %in% kunta_codes] <- new_kunta
-
-  x
-
-}
