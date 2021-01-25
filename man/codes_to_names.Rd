@@ -23,10 +23,13 @@ A wrapper that uses the statficlassifications::recode-function.
 
   v <- c("SSS", "KU103", "KU061","SK213", "MK04")
   codes_to_names(v)
+  v <- c("SSS", "KU103", "KU061","SK213", "MK04", "nav9w4t")
+  codes_to_names(v)
   f <- factor(c("SSS", "KU103", "KU061","SK213", "MK04"))
   codes_to_names(f)
   df <- data.frame(kunta_code = c("SSS", "KU103", "KU061","SK213", "MK04"), values = rnorm(5))
   codes_to_names(df, "kunta_code")
-
+  df <- data.frame(kunta_code = c("SSS", "KU103", "KU061","SK213", "MK04", "v43y"), values = rnorm(6))
+  codes_to_names(df, "kunta_code")
 
 }

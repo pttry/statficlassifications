@@ -26,7 +26,7 @@ get_regionkey <- function(source = "kunta", targets = NULL, year = NULL,
 
   if(is.null(year)) {
     year <- latest_year
-  } else if((year != latest_year)) {
+  } else if((year != latest_year & offline)) {
     offline <- FALSE
     message("Overriding default option for offline regionkey for years other than the latest year.")
   }
@@ -42,12 +42,18 @@ get_regionkey <- function(source = "kunta", targets = NULL, year = NULL,
   # Build a complete region key
 
   regionkey <- NULL
+  missed_targets <- logical(length(target_regions))
+  names(missed_targets) <- target_regions
 
   for(target in target_regions) {
 
     # Create local ID and get key
     localID <- create_localID_name("kunta", target, year)
     key <- get_key(localID, print_key_name = FALSE)
+
+    if(length(key) == 0) {
+      missed_targets[target] <- TRUE
+      next}
 
     # The codes in classification tables have only the numbers, not the region marker (e.g. MK, SK). Add
     # these region markers.
@@ -73,7 +79,7 @@ get_regionkey <- function(source = "kunta", targets = NULL, year = NULL,
   # Apply potential user selection
 
     if(is.null(targets)) {
-         targets <- target_regions
+         targets <- target_regions[!missed_targets]
     } else {
          targets <- tolower(targets)
          if(any(!(targets %in% c("kunta", target_regions)))) {
