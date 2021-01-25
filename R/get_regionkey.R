@@ -33,6 +33,8 @@ get_regionkey <- function(source = "kunta", targets = NULL, year = NULL,
 
   target_regions <- c("seutukunta", "maakunta", "suuralue", "ely")
   region_code_prefixes <- c("SK", "MK", "SA", "ELY")
+  missed_targets <- logical(length(target_regions))
+  names(missed_targets) <- target_regions
 
   if(offline) {
     data(regionkey, package = "statficlassifications")
@@ -42,8 +44,7 @@ get_regionkey <- function(source = "kunta", targets = NULL, year = NULL,
   # Build a complete region key
 
   regionkey <- NULL
-  missed_targets <- logical(length(target_regions))
-  names(missed_targets) <- target_regions
+
 
   for(target in target_regions) {
 
