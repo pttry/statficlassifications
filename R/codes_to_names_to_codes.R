@@ -13,12 +13,14 @@
 #'
 #'   v <- c("SSS", "KU103", "KU061","SK213", "MK04")
 #'   codes_to_names(v)
+#'   v <- c("SSS", "KU103", "KU061","SK213", "MK04", "nav9w4t")
+#'   codes_to_names(v)
 #'   f <- factor(c("SSS", "KU103", "KU061","SK213", "MK04"))
 #'   codes_to_names(f)
 #'   df <- data.frame(kunta_code = c("SSS", "KU103", "KU061","SK213", "MK04"), values = rnorm(5))
 #'   codes_to_names(df, "kunta_code")
-#
-#'
+#'   df <- data.frame(kunta_code = c("SSS", "KU103", "KU061","SK213", "MK04", "v43y"), values = rnorm(6))
+#'   codes_to_names(df, "kunta_code")
 #'
 codes_to_names <- function(x, col = NULL) {
 
@@ -40,8 +42,8 @@ codes_to_names <- function(x, col = NULL) {
 codes_to_names_vct <- function(x) {
 
   x_names <- names(x)
-  region_codes_names <- get_full_region_code_name_key(offline = TRUE)
-  x <- dplyr::left_join(data.frame(alue_code = x), region_codes_names, by = "alue_code")$alue_name
+  data(region_code_name_key, package = "statficlassifications")
+  x <- dplyr::left_join(data.frame(alue_code = x), region_code_name_key, by = "alue_code")$alue_name
   names(x) <- x_names
   x
 
@@ -118,8 +120,9 @@ names_to_codes_vct <- function(x) {
 
   l <- length(x)
   x_names <- names(x)
-  region_codes_names <- get_full_region_code_name_key(offline = TRUE)
-  x <- dplyr::left_join(data.frame(alue_name = x), region_codes_names, by = "alue_name")$alue_code
+  data(region_code_name_key, package = "statficlassifications")
+  region_code_name_key <- dplyr::filter(region_code_name_key, grepl("[a-zA-Z]", alue_code))
+  x <- dplyr::left_join(data.frame(alue_name = x), region_code_name_key, by = "alue_name")$alue_code
   names(x) <- x_names
   if(length(x) > l) stop("Some region name(s) can be mapped to multiple region codes!")
   x

@@ -123,29 +123,3 @@ get_region_code_name_key <- function(region,
   get_regionkey(source = region, targets = region, year = year, offline = offline)
 }
 
-#' Get all region name-code keys in one object.
-#'
-#' @param year
-#' @param offline
-#' @param as_named_vector logical, whether returns key as a named vector. Defaults to FALSE,
-#'    in which case returns as a data.frame.
-#'
-#' @return
-#' @export
-#'
-#' @examples
-get_full_region_code_name_key <- function(year = NULL, offline = TRUE, as_named_vector = FALSE) {
-  regions <- c("kunta", "seutukunta", "maakunta", "suuralue", "ely")
-
-  codes_names_df <- purrr::map(regions, get_region_code_name_key, year = year, offline = offline) %>%
-                    purrr::map(setNames, c("alue_name", "alue_code")) %>%
-                    plyr::ldply()
-  codes_names_df <- rbind(data.frame(alue_name = "KOKO MAA", alue_code = "SSS"), codes_names_df)
-  if(!as_named_vector) {
-      codes_names_df
-  } else {
-      codes_names_vct <- codes_names_df$alue_name
-      names(codes_names_vct) <- codes_names_df$alue_code
-      codes_names_vct
-  }
-}
