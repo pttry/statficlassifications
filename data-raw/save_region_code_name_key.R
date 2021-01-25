@@ -1,7 +1,9 @@
 # Prepare code-name key
 
-regions1 <- c("kunta", "seutukunta", "maakunta")
-regions2 <- c("suuralue", "ely")
+# For municipalities, the key also has their codes without prefixes.
+
+regions1 <- c("kunta")
+regions2 <- c("seutukunta", "maakunta", "suuralue", "ely")
 
 codes_names_key1 <- purrr::map(regions1, get_region_code_name_key, year = 2020, offline = FALSE) %>%
   purrr::map(setNames, c("alue_name", "alue_code")) %>%
