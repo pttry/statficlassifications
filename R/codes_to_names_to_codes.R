@@ -35,6 +35,7 @@ codes_to_names <- function(x, col = NULL) {
 }
 
 #' @describeIn codes_to_names
+#' @export
 #'
 codes_to_names_vct <- function(x) {
 
@@ -47,6 +48,7 @@ codes_to_names_vct <- function(x) {
 }
 
 #' @describeIn codes_to_names
+#' @export
 #'
 codes_to_names_fct <- function(x) {
 
@@ -56,6 +58,7 @@ x
 }
 
 #' @describeIn set_region_codes
+#' @export
 #'
 codes_to_names_df <- function(x, col) {
 
@@ -109,6 +112,7 @@ names_to_codes <- function(x, col = NULL) {
 }
 
 #' @describeIn codes_to_names
+#' @export
 #'
 names_to_codes_vct <- function(x) {
 
@@ -124,6 +128,7 @@ names_to_codes_vct <- function(x) {
 
 
 #' @describeIn codes_to_names
+#' @export
 #'
 names_to_codes_fct <- function(x) {
 

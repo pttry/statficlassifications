@@ -2,21 +2,9 @@
 % Please edit documentation in R/codes_to_names_to_codes.R
 \name{codes_to_names}
 \alias{codes_to_names}
-\alias{codes_to_names_vct}
-\alias{codes_to_names_fct}
-\alias{names_to_codes_vct}
-\alias{names_to_codes_fct}
 \title{Changes region codes to region names}
 \usage{
 codes_to_names(x, col = NULL)
-
-codes_to_names_vct(x)
-
-codes_to_names_fct(x)
-
-names_to_codes_vct(x)
-
-names_to_codes_fct(x)
 }
 \arguments{
 \item{data}{data.frame, the input data that contains a variable of region codes.}
@@ -31,17 +19,6 @@ data.frame
 \description{
 A wrapper that uses the statficlassifications::recode-function.
 }
-\section{Functions}{
-\itemize{
-\item \code{codes_to_names_vct}: 
-
-\item \code{codes_to_names_fct}: 
-
-\item \code{names_to_codes_vct}: 
-
-\item \code{names_to_codes_fct}: 
-}}
-
 \examples{
 
   v <- c("SSS", "KU103", "KU061","SK213", "MK04")
