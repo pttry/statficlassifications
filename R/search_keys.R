@@ -1,6 +1,6 @@
 #' Search for classification keys
 #'
-#' A function to search and browse Statistics Finland Classifications correspondence tables.
+#' A function to search and browse available classification keys.
 #'
 #' @param ... character, search words.
 #' @param search_source logical, whether search only among the sources.
@@ -29,9 +29,9 @@
 #' # Search for keys that map "kunta" to "maakunta"
 #'    search_keys(source_searchterm = "kunta", target_searchterm = "maakunta")
 #'
-#' # Search for keys that map "kunta" to "maakunta" for year 2016 and print as localID
+#' # Search for keys that map "kunta" to "maakunta" for year 2016 and print as localId
 #'   search_keys(source_searchterm = "kunta", target_searchterm = "maakunta",
-#'               year = 2016, as_localID = TRUE)
+#'               year = 2016, as_localId = TRUE)
 #'
 #'
 search_keys <- function(...,
@@ -40,7 +40,7 @@ search_keys <- function(...,
                         source = NULL,
                         target= NULL,
                         year = NULL,
-                        as_localID = FALSE) {
+                        as_localId = FALSE) {
 
   source_searchterm <- source
   target_searchterm <- target
@@ -48,24 +48,13 @@ search_keys <- function(...,
   # Get a list of all correspondence table urls and create a data.frame that isolates the components
   # of the endpoints
 
-  urls <- get_url()
-  urls <- as.data.frame(sapply(urls, stringr::str_remove,
-                               paste0("https://data.stat.fi/api/classifications/v2/correspondenceTables/")))
-  nros <- as.data.frame(matrix(unlist(lapply(urls, stringr::str_extract_all, "_\\d+_")), ncol = 2, byrow = TRUE))
-  names(nros) <- paste0("nro", 1:2)
-  results <- tidyr::separate(urls, url, c("source", "temp_var", "date2"), sep = "_\\d+_") %>%
-             tidyr::separate(temp_var, c("date1", "target"), sep = "#") %>%
-             dplyr::mutate(year1 = substring(date1, 1,4),
-                           date1 = substring(date1, 5,8),
-                           year2 = substring(date2, 1,4),
-                           date2 = substring(date2, 5,8))
-  results <- cbind(results, nros)
+  results <- urls_as_localId_df(get_url())
 
   # Filter results by the searchterms
 
   searchterms <- unlist(list(...))
 
-   if(length(searchterms > 0)) {
+   if(length(searchterms) > 0) {
      results_temp <- data.frame()
      for(word in searchterms) {
        match_indicator_source <- NULL
@@ -89,11 +78,11 @@ search_keys <- function(...,
    }
 
    if(!is.null(source_searchterm)) {
-     results <- dplyr::filter(results, grepl(source_searchterm, source))
+     results <- dplyr::filter(results, source_searchterm == source)
    }
 
   if(!is.null(target_searchterm)) {
-    results <- dplyr::filter(results, grepl(target_searchterm, target))
+    results <- dplyr::filter(results, target_searchterm == target)
   }
 
    if(dim(results)[1] == 0) {
@@ -103,9 +92,9 @@ search_keys <- function(...,
   # Format output
 
    output <- character(dim(results)[1])
-   if(as_localID) {
+   if(as_localId) {
      for(i in 1:dim(results)[1]) {
-     output[i] <- create_localID_name(input_vector = results[i,])
+     output[i] <- create_localId_name(input_vector = results[i,])
      }
     } else {
        for(i in 1:dim(results)[1]) {

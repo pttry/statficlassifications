@@ -4,17 +4,25 @@
 \alias{access_API}
 \title{API interface}
 \usage{
-access_API(localID = NULL, content = "data")
+access_API(localId = NULL, content = "data")
 }
 \arguments{
-\item{localID}{character local ID of the required correspondence table}
-
 \item{content, }{character either "data" or "url" whether the content of the query
 is data or url.}
+
+\item{localID}{character local ID of the required correspondence table}
 }
 \value{
-data.frame
+data.frame either the correspondence table or its url depending on argument \code{content}.
 }
 \description{
-Given a local ID of a correspondence table fetches the table and reads it.
+Given a local ID of a correspondence table, gets the table and transforms it into a data.frame.
+For internal use.
+}
+\examples{
+
+  localId <- "kunta_1_20200101\%23seutukunta_1_20200101"
+  access_API(localId, content = "data")
+  access_API(localId, content = "url")
+
 }

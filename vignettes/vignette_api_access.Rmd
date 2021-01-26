@@ -37,24 +37,24 @@ search_keys(source = "kunta", target = "suuralue", year = 2020)
 
 # Getting keys
 
-Each key is uniquely identified by a local ID in the API. Having found the suitable key, you can use `search_keys` with an argument `as_localID = TRUE` to print the local ID of the key:
+The API uniquely identifies each classification key by a local ID. Having found the suitable key, you can use `search_keys` with an argument `as_localId = TRUE` to print the localId of the key:
 
 ```{r}
-localID <- search_keys(source = "kunta", target = "suuralue", year = 2020, as_localID = TRUE)
-localID
+localId <- search_keys(source = "kunta", target = "suuralue", year = 2020, as_localId = TRUE)
+localId
 ```
 
-You can also create a local ID yourself:
+You can also create a local Id yourself:
 
 ```{r}
-localID <- create_localID_name("kunta", "maakunta", year = 2020)
-localID
+localId <- create_localId_name("kunta", "maakunta", year = 2020)
+localId
 ```
 
 Finally, you can get the key by:
 
 ```{r}
-key <- get_key(localID)
+key <- get_key(localId)
 head(key)
 ```
 

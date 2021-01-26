@@ -23,7 +23,7 @@
 get_regionkey <- function(source = "kunta", targets = NULL, year = NULL,
                           only_codes = FALSE, only_names = FALSE, offline = TRUE) {
 
-  latest_year <- 2020 #get_latest_year()
+  latest_year <- get_latest_year(offline = offline)
 
   if(is.null(year)) {
     year <- latest_year
@@ -32,8 +32,9 @@ get_regionkey <- function(source = "kunta", targets = NULL, year = NULL,
     message("Overriding default option for offline regionkey for years other than the latest year.")
   }
 
-  target_regions <- c("seutukunta", "maakunta", "suuralue", "ely")
-  region_code_prefixes <- c("SK", "MK", "SA", "ELY")
+  data(prefix_name_key)
+  target_regions <- prefix_name_key$name[-(1:2)]
+  region_code_prefixes <- prefix_name_key$prefix[-(1:2)]
   missed_targets <- logical(length(target_regions))
   names(missed_targets) <- target_regions
 
@@ -46,16 +47,16 @@ get_regionkey <- function(source = "kunta", targets = NULL, year = NULL,
 
   regionkey <- NULL
 
-
   for(target in target_regions) {
 
     # Create local ID and get key
-    localID <- create_localID_name("kunta", target, year)
-    key <- get_key(localID, print_key_name = FALSE)
+    localId <- create_localId_name("kunta", target, year)
+    key <- get_key(localId, print_key_name = FALSE)
 
     if(length(key) == 0) {
       missed_targets[target] <- TRUE
-      next}
+      next
+    }
 
     # The codes in classification tables have only the numbers, not the region marker (e.g. MK, SK). Add
     # these region markers.
@@ -78,7 +79,7 @@ get_regionkey <- function(source = "kunta", targets = NULL, year = NULL,
 
   }
 
-  # Apply potential user selection
+  # Apply potential user selection regarding regions
 
     if(is.null(targets)) {
          targets <- target_regions[!missed_targets]
@@ -113,6 +114,8 @@ get_regionkey <- function(source = "kunta", targets = NULL, year = NULL,
 
 
 #' Get region name-code keys.
+#'
+#' A wrapper of \code{get_regionkey} to get region name-code key tables.
 #'
 #' @param region character (vector) region(s) of required keys.
 #' @param year

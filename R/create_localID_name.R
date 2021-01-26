@@ -1,7 +1,6 @@
-#' Create correspondence table local ID
+#' Create correspondence table localId
 #'
-#' Given the inputs creates the local ID of a correspondence table to be used as an argument of the
-#' 'get_correspondencetable'-function. For internal use.
+#' Given the inputs, creates a localId. For internal use.
 #'
 #' @param source character
 #' @param target character
@@ -20,10 +19,10 @@
 #'
 #' @examples
 #'
-#' # Create a local ID for the key that maps "kunta" to "maakunta" for year 2015
-#'    create_localID_name("kunta", "maakunta", year = 2015)
+#' # Create a localId for the key that maps "kunta" to "maakunta" for year 2015
+#'    create_localId_name("kunta", "maakunta", year = 2015)
 #'
-create_localID_name <- function(source, target,
+create_localId_name <- function(source, target,
                                 year, year1 = year, year2 = year,
                                 date = "0101", date1 = date, date2 = date,
                                 nro1 = "_1_", nro2 = "_1_",

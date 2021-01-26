@@ -2,16 +2,22 @@
 % Please edit documentation in R/functions_for_api_access.R
 \name{get_url}
 \alias{get_url}
-\title{Get urls from API}
+\title{Get url from API}
 \usage{
-get_url(localID = NULL)
+get_url(localId = NULL)
 }
 \arguments{
-\item{localID, }{character, local ID of the required correspondence table}
+\item{localId, }{character, localId of the required correspondence table}
 }
 \value{
-character,
+character, url of the provided localId.
 }
 \description{
 A wrapper for \code{access_API} function to get url.
+}
+\examples{
+
+   localId <- "kunta_1_20200101\%23seutukunta_1_20200101"
+   get_url(localId)
+
 }

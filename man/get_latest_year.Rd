@@ -2,7 +2,7 @@
 % Please edit documentation in R/functions_for_api_access.R
 \name{get_latest_year}
 \alias{get_latest_year}
-\title{Get the year of the newest correspondence table}
+\title{Get the year of the latest correspondence table}
 \usage{
 get_latest_year()
 }
@@ -10,5 +10,10 @@ get_latest_year()
 double, the year of the newest correspondence table
 }
 \description{
-Get the year of the newest correspondence table
+Get the year of the latest correspondence table
+}
+\examples{
+
+ get_latest_year()
+
 }

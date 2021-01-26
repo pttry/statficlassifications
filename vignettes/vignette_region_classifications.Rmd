@@ -77,7 +77,7 @@ data(prefix_name_key); prefix_name_key
 Function ´set_region_codes´helps you set your region codes in a standard format:
 
 ```{r}
-v <- c("020", "047", "15", "193")
+v <- c("020", "047", "15", "063")
 set_region_codes(v)
 ```
 

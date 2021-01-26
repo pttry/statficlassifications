@@ -8,10 +8,10 @@ search_keys(
   ...,
   search_source = FALSE,
   search_target = FALSE,
-  searchword_source = NULL,
-  searchword_target = NULL,
+  source = NULL,
+  target = NULL,
   year = NULL,
-  as_localID = FALSE
+  as_localId = FALSE
 )
 }
 \arguments{
@@ -21,11 +21,11 @@ search_keys(
 
 \item{search_target}{logical, whether search only among the targets.}
 
-\item{searchword_source}{character, a search word to use in search only among the sources.}
-
-\item{searchword_target}{character, a search word to use in search only among the targets.}
-
 \item{year}{character or numerical, search for specific years.}
+
+\item{source_searchterm}{character, a search word to use in search only among the sources.}
+
+\item{target_searchterm}{character, a search word to use in search only among the targets.}
 
 \item{as_localID}{logical, whether returns the localID of the found table. Defaults to FALSE.}
 }
@@ -33,7 +33,7 @@ search_keys(
 character vector
 }
 \description{
-A function to search and browse Statistics Finland Classifications correspondence tables.
+A function to search and browse available classification keys.
 }
 \examples{
 
@@ -47,11 +47,11 @@ A function to search and browse Statistics Finland Classifications correspondenc
    search_keys(search_source = "maakunta)
 
 # Search for keys that map "kunta" to "maakunta"
-   search_keys(searchword_source = "kunta", searchword_target = "maakunta")
+   search_keys(source_searchterm = "kunta", target_searchterm = "maakunta")
 
-# Search for keys that map "kunta" to "maakunta" for year 2016 and print as localID
-  search_keys(searchword_source = "kunta", searchword_target = "maakunta",
-              year = 2016, as_localID = TRUE)
+# Search for keys that map "kunta" to "maakunta" for year 2016 and print as localId
+  search_keys(source_searchterm = "kunta", target_searchterm = "maakunta",
+              year = 2016, as_localId = TRUE)
 
 
 }

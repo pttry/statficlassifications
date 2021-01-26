@@ -4,14 +4,22 @@
 \alias{get_key}
 \title{Get data from API}
 \usage{
-get_key(localID, print_key_name = TRUE)
+get_key(localId, print_key_name = TRUE)
 }
 \arguments{
+\item{print_key_name, }{whether prints the long name of the correspondence table got.}
+
 \item{localID, }{character, local ID of the required correspondence table}
 }
 \value{
-data.frame
+data.frame, the key of the provided localId.
 }
 \description{
 A wrapper for \code{access_API} to get data.
+}
+\examples{
+
+   localId <- "kunta_1_20200101\%23seutukunta_1_20200101"
+   get_key(localId)
+
 }
