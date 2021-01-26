@@ -9,7 +9,7 @@
 
 The `statficlassifications` allows the access of Statistics Finland
 classifications API from within R. Gets correspondence tables or
-classification keys.
+classification keys. Provides tools for reclassifying regions in data.
 
 ## Installation
 
@@ -22,13 +22,15 @@ library(statficlassifications)
 library(dplyr)
 ```
 
-## List all available classification keys
+## Searching and getting correspondence tables
+
+### List all available classification keys
 
 ``` r
 search_keys()
 ```
 
-## Search for available classifications
+### Search for available classifications
 
 ``` r
 search_keys("maakunta")
@@ -36,23 +38,36 @@ search_keys("maakunta", search_source = TRUE)
 search_keys(searchword_source = "kunta", searchword_target = "maakunta", year = 2020)
 ```
 
-## Print the localID of the search results and assign
+### Print the localID of the search results and assign to variable
 
 ``` r
 
 localID <- search_keys(searchword_source = "kunta", searchword_target = "maakunta", year = 2020, as_localID = TRUE)
 ```
 
-## Create localID yourself
+### Create localID yourself
 
 ``` r
 localID <- create_localID_name("kunta", "maakunta", year = 2020)
 ```
 
-## Get classification key
+### Get classification key
 
 ``` r
 key <- get_key(localID)
+```
+
+## Region classifications
+
+The package aims to impose the use of prefixed region codes. Prefixes
+are useful in making sure codes do not map to multiple names. There are,
+for instance, kuntia and seutukuntia with identical numbers. Prefixes
+help distinguish between these.
+
+The correpondence of region names and prefixes is
+
+``` r
+data(prefix_name_key); prefix_name_key
 ```
 
 ## Get the latest region key table

@@ -2,11 +2,13 @@
 
 # For municipalities, the key also has their codes without prefixes.
 
+# Vuonna 2018 ja ennen Ahvenanmaa - Åland, Vuonna 2019 ja jälkeen Ahvenanmaa
+
 regions1 <- c("kunta", "maakunta")
 regions2 <- c("seutukunta", "suuralue", "ely")
 
 codes_names_key <- data.frame()
-years <- 2020:2020
+years <- 2010:2020
 for(year in years) {
 codes_names_key_temp <- purrr::map(regions1, get_region_code_name_key, year = year, offline = FALSE) %>%
   purrr::map(setNames, c("alue_name", "alue_code")) %>%
@@ -28,9 +30,15 @@ region_code_name_key <- rbind(data.frame(alue_name = rep("KOKO MAA",2), alue_cod
                          codes_names_key2,
                          codes_names_key3)
 
+region_code_name_key <- filter(region_code_name_key, alue_name != "Ahvenanmaa - Åland")
+region_code_name_key <- distinct(region_code_name_key)
 
-usethis::use_data(region_code_name_key, overwrite = TRUE)
+if(any(duplicated(region_code_name_key$alue_code))) {
+  stop("Non-unique code to name mappings produced! Data not saved.")
+} else {
+  usethis::use_data(region_code_name_key, overwrite = TRUE)
+}
 
 
-# region_code_name_key[duplicated(region_code_name_key$alue_code),]
-
+ region_code_name_key[duplicated(region_code_name_key$alue_code),]
+ region_code_name_key %>% filter(alue_code == "KU445")

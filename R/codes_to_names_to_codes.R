@@ -151,3 +151,31 @@ names_to_codes_df <- function(x, col) {
   }
   x
 }
+
+
+#' Change prefixes to names and vice versa
+#'
+#' @param prefix
+#'
+#' @return
+#' @export
+#'
+#' @examples
+prefix_to_name <- function(prefix) {
+  data(prefix_name_key, package = "statficlassifications")
+  prefix_name_key[prefix_name_key$prefix == prefix,]$name
+}
+
+
+#' Title
+#'
+#' @param name
+#'
+#' @return
+#' @export
+#'
+#' @examples
+name_to_prefix <- function(name) {
+  data(prefix_name_key, package = "statficlassifications")
+  prefix_name_key[prefix_name_key$name == name,]$prefix
+}

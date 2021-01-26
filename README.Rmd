@@ -24,7 +24,7 @@ The `statficlassifications` allows the access of Statistics Finland classificati
 
 To install the packag and start using the package:
 
-``` r
+```{r}
 install.packages("devtools")
 devtools::install_github("pttry/statficlassifications")
 library(statficlassifications)
@@ -35,7 +35,7 @@ library(dplyr)
 
 ### List all available classification keys
 
-```r
+```{r}
 search_keys()
 ```
 
@@ -68,7 +68,13 @@ key <- get_key(localID)
 
 ## Region classifications
 
-The pacakge aims to impose region codes of the form prefixnumber. The prefixes are "KU", "SK", "MK", "SA", "ELY". 
+The package aims to impose the use of prefixed region codes. Prefixes are useful in making sure codes do not map to multiple names. There are, for instance, kuntia and seutukuntia with identical numbers. Prefixes help distinguish between these.
+
+The correpondence of region names and prefixes is 
+
+```r
+data(prefix_name_key); prefix_name_key
+```
 
 ## Get the latest region key table
 

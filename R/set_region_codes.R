@@ -52,7 +52,7 @@ set_region_codes_vct <- function(x) {
   if(!all(x %in% unlist(codes))) {
     warning(paste("Code(s)",
                   paste(x[!(x %in% unlist(codes))], collapse = ", "),
-                  "not recognized as region codes. They have been left as they were.", sep = " "))
+                  "not recognized as region codes. They have been left as they were."))
   }
 
   # For kunta, seutukunta and maakunta, add corresponding prefixes if input does not have
