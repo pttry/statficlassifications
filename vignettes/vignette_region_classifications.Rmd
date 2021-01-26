@@ -87,6 +87,6 @@ It also easy to map region codes to corresponding names and vice versa:
 v <- set_region_codes(v)
 codes_to_names(v)
 v <- codes_to_names(v)
-#names_to_codes(v)
+names_to_codes(v)
 ```
 

@@ -49,6 +49,11 @@ set_region_codes_vct <- function(x) {
                        unique(regionkey$seutukunta_code)), gsub, pattern = "[^0-9.-]", replacement = "")
   names(codes) <- prefixes
 
+  if(any(x %in% codes$SK[codes$SK %in% codes$KU]))  {
+    warning(paste("Code(s)", paste(x[x %in% codes$SK[codes$SK %in% codes$KU]], collapse = ", "),
+                  "could have been interpreted as seutukunta code(s), but have been interpreted as municipality code(s)."))
+  }
+
   if(!all(x %in% unlist(codes))) {
     warning(paste("Code(s)",
                   paste(x[!(x %in% unlist(codes))], collapse = ", "),
