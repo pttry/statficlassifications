@@ -15,7 +15,7 @@ get_region_code_name_key(region, year = NULL, offline = TRUE)
 data.frame key
 }
 \description{
-Get region name-code keys.
+A wrapper of \code{get_regionkey} to get region name-code key tables.
 }
 \examples{
 

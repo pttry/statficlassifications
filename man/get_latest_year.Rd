@@ -4,7 +4,7 @@
 \alias{get_latest_year}
 \title{Get the year of the latest correspondence table}
 \usage{
-get_latest_year()
+get_latest_year(offline = TRUE)
 }
 \value{
 double, the year of the newest correspondence table

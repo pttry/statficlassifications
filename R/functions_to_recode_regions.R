@@ -139,7 +139,7 @@ codes_to_names2_df <- function(data, from = NULL, year = NULL) {
 #'
 #' @examples
 #'
-add_region <- function(data, to, from = NULL, offline = FALSE) {
+add_region <- function(data, to, from = NULL, offline = TRUE) {
 
   if(is.null(from)) {
     from <- detect_region_var(data, offline = offline)
@@ -180,7 +180,7 @@ add_region <- function(data, to, from = NULL, offline = FALSE) {
 #'
 #'              detect_region_var(data)
 #'
-detect_region_var <- function(data, offline = TRUE) {
+detect_region_var <- function(data, offline = FALSE) {
 
   regionkey <- get_regionkey(offline = offline)
 

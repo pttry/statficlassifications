@@ -7,16 +7,17 @@
 
 <!-- badges: end -->
 
-The `statficlassifications` allows the access of Statistics Finland
-classifications API at <https://data.stat.fi/api/classifications/v2>
-from within R. (For information on the API, see
-<https://www.stat.fi/fi/luokitukset/info/>.) Gets correspondence tables
-or how the package calls them, classification keys or just keys.
-Provides tools for reclassifying regions in data.
+The `statficlassifications`-package allows the access of the
+(correspondence tables of) open classifications API of Statistics
+Finland at <https://data.stat.fi/api/classifications/v2>. (For
+information on the API, see <https://www.stat.fi/fi/luokitukset/info/>.)
+`statficlassifications` gives functions that get correspondence tables /
+classification conversion keys. Also provides tools for reclassifying
+regions in data.
 
 ## Installation
 
-To install the packag and start using the package:
+To install and start using the package:
 
 ``` r
 install.packages("devtools")
@@ -66,29 +67,29 @@ search_keys(source = "kunta", target = "suuralue", year = 2020)
 
 # Getting keys
 
-Each key is uniquely identified by a local ID in the API. Having found
-the suitable key, you can use `search_keys` with an argument `as_localID
-= TRUE` to print the local ID of the
+The API uniquely identifies each classification key by a local ID.
+Having found the suitable key, you can use `search_keys` with an
+argument `as_localId = TRUE` to print the localId of the
 key:
 
 ``` r
-localID <- search_keys(source = "kunta", target = "suuralue", year = 2020, as_localID = TRUE)
-localID
+localId <- search_keys(source = "kunta", target = "suuralue", year = 2020, as_localId = TRUE)
+localId
 #> [1] "kunta_1_20200101%23suuralue_1_20200101"
 ```
 
-You can also create a local ID yourself:
+You can also create a local Id yourself:
 
 ``` r
-localID <- create_localID_name("kunta", "maakunta", year = 2020)
-localID
+localId <- create_localId_name("kunta", "maakunta", year = 2020)
+localId
 #> [1] "kunta_1_20200101%23maakunta_1_20200101"
 ```
 
 Finally, you can get the key by:
 
 ``` r
-key <- get_key(localID)
+key <- get_key(localId)
 #> Vuoden 2020 kuntien ja maakuntien välinen luokitusavain
 head(key)
 #>   source_code source_name target_code target_name
@@ -113,23 +114,27 @@ To load regional classification keys, use `get_regionkey`:
 
 ``` r
 regionkey <- get_regionkey(only_names = TRUE)
+#> Warning in get_latest_year(offline = offline): In January, the offline latest
+#> year is the last year in case no fresh keys updated.
 head(regionkey)
-#>    kunta_name seutukunta_name maakunta_name suuralue_name              ely_name
-#> 1        Akaa Etelä-Pirkanmaa     Pirkanmaa   Länsi-Suomi Pirkanmaan ELY-keskus
-#> 2      Urjala Etelä-Pirkanmaa     Pirkanmaa   Länsi-Suomi Pirkanmaan ELY-keskus
-#> 3 Valkeakoski Etelä-Pirkanmaa     Pirkanmaa   Länsi-Suomi Pirkanmaan ELY-keskus
-#> 4     Tammela          Forssa    Kanta-Häme   Etelä-Suomi     Hämeen ELY-keskus
-#> 5    Humppila          Forssa    Kanta-Häme   Etelä-Suomi     Hämeen ELY-keskus
-#> 6   Jokioinen          Forssa    Kanta-Häme   Etelä-Suomi     Hämeen ELY-keskus
+#>    kunta_name seutukunta_name maakunta_name              ely_name suuralue_name
+#> 1        Akaa Etelä-Pirkanmaa     Pirkanmaa Pirkanmaan ELY-keskus   Länsi-Suomi
+#> 2      Urjala Etelä-Pirkanmaa     Pirkanmaa Pirkanmaan ELY-keskus   Länsi-Suomi
+#> 3 Valkeakoski Etelä-Pirkanmaa     Pirkanmaa Pirkanmaan ELY-keskus   Länsi-Suomi
+#> 4     Tammela          Forssa    Kanta-Häme     Hämeen ELY-keskus   Etelä-Suomi
+#> 5    Humppila          Forssa    Kanta-Häme     Hämeen ELY-keskus   Etelä-Suomi
+#> 6   Jokioinen          Forssa    Kanta-Häme     Hämeen ELY-keskus   Etelä-Suomi
 regionkey <- get_regionkey(only_codes = TRUE)
+#> Warning in get_latest_year(offline = offline): In January, the offline latest
+#> year is the last year in case no fresh keys updated.
 head(regionkey)
-#>   kunta_code seutukunta_code maakunta_code suuralue_code ely_code
-#> 1      KU020           SK063          MK06           SA3    ELY05
-#> 2      KU887           SK063          MK06           SA3    ELY05
-#> 3      KU908           SK063          MK06           SA3    ELY05
-#> 4      KU834           SK053          MK05           SA2    ELY04
-#> 5      KU103           SK053          MK05           SA2    ELY04
-#> 6      KU169           SK053          MK05           SA2    ELY04
+#>   kunta_code seutukunta_code maakunta_code ely_code suuralue_code
+#> 1      KU020           SK063          MK06    ELY05           SA3
+#> 2      KU887           SK063          MK06    ELY05           SA3
+#> 3      KU908           SK063          MK06    ELY05           SA3
+#> 4      KU834           SK053          MK05    ELY04           SA2
+#> 5      KU103           SK053          MK05    ELY04           SA2
+#> 6      KU169           SK053          MK05    ELY04           SA2
 ```
 
 You can also get more specialised regional classification keys by
@@ -137,6 +142,8 @@ setting arguments:
 
 ``` r
 kunta_maakunta_key <- get_regionkey("kunta", "maakunta")
+#> Warning in get_latest_year(offline = offline): In January, the offline latest
+#> year is the last year in case no fresh keys updated.
 head(kunta_maakunta_key)
 #>    kunta_name maakunta_name kunta_code maakunta_code
 #> 1        Akaa     Pirkanmaa      KU020          MK06
@@ -156,14 +163,16 @@ data:
 
 ``` r
 data <- get_regionkey() %>% dplyr::select(kunta_name) %>% dplyr::mutate(values = rnorm(dplyr::n()))
+#> Warning in get_latest_year(offline = offline): In January, the offline latest
+#> year is the last year in case no fresh keys updated.
 head(data)
-#>    kunta_name     values
-#> 1        Akaa  0.1086406
-#> 2      Urjala  0.4132672
-#> 3 Valkeakoski  0.7598157
-#> 4     Tammela  1.6135480
-#> 5    Humppila -1.9664104
-#> 6   Jokioinen  1.3680512
+#>    kunta_name      values
+#> 1        Akaa  2.25379837
+#> 2      Urjala  1.32789006
+#> 3 Valkeakoski  0.09849152
+#> 4     Tammela  0.27872330
+#> 5    Humppila -1.70114496
+#> 6   Jokioinen  1.03625297
 ```
 
 You can use regional classification tables to add regions to your
@@ -171,33 +180,37 @@ data:
 
 ``` r
 dplyr::left_join(data, get_regionkey(only_names = TRUE), by = "kunta_name") %>% head()
-#>    kunta_name     values seutukunta_name maakunta_name suuralue_name
-#> 1        Akaa  0.1086406 Etelä-Pirkanmaa     Pirkanmaa   Länsi-Suomi
-#> 2      Urjala  0.4132672 Etelä-Pirkanmaa     Pirkanmaa   Länsi-Suomi
-#> 3 Valkeakoski  0.7598157 Etelä-Pirkanmaa     Pirkanmaa   Länsi-Suomi
-#> 4     Tammela  1.6135480          Forssa    Kanta-Häme   Etelä-Suomi
-#> 5    Humppila -1.9664104          Forssa    Kanta-Häme   Etelä-Suomi
-#> 6   Jokioinen  1.3680512          Forssa    Kanta-Häme   Etelä-Suomi
-#>                ely_name
-#> 1 Pirkanmaan ELY-keskus
-#> 2 Pirkanmaan ELY-keskus
-#> 3 Pirkanmaan ELY-keskus
-#> 4     Hämeen ELY-keskus
-#> 5     Hämeen ELY-keskus
-#> 6     Hämeen ELY-keskus
+#> Warning in get_latest_year(offline = offline): In January, the offline latest
+#> year is the last year in case no fresh keys updated.
+#>    kunta_name      values seutukunta_name maakunta_name              ely_name
+#> 1        Akaa  2.25379837 Etelä-Pirkanmaa     Pirkanmaa Pirkanmaan ELY-keskus
+#> 2      Urjala  1.32789006 Etelä-Pirkanmaa     Pirkanmaa Pirkanmaan ELY-keskus
+#> 3 Valkeakoski  0.09849152 Etelä-Pirkanmaa     Pirkanmaa Pirkanmaan ELY-keskus
+#> 4     Tammela  0.27872330          Forssa    Kanta-Häme     Hämeen ELY-keskus
+#> 5    Humppila -1.70114496          Forssa    Kanta-Häme     Hämeen ELY-keskus
+#> 6   Jokioinen  1.03625297          Forssa    Kanta-Häme     Hämeen ELY-keskus
+#>   suuralue_name
+#> 1   Länsi-Suomi
+#> 2   Länsi-Suomi
+#> 3   Länsi-Suomi
+#> 4   Etelä-Suomi
+#> 5   Etelä-Suomi
+#> 6   Etelä-Suomi
 ```
 
 For a shortcut, use `add_region`:
 
 ``` r
 data %>% add_region("maakunta") %>% head()
-#>    kunta_name     values maakunta_name
-#> 1        Akaa  0.1086406     Pirkanmaa
-#> 2      Urjala  0.4132672     Pirkanmaa
-#> 3 Valkeakoski  0.7598157     Pirkanmaa
-#> 4     Tammela  1.6135480    Kanta-Häme
-#> 5    Humppila -1.9664104    Kanta-Häme
-#> 6   Jokioinen  1.3680512    Kanta-Häme
+#> Warning in get_latest_year(offline = offline): In January, the offline latest
+#> year is the last year in case no fresh keys updated.
+#>    kunta_name      values maakunta_name
+#> 1        Akaa  2.25379837     Pirkanmaa
+#> 2      Urjala  1.32789006     Pirkanmaa
+#> 3 Valkeakoski  0.09849152     Pirkanmaa
+#> 4     Tammela  0.27872330    Kanta-Häme
+#> 5    Humppila -1.70114496    Kanta-Häme
+#> 6   Jokioinen  1.03625297    Kanta-Häme
 ```
 
 It is also straightforward to compute, say, maakunta-level means give
@@ -207,16 +220,18 @@ the municipal data.
 data %>% add_region("maakunta") %>% 
          dplyr::group_by(maakunta_name) %>%
          dplyr::summarize(maakunta_mean = mean(values)) %>% head()
+#> Warning in get_latest_year(offline = offline): In January, the offline latest
+#> year is the last year in case no fresh keys updated.
 #> `summarise()` ungrouping output (override with `.groups` argument)
 #> # A tibble: 6 x 2
 #>   maakunta_name   maakunta_mean
 #>   <fct>                   <dbl>
-#> 1 Ahvenanmaa             -0.746
-#> 2 Etelä-Karjala          -0.173
-#> 3 Etelä-Pohjanmaa        -0.275
-#> 4 Etelä-Savo              0.127
-#> 5 Kainuu                  0.413
-#> 6 Kanta-Häme              0.377
+#> 1 Ahvenanmaa            -0.119 
+#> 2 Etelä-Karjala         -0.0552
+#> 3 Etelä-Pohjanmaa        0.372 
+#> 4 Etelä-Savo            -0.453 
+#> 5 Kainuu                 0.409 
+#> 6 Kanta-Häme             0.508
 ```
 
 `statficlassifications` aims to impose the use of prefixed region codes.
@@ -237,9 +252,9 @@ Function ´set\_region\_codes´helps you set your region codes in a
 standard format:
 
 ``` r
-v <- c("020", "047", "15", "193")
+v <- c("020", "047", "15", "063")
 set_region_codes(v)
-#> [1] "KU020" "KU047" "MK15"  "SK193"
+#> [1] "KU020" "KU047" "MK15"  "SK063"
 ```
 
 It also easy to map region codes to corresponding names and vice versa:
@@ -247,7 +262,7 @@ It also easy to map region codes to corresponding names and vice versa:
 ``` r
 v <- set_region_codes(v)
 codes_to_names(v)
-#> [1] "Akaa"         "Enontekiö"    "Pohjanmaa"    "Torniolaakso"
+#> [1] "Akaa"            "Enontekiö"       "Pohjanmaa"       "Etelä-Pirkanmaa"
 v <- codes_to_names(v)
 #names_to_codes(v)
 ```

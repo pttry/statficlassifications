@@ -3,20 +3,11 @@
 \name{names_to_codes_df}
 \alias{names_to_codes_df}
 \alias{set_region_codes}
-\alias{set_region_codes_vct}
-\alias{set_region_codes_fct}
-\alias{set_region_codes_df}
 \title{Standardize region codes with prefixes}
 \usage{
 names_to_codes_df(x, col)
 
 set_region_codes(x, col = NULL)
-
-set_region_codes_vct(x)
-
-set_region_codes_fct(x)
-
-set_region_codes_df(x, col)
 }
 \arguments{
 \item{x}{character vector of region codes}
@@ -30,12 +21,6 @@ Standardize region codes with prefixes
 \section{Functions}{
 \itemize{
 \item \code{names_to_codes_df}: 
-
-\item \code{set_region_codes_vct}: 
-
-\item \code{set_region_codes_fct}: 
-
-\item \code{set_region_codes_df}: 
 }}
 
 \examples{
