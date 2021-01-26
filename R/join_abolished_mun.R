@@ -35,6 +35,7 @@ join_abolished_mun <- function(x, col = NULL) {
 }
 
 #' @describeIn join_abolished_mun
+#' @export
 #'
 join_abolished_mun_vct <- function(x) {
 
@@ -66,6 +67,7 @@ join_abolished_mun_vct <- function(x) {
 }
 
 #' @describeIn join_abolished_mun
+#' @export
 #'
 join_abolished_mun_fct <- function(x) {
   levels(x) <- join_abolished_mun_vct(levels(x))
@@ -73,6 +75,7 @@ join_abolished_mun_fct <- function(x) {
 }
 
 #' @describeIn join_abolished_mun
+#' @export
 #'
 join_abolished_mun_df <- function(x, col) {
 
