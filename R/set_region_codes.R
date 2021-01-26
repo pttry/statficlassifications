@@ -36,6 +36,7 @@ set_region_codes <- function(x, col = NULL) {
 
 
 #' @describeIn set_region_codes
+#' @export
 #'
 set_region_codes_vct <- function(x) {
 
@@ -78,6 +79,7 @@ set_region_codes_vct <- function(x) {
 
 
 #' @describeIn set_region_codes
+#' @export
 #'
 set_region_codes_fct <- function(x) {
 
@@ -87,6 +89,7 @@ set_region_codes_fct <- function(x) {
 }
 
 #' @describeIn set_region_codes
+#' @export
 #'
 set_region_codes_df <- function(x, col) {
 
