@@ -13,6 +13,7 @@
 #' @param only_names logical, whether the key should contain only the region names. Defaults to FALSE.
 #' @param year character or numerical, the year of the desired classification key.
 #' @return data.frame Returns a classification key as a data.frame.
+#' @import dplyr
 #' @export
 #' @examples
 #'

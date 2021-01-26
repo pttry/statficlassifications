@@ -5,12 +5,14 @@
 #' @param ... character, search words.
 #' @param search_source logical, whether search only among the sources.
 #' @param search_target logical, whether search only among the targets.
-#' @param searchword_source character, a search word to use in search only among the sources.
-#' @param searchword_target character, a search word to use in search only among the targets.
+#' @param source_searchterm character, a search word to use in search only among the sources.
+#' @param target_searchterm character, a search word to use in search only among the targets.
 #' @param year character or numerical, search for specific years.
 #' @param as_localID logical, whether returns the localID of the found table. Defaults to FALSE.
 #'
 #' @return character vector
+#'
+#' @import dplyr
 #' @export
 #'
 #' @examples
@@ -25,20 +27,23 @@
 #'    search_keys(search_source = "maakunta)
 #'
 #' # Search for keys that map "kunta" to "maakunta"
-#'    search_keys(searchword_source = "kunta", searchword_target = "maakunta")
+#'    search_keys(source_searchterm = "kunta", target_searchterm = "maakunta")
 #'
 #' # Search for keys that map "kunta" to "maakunta" for year 2016 and print as localID
-#'   search_keys(searchword_source = "kunta", searchword_target = "maakunta",
+#'   search_keys(source_searchterm = "kunta", target_searchterm = "maakunta",
 #'               year = 2016, as_localID = TRUE)
 #'
 #'
 search_keys <- function(...,
                         search_source = FALSE,
                         search_target = FALSE,
-                        searchword_source = NULL,
-                        searchword_target = NULL,
+                        source = NULL,
+                        target= NULL,
                         year = NULL,
                         as_localID = FALSE) {
+
+  source_searchterm <- source
+  target_searchterm <- target
 
   # Get a list of all correspondence table urls and create a data.frame that isolates the components
   # of the endpoints
@@ -56,13 +61,13 @@ search_keys <- function(...,
                            date2 = substring(date2, 5,8))
   results <- cbind(results, nros)
 
-  # Filter results by the searchwords
+  # Filter results by the searchterms
 
-  searchwords <- unlist(list(...))
+  searchterms <- unlist(list(...))
 
-   if(length(searchwords > 0)) {
+   if(length(searchterms > 0)) {
      results_temp <- data.frame()
-     for(word in searchwords) {
+     for(word in searchterms) {
        match_indicator_source <- NULL
        match_indicator_target <- NULL
 
@@ -83,12 +88,12 @@ search_keys <- function(...,
     results <- dplyr::filter(results, year1 == year | year2 == year)
    }
 
-   if(!is.null(searchword_source)) {
-     results <- dplyr::filter(results, grepl(searchword_source, source))
+   if(!is.null(source_searchterm)) {
+     results <- dplyr::filter(results, grepl(source_searchterm, source))
    }
 
-  if(!is.null(searchword_target)) {
-    results <- dplyr::filter(results, grepl(searchword_target, target))
+  if(!is.null(target_searchterm)) {
+    results <- dplyr::filter(results, grepl(target_searchterm, target))
   }
 
    if(dim(results)[1] == 0) {

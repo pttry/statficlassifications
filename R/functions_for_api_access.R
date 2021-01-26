@@ -82,6 +82,8 @@ get_key <- function(localID, print_key_name = TRUE) {
 #'
 #' @return double, the year of the newest correspondence table
 #' @export
+#' @import dplyr
+#'
 #'
 #' @examples
 get_latest_year <- function() {

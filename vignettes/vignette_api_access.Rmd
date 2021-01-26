@@ -1,5 +1,5 @@
 ---
-title: "vignette"
+title: "How to use"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{vignette}
@@ -14,6 +14,48 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r setup}
+```{r include = FALSE}
 library(statficlassifications)
+library(dplyr)
 ```
+
+# Searching for keys
+
+To list all available keys, use `search_keys` without arguments:
+
+```{r}
+head(search_keys())
+```
+
+Plug in search terms to search for available keys or use more specific options:
+
+```{r}
+search_keys("maakunta")
+search_keys("maakunta", search_source = TRUE)
+search_keys(source = "kunta", target = "suuralue", year = 2020)
+```
+
+# Getting keys
+
+Each key is uniquely identified by a local ID in the API. Having found the suitable key, you can use `search_keys` with an argument `as_localID = TRUE` to print the local ID of the key:
+
+```{r}
+localID <- search_keys(source = "kunta", target = "suuralue", year = 2020, as_localID = TRUE)
+localID
+```
+
+You can also create a local ID yourself:
+
+```{r}
+localID <- create_localID_name("kunta", "maakunta", year = 2020)
+localID
+```
+
+Finally, you can get the key by:
+
+```{r}
+key <- get_key(localID)
+head(key)
+```
+
+

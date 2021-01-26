@@ -1,5 +1,5 @@
 ---
-title: "vignette_region_classifications"
+title: "Region keys"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{vignette_region_classifications}
@@ -17,3 +17,76 @@ knitr::opts_chunk$set(
 ```{r setup}
 library(statficlassifications)
 ```
+
+The package provides more more specialised ways for dealing with regional classifications.
+
+### Getting regional classification keys
+
+To load regional classification keys, use `get_regionkey`:
+
+```{r}
+regionkey <- get_regionkey(only_names = TRUE)
+head(regionkey)
+regionkey <- get_regionkey(only_codes = TRUE)
+head(regionkey)
+```
+
+You can also get more specialised regional classification keys by setting arguments:
+
+```{r}
+kunta_maakunta_key <- get_regionkey("kunta", "maakunta")
+head(kunta_maakunta_key)
+```
+
+### Manipulating regional variables
+
+´statficlassifications´ also gives you a selection of ways and functions that help you to standardize and manipulate the regional information in your data. For examples, generate random municipal data:
+
+```{r}
+data <- get_regionkey() %>% dplyr::select(kunta_name) %>% dplyr::mutate(values = rnorm(dplyr::n()))
+head(data)
+```
+
+You can use regional classification tables to add regions to your data:
+
+```{r}
+dplyr::left_join(data, get_regionkey(only_names = TRUE), by = "kunta_name") %>% head()
+```
+
+For a shortcut, use `add_region`:
+
+```{r}
+data %>% add_region("maakunta") %>% head()
+```
+
+
+It is also straightforward to compute, say, maakunta-level means give the municipal data. 
+
+```{r}
+data %>% add_region("maakunta") %>% 
+         dplyr::group_by(maakunta_name) %>%
+         dplyr::summarize(maakunta_mean = mean(values)) %>% head()
+```
+
+`statficlassifications` aims to impose the use of prefixed region codes. Prefixes are useful in making sure codes do not map to multiple names. There are, for instance, kuntia and seutukuntia with identical numbers. Prefixes help distinguish between these. The correpondence of region names and prefixes is
+
+```{r, echo = FALSE}
+data(prefix_name_key); prefix_name_key
+```
+
+Function ´set_region_codes´helps you set your region codes in a standard format:
+
+```{r}
+v <- c("020", "047", "15", "193")
+set_region_codes(v)
+```
+
+It also easy to map region codes to corresponding names and vice versa:
+
+```{r}
+v <- set_region_codes(v)
+codes_to_names(v)
+v <- codes_to_names(v)
+#names_to_codes(v)
+```
+
