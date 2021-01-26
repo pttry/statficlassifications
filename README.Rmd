@@ -18,7 +18,7 @@ knitr::opts_chunk$set(
 <!-- badges: start -->
 <!-- badges: end -->
 
-The `statficlassifications` allows the access of Statistics Finland classifications API from within R. Gets correspondence tables or how the package calls them, classification keys or just keys. Provides tools for reclassifying regions in data. 
+The `statficlassifications` allows the access of Statistics Finland classifications API at https://data.stat.fi/api/classifications/v2 from within R. (For information on the API, see https://www.stat.fi/fi/luokitukset/info/.) Gets correspondence tables or how the package calls them, classification keys or just keys. Provides tools for reclassifying regions in data. 
 
 ## Installation
 
