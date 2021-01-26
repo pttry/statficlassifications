@@ -1,0 +1,19 @@
+---
+title: "vignette_region_classifications"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{vignette_region_classifications}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(statficlassifications)
+```

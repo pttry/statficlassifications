@@ -2,8 +2,8 @@ Package: statficlassifications
 Title: Statistics Finland Statistical Classification API interface
 Version: 0.0.0.9000
 Authors@R: 
-    person(given = "First",
-           family = "Last",
+    person(given = "Juho",
+           family = "Alasalmi",
            role = c("aut", "cre"),
            email = "juho.alasalmi@ptt.fi",
            comment = c(ORCID = "YOUR-ORCID-ID"))
@@ -17,11 +17,15 @@ Imports:
     httr,
     jsonlite,
     dplyr,
-    magrittr,
     stringr,
     tidyr,
     purrr,
     plyr,
-    readxl
+    readxl,
+    magrittr
 Depends: 
     R (>= 2.10)
+Suggests: 
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr
