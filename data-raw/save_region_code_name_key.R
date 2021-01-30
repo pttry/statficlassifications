@@ -7,7 +7,9 @@
 regions1 <- c("kunta", "maakunta")
 regions2 <- c("seutukunta", "suuralue", "ely")
 
+
 codes_names_key <- data.frame()
+
 years <- 2010:2020
 for(year in years) {
 codes_names_key_temp <- purrr::map(regions1, get_region_code_name_key, year = year, offline = FALSE) %>%

@@ -71,7 +71,7 @@ data %>% add_region("maakunta") %>%
 `statficlassifications` aims to impose the use of prefixed region codes. Prefixes are useful in making sure codes do not map to multiple names. There are, for instance, kuntia and seutukuntia with identical numbers. Prefixes help distinguish between these. The correpondence of region names and prefixes is
 
 ```{r, echo = FALSE}
-data(prefix_name_key); prefix_name_key
+statficlassifications:::prefix_name_key
 ```
 
 Function ´set_region_codes´helps you set your region codes in a standard format:

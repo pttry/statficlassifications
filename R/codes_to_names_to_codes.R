@@ -42,8 +42,9 @@ codes_to_names <- function(x, col = NULL) {
 codes_to_names_vct <- function(x) {
 
   x_names <- names(x)
-  region_code_name_key <- statficlassifications::region_code_name_key
-  x <- dplyr::left_join(data.frame(alue_code = x), region_code_name_key, by = "alue_code")$alue_name
+  x <- dplyr::left_join(data.frame(alue_code = x),
+                        statficlassifications::region_code_name_key,
+                        by = "alue_code")$alue_name
   names(x) <- x_names
   x
 
@@ -120,9 +121,11 @@ names_to_codes_vct <- function(x) {
 
   l <- length(x)
   x_names <- names(x)
-  data(region_code_name_key, package = "statficlassifications")
-  region_code_name_key <- dplyr::filter(region_code_name_key, grepl("[a-zA-Z]", alue_code))
-  x <- dplyr::left_join(data.frame(alue_name = x), region_code_name_key, by = "alue_name")$alue_code
+  region_code_name_key <- dplyr::filter(statficlassifications::region_code_name_key,
+                                        grepl("[a-zA-Z]", alue_code))
+  x <- dplyr::left_join(data.frame(alue_name = x),
+                        region_code_name_key,
+                        by = "alue_name")$alue_code
   names(x) <- x_names
   if(length(x) > l) stop("Some region name(s) can be mapped to multiple region codes!")
   x
