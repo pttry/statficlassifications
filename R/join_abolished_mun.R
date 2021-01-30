@@ -48,7 +48,7 @@ join_abolished_mun_vct <- function(x) {
   # Save potential names
 
   # Load a vector with all past and current municipality codes
-  data(abolished_mun_key, package = "statficlassifications")
+  abolished_mun_key <- statficlassifications::abolished_mun_key
   kunta_codes <- abolished_mun_key$joiner
 
   # From the argument, extract elements that are past or current

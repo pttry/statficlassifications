@@ -42,7 +42,7 @@ codes_to_names <- function(x, col = NULL) {
 codes_to_names_vct <- function(x) {
 
   x_names <- names(x)
-  data(region_code_name_key, package = "statficlassifications")
+  region_code_name_key <- statficlassifications::region_code_name_key
   x <- dplyr::left_join(data.frame(alue_code = x), region_code_name_key, by = "alue_code")$alue_name
   names(x) <- x_names
   x

@@ -42,8 +42,8 @@ set_region_codes_vct <- function(x) {
 
   x_names <- names(x)
   # construct a list with all kunta, seutukunta, maakunta codes without prefixes
-  data(abolished_mun_key, package = "statficlassifications")
-  data(regionkey, package = "statficlassifications")
+  abolished_mun_key <- statficlassifications::abolished_mun_key
+  regionkey <- statficlassifications::regionkey
   prefixes <- c("KU", "MK", "SK")
   codes <- lapply(list(unique(abolished_mun_key$joiner),
                        unique(regionkey$maakunta_code),
