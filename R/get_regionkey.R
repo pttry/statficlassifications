@@ -32,8 +32,8 @@ get_regionkey <- function(source = "kunta", targets = NULL, year = NULL,
     message("Overriding default option for offline regionkey for years other than the latest year.")
   }
 
-  target_regions <- prefix_name_key$name[-(1:2)]
-  region_code_prefixes <- prefix_name_key$prefix[-(1:2)]
+  target_regions <- statficlassifications::prefix_name_key$name[-(1:2)]
+  region_code_prefixes <- statficlassifications::prefix_name_key$prefix[-(1:2)]
   missed_targets <- logical(length(target_regions))
   names(missed_targets) <- target_regions
 
