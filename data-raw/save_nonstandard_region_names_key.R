@@ -1,6 +1,6 @@
 # Create the nonstandard region names key
 
-key <- c("koko suomi" = "SSS",
+key <- c("koko maa" = "SSS",
          "uudenmaan maakunta" = "MK01",
          "itä-uudenmaan maakunta" = "MK20",
          "varsinais-suomen maakunta" = "MK02",
