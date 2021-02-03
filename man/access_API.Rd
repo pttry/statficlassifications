@@ -4,7 +4,7 @@
 \alias{access_API}
 \title{API interface}
 \usage{
-access_API(localId = NULL, content = "data")
+access_API(localId = NULL, content = "data", classification_service = NULL)
 }
 \arguments{
 \item{content, }{character either "data" or "url" whether the content of the query

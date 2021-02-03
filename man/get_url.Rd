@@ -4,7 +4,7 @@
 \alias{get_url}
 \title{Get url from API}
 \usage{
-get_url(localId = NULL)
+get_url(localId = NULL, classification_service = NULL)
 }
 \arguments{
 \item{localId, }{character, localId of the required correspondence table}
@@ -18,6 +18,6 @@ A wrapper for \code{access_API} function to get url.
 \examples{
 
    localId <- "kunta_1_20200101\%23seutukunta_1_20200101"
-   get_url(localId)
+   get_url(localId, classification_service = "correspondenceTables")
 
 }

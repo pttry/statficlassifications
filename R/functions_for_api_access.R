@@ -16,7 +16,19 @@
 #'   access_API(localId, content = "data")
 #'   access_API(localId, content = "url")
 #'
-access_API <- function(localId = NULL, content = "data") {
+access_API <- function(localId = NULL, content = "data", classification_service = NULL) {
+
+  if(is.null(localId) & is.null(classification_service)) {
+    stop("Please provide either a localId or a classification_service.")
+  }
+
+  if(is.null(classification_service)) {
+      classification_service <- find_classification_service(localId)
+  }
+
+  if(!(classification_service %in% c("classifications", "correspondenceTables"))) {
+    stop("Unknown classification service.")
+  }
 
   if(!(content %in% c("url", "data"))) {
     stop("Argument 'content' has to be either 'data' or 'url'.")
@@ -28,9 +40,14 @@ access_API <- function(localId = NULL, content = "data") {
   }
 
   # Set url either to get url or content
-  url <- paste0("https://data.stat.fi/api/classifications/v2/correspondenceTables",
+
+  endpoint_name <- c("classifications" = "/classificationItems",
+                     "correspondenceTables" = "/maps")
+
+  url <- paste0("https://data.stat.fi/api/classifications/v2/",
+                classification_service,
                 localId,
-                ifelse(content == "data", "/maps", ""))
+                ifelse(content == "data", endpoint_name[classification_service], ""))
 
   # access API and return
   resp <- httr::GET(url, query = list(content = content, meta = "min"))
@@ -52,22 +69,26 @@ access_API <- function(localId = NULL, content = "data") {
 #' @examples
 #'
 #'    localId <- "kunta_1_20200101%23seutukunta_1_20200101"
-#'    get_url(localId)
+#'    get_url(localId, classification_service = "correspondenceTables")
 #'
-get_url <- function(localId = NULL) {
+get_url <- function(localId = NULL, classification_service = NULL) {
 
-  url <- access_API(localId, content = "url")
+  if(is.null(localId) & is.null(classification_service)) {
+    stop("Please provide either a localId or a classification_service.")
+  }
+
+  url <- access_API(localId, content = "url", classification_service = classification_service)
   names(url) <- "url"
   url
 }
 
 
-#' Get data from API
+#' Get classification key from API
 #'
-#' A wrapper for \code{access_API} to get data.
+#' A wrapper for \code{access_API} to get data of classification keys.
 #'
 #' @param localID, character, local ID of the required correspondence table
-#' @param print_key_name, whether prints the long name of the correspondence table got.
+#' @param print_key_name, whether prints the long name of the correspondence table.
 #'
 #' @return data.frame, the key of the provided localId.
 #' @export
@@ -83,7 +104,7 @@ get_key <- function(localId, print_key_name = TRUE) {
     stop("Multiple localIds! This function currently gives you only one key at the time.")
   }
 
-  key <- access_API(localId, content = "data")
+  key <- access_API(localId, content = "data", classification_service = "correspondenceTables")
   text <- unique(key$correspondenceTable$correspondenceTableTexts)
   key <- data.frame(source_code = key$sourceItem$code,
                     source_name = unlist(lapply(key$sourceItem$classificationItemNames, '[', "name")),
@@ -92,6 +113,36 @@ get_key <- function(localId, print_key_name = TRUE) {
 
   if(print_key_name) {message(text)}
   key
+}
+
+#' Get classification series from API
+#'
+#' A wrapper for \code{access_API} to get data of classification series
+#'
+#' @param localId character, local ID of the required correspondence table
+#' @param print_series_name  whether prints the long name of the classification series.
+#'
+#' @return
+#' @export
+#'
+#' @examples
+#'
+#'   localId <- "siviiliasiat_1_20140101"
+#'   get_series(localId)
+#'
+get_series <- function(localId, print_series_name = TRUE) {
+
+  if(length(localId) > 1) {
+    stop("Multiple localIds! This function currently gives you only one series at the time.")
+  }
+
+  series <- access_API(localId, content = "data", classification_service = "classifications")
+  text <- unlist(unique(series$classification$classificationName))["name"]
+  series <- data.frame(code = series$code,
+                    name = unlist(lapply(series$classificationItemNames, '[', "name")))
+
+  if(print_series_name) {message(text)}
+  series
 }
 
 
@@ -139,6 +190,8 @@ get_latest_year <- function(offline = TRUE) {
 #' @examples
 urls_as_localId_df <- function(urls) {
 
+  if(grepl("v2/correspondenceTables", urls)) {
+
   urls <- as.data.frame(sapply(urls, stringr::str_remove,
                                paste0("https://data.stat.fi/api/classifications/v2/correspondenceTables/")))
   nros <- as.data.frame(matrix(unlist(lapply(urls, stringr::str_extract_all, "_\\d+_")), ncol = 2, byrow = TRUE))
@@ -149,5 +202,48 @@ urls_as_localId_df <- function(urls) {
                   date1 = substring(date1, 5,8),
                   year2 = substring(date2, 1,4),
                   date2 = substring(date2, 5,8))
-  cbind(results, nros)
+  output <- cbind(results, nros)
+
+  } else if(grepl("v2/classifications", urls)) {
+
+    urls <- as.data.frame(sapply(urls, stringr::str_remove,
+                                 paste0("https://data.stat.fi/api/classifications/v2/classifications/")))
+    nro <- as.data.frame(matrix(unlist(lapply(urls, stringr::str_extract_all, "_\\d+_")), ncol = 1, byrow = TRUE))
+    names(nro) <- "nro"
+    results <- tidyr::separate(urls, url, c("series", "date1"), sep = "_\\d+_") %>%
+      dplyr::mutate(year = substring(date1, 1,4),
+                    date = substring(date1, 5,8))
+    output <- cbind(results, nro)
+  }
+  output
+}
+
+
+#' Finds a classification service for a localId
+#'
+#' Given a localId finds whether the localId is a localId in classifications or correspondenceTables
+#' classification services. For internal use.
+#'
+#' @param localId character
+#'
+#' @return
+#' @export
+#'
+#' @examples
+#'
+#'     find_classification_service(search_series(as_localId = TRUE)[1])
+#'
+find_classification_service <- function(localId) {
+
+  if(length(localId) > 1) {
+    stop("Multiple localIds! This function currently gives you only one series at the time.")
+  }
+
+  indicator <- c(localId %in% search_series(as_localId = TRUE),
+                 localId %in% search_keys(as_localId = TRUE))
+
+  if(all(!indicator)) {stop("Classification service not found.")}
+
+  c("classifications", "correspondenceTables")[indicator]
+
 }

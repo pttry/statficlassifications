@@ -2,12 +2,12 @@
 % Please edit documentation in R/functions_for_api_access.R
 \name{get_key}
 \alias{get_key}
-\title{Get data from API}
+\title{Get classification key from API}
 \usage{
 get_key(localId, print_key_name = TRUE)
 }
 \arguments{
-\item{print_key_name, }{whether prints the long name of the correspondence table got.}
+\item{print_key_name, }{whether prints the long name of the correspondence table.}
 
 \item{localID, }{character, local ID of the required correspondence table}
 }
@@ -15,7 +15,7 @@ get_key(localId, print_key_name = TRUE)
 data.frame, the key of the provided localId.
 }
 \description{
-A wrapper for \code{access_API} to get data.
+A wrapper for \code{access_API} to get data of classification keys.
 }
 \examples{
 

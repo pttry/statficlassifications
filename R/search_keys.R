@@ -48,7 +48,7 @@ search_keys <- function(...,
   # Get a list of all correspondence table urls and create a data.frame that isolates the components
   # of the endpoints
 
-  results <- urls_as_localId_df(get_url())
+  results <- urls_as_localId_df(get_url(classification_service = "correspondenceTables"))
 
   # Filter results by the searchterms
 
