@@ -156,29 +156,46 @@ names_to_codes_df <- function(x, col) {
 }
 
 
-#' Change prefixes to names and vice versa
+#' Change region prefixes to names
 #'
-#' @param prefix
+#' @param prefix, region level code prefix
 #'
-#' @return
+#' @return region name
 #' @export
 #'
 #' @examples
+#'
+#'  prefix_to_name("SK")
+#'
 prefix_to_name <- function(prefix) {
-  data(prefix_name_key, package = "statficlassifications")
-  prefix_name_key[prefix_name_key$prefix == prefix,]$name
+  if(any(tolower(prefix) %in% prefix_name_key$name)) {
+    return(tolower(prefix))
+  }
+  prefix <- toupper(prefix)
+  if(!all(prefix %in% prefix_name_key$prefix)) {
+    stop(paste0("Unknown region code prefix ", prefix[!(prefix %in% prefix_name_key$prefix)], "."))
+  }
+  prefix_name_key[prefix_name_key$prefix %in% prefix,]$name
 }
 
-
-#' Title
+#' Change region names to prefixes
 #'
-#' @param name
+#' @param name, region level name
 #'
-#' @return
+#' @return region prefix
 #' @export
 #'
 #' @examples
+#'
+#'  name_to_prefix("seutukunta")
+#'
 name_to_prefix <- function(name) {
-  data(prefix_name_key, package = "statficlassifications")
-  prefix_name_key[prefix_name_key$name == name,]$prefix
+  if(any(toupper(name) %in% prefix_name_key$prefix)) {
+    return(toupper(name))
+  }
+  name <- tolower(name)
+  if(!all(name %in% prefix_name_key$name)) {
+    stop(paste0("Unknown region name ", name[!(name %in% prefix_name_key$name)], "."))
+  }
+  prefix_name_key[prefix_name_key$name %in% name,]$prefix
 }

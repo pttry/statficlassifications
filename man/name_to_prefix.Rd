@@ -2,16 +2,21 @@
 % Please edit documentation in R/codes_to_names_to_codes.R
 \name{name_to_prefix}
 \alias{name_to_prefix}
-\title{Title}
+\title{Change region names to prefixes}
 \usage{
 name_to_prefix(name)
 }
 \arguments{
-\item{name}{}
+\item{name, }{region level name}
 }
 \value{
-
+region prefix
 }
 \description{
-Title
+Change region names to prefixes
+}
+\examples{
+
+ name_to_prefix("seutukunta")
+
 }

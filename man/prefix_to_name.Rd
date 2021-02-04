@@ -2,16 +2,21 @@
 % Please edit documentation in R/codes_to_names_to_codes.R
 \name{prefix_to_name}
 \alias{prefix_to_name}
-\title{Change prefixes to names and vice versa}
+\title{Change region prefixes to names}
 \usage{
 prefix_to_name(prefix)
 }
 \arguments{
-\item{prefix}{}
+\item{prefix, }{region level code prefix}
 }
 \value{
-
+region name
 }
 \description{
-Change prefixes to names and vice versa
+Change region prefixes to names
+}
+\examples{
+
+ prefix_to_name("SK")
+
 }
