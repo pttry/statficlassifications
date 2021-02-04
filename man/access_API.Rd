@@ -7,17 +7,25 @@
 access_API(localId = NULL, content = "data", classification_service = NULL)
 }
 \arguments{
-\item{content, }{character either "data" or "url" whether the content of the query
+\item{content, }{character, either "data" or "url" whether the content of the query
 is data or url.}
 
-\item{localID}{character local ID of the required correspondence table}
+\item{classification_service}{character, either 'correspondenceTable' or
+'classifications'. Determines the classification service used.}
+
+\item{localID}{character, local ID of the correspondence table or classification}
 }
 \value{
 data.frame either the correspondence table or its url depending on argument \code{content}.
 }
 \description{
-Given a local ID of a correspondence table, gets the table and transforms it into a data.frame.
-For internal use.
+Given a local ID of a correspondence table or classification, gets the data
+and transforms it into a data.frame. For internal use of the package.
+}
+\details{
+Currently supported classification services are 'classifications' and
+'correspondenceTables'. For more information on classification services,
+see \url{https://www.stat.fi/en/luokitukset/info/}.
 }
 \examples{
 

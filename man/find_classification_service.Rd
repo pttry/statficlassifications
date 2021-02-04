@@ -18,6 +18,6 @@ classification services. For internal use.
 }
 \examples{
 
-    find_classification_service(search_series(as_localId = TRUE)[1])
+    find_classification_service(search_classifications(as_localId = TRUE)[1])
 
 }

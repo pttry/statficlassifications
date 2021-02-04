@@ -1,11 +1,17 @@
 #' API interface
 #'
-#' Given a local ID of a correspondence table, gets the table and transforms it into a data.frame.
-#' For internal use.
+#' Given a local ID of a correspondence table or classification, gets the data
+#' and transforms it into a data.frame. For internal use of the package.
 #'
-#' @param localID character local ID of the required correspondence table
-#' @param content, character either "data" or "url" whether the content of the query
+#' Currently supported classification services are 'classifications' and
+#' 'correspondenceTables'. For more information on classification services,
+#' see <https://www.stat.fi/en/luokitukset/info/>.
+#'
+#' @param localID character, local ID of the correspondence table or classification
+#' @param content, character, either "data" or "url" whether the content of the query
 #'    is data or url.
+#' @param classification_service character, either 'correspondenceTable' or
+#'    'classifications'. Determines the classification service used.
 #'
 #' @return data.frame either the correspondence table or its url depending on argument \code{content}.
 #' @export
@@ -41,13 +47,13 @@ access_API <- function(localId = NULL, content = "data", classification_service 
 
   # Set url either to get url or content
 
-  endpoint_name <- c("classifications" = "/classificationItems",
+  url_ends <- c("classifications" = "/classificationItems",
                      "correspondenceTables" = "/maps")
 
   url <- paste0("https://data.stat.fi/api/classifications/v2/",
                 classification_service,
                 localId,
-                ifelse(content == "data", endpoint_name[classification_service], ""))
+                ifelse(content == "data", url_ends[classification_service], ""))
 
   # access API and return
   resp <- httr::GET(url, query = list(content = content, meta = "min"))
@@ -61,7 +67,7 @@ access_API <- function(localId = NULL, content = "data", classification_service 
 #'
 #' A wrapper for \code{access_API} function to get url.
 #'
-#' @param localId, character, localId of the required correspondence table
+#' @param localId, character, localId of the required table.
 #'
 #' @return character, url of the provided localId.
 #' @export
@@ -117,7 +123,7 @@ get_key <- function(localId, print_key_name = TRUE) {
 
 #' Get classification series from API
 #'
-#' A wrapper for \code{access_API} to get data of classification series
+#' A wrapper for \code{access_API} to get data of classifications.
 #'
 #' @param localId character, local ID of the required correspondence table
 #' @param print_series_name  whether prints the long name of the classification series.
@@ -128,9 +134,9 @@ get_key <- function(localId, print_key_name = TRUE) {
 #' @examples
 #'
 #'   localId <- "siviiliasiat_1_20140101"
-#'   get_series(localId)
+#'   get_classification(localId)
 #'
-get_series <- function(localId, print_series_name = TRUE) {
+get_classification <- function(localId, print_series_name = TRUE) {
 
   if(length(localId) > 1) {
     stop("Multiple localIds! This function currently gives you only one series at the time.")
@@ -169,7 +175,7 @@ get_latest_year <- function(offline = TRUE) {
    }
 
  } else {
-     urls <- get_url()
+     urls <- get_url(classification_service = "correspondenceTable")
      results <- urls_as_localId_df(urls)
      as.double(max(c(results$year1, results$year2)))
  }
@@ -231,7 +237,7 @@ urls_as_localId_df <- function(urls) {
 #'
 #' @examples
 #'
-#'     find_classification_service(search_series(as_localId = TRUE)[1])
+#'     find_classification_service(search_classifications(as_localId = TRUE)[1])
 #'
 find_classification_service <- function(localId) {
 

@@ -7,7 +7,7 @@
 get_url(localId = NULL, classification_service = NULL)
 }
 \arguments{
-\item{localId, }{character, localId of the required correspondence table}
+\item{localId, }{character, localId of the required table.}
 }
 \value{
 character, url of the provided localId.

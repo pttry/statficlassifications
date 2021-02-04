@@ -19,9 +19,9 @@ library(statficlassifications)
 library(dplyr)
 ```
 
-# Searching for keys
+### Searching for keys
 
-To list all available keys, use `search_keys` without arguments:
+To list all available classification keys (correspondence tables), use `search_keys` without arguments:
 
 ```{r}
 head(search_keys())
@@ -35,7 +35,7 @@ search_keys("maakunta", search_source = TRUE)
 search_keys(source = "kunta", target = "suuralue", year = 2020)
 ```
 
-# Getting keys
+### Getting keys
 
 The API uniquely identifies each classification key by a local ID. Having found the suitable key, you can use `search_keys` with an argument `as_localId = TRUE` to print the localId of the key:
 
@@ -58,4 +58,33 @@ key <- get_key(localId)
 head(key)
 ```
 
+
+### Searching for classifications
+
+To list all available classifications, use `search_classifications` without arguments:
+
+```{r}
+head(search_classifications())
+```
+
+Plug in search terms to search for available classifications or use more specific options:
+
+```{r}
+search_classifications("ammatti")
+search_classifications("ammatti", year = 2021)
+```
+
+### Getting classifications
+
+To print the localId of the desired classification, use `as_localId = TRUE`.
+
+```{r}
+localId <- search_classifications("ammatti", year = 2021, as_localId = TRUE)
+```
+
+Use localId to get the classification
+
+```{r}
+head(get_classification(localId))
+```
 

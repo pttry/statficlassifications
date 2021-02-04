@@ -1,4 +1,4 @@
-#' Search for classification series
+#' Search for classifications
 #'
 #' @param ... character, search words.
 #' @param year character or numerical, search for specific years.
@@ -9,10 +9,10 @@
 #'
 #' @examples
 #'
-#'   search_series("ammatti")
-#'   search_series("ammatti", year = 2021, as_localId = TRUE)
+#'   search_classifications("ammatti")
+#'   search_classifications("ammatti", year = 2021, as_localId = TRUE)
 #'
-search_series <- function(...,
+search_classifications <- function(...,
                           year = NULL,
                           as_localId = FALSE){
 
