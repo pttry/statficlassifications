@@ -193,7 +193,7 @@ name_to_prefix <- function(name) {
   if(any(toupper(name) %in% prefix_name_key$prefix)) {
     return(toupper(name))
   }
-  name <- tolower(name)
+  name <- ifelse(name != "KOKO MAA", tolower(name), name)
   if(!all(name %in% prefix_name_key$name)) {
     stop(paste0("Unknown region name ", name[!(name %in% prefix_name_key$name)], "."))
   }
