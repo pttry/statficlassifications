@@ -4,7 +4,7 @@
 \alias{get_occupationkey}
 \title{Get an occupation name-code key}
 \usage{
-get_occupationkey(code_level = NULL, year = 2010)
+get_occupationkey(code_level = NULL, year = 2010, as_named_vector = FALSE)
 }
 \arguments{
 \item{code_level, }{disaggregation level}
@@ -20,5 +20,6 @@ Get an occupation name-code key
 \examples{
 
    get_occupationkey(1)
+   get_occupationkey(1, as_named_vector = TRUE)
 
 }
