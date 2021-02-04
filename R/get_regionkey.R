@@ -110,26 +110,32 @@ get_regionkey <- function(source = "kunta", targets = NULL, year = NULL,
 
 }
 
-
-
-#' Get region name-code keys.
+#' Get region code-name keys
 #'
-#' A wrapper of \code{get_regionkey} to get region name-code key tables.
+#' @param ... character(s), (vector), region(s) of required keys.
+#' @param year character/numeric, year of the required keys. If NULL uses the latest year.
+#' @param offline logical, whether uses the key in the package data. Defaults TRUE.
+#' @param as_named_vector logical, whether returns the key as a named vector rather than a
+#'    data.frame. Defaults FALSE.
 #'
-#' @param region character (vector) region(s) of required keys.
-#' @param year
-#' @param offline
-#'
-#' @return data.frame key
+#' @return a data.frame or a named vector. A region code-name key.
 #' @export
 #'
 #' @examples
 #'
-#'   get_region_code_name_key("seutukunta")
+#' get_region_code_name_key("seutukunta")
+#' get_region_code_name_key("seutukunta", as_named_vector = TRUE)
+#' get_region_code_name_key("seutukunta", "maakunta")
 #'
-get_region_code_name_key <- function(region,
-                                     year = NULL, offline = TRUE) {
+get_region_code_name_key <- function(..., year = NULL, offline = TRUE, as_named_vector = FALSE) {
 
-  get_regionkey(source = region, targets = region, year = year, offline = offline)
+  region <- unlist(list(...))
+  key <- get_regionkey(source = region, targets = region, year = year, offline = offline)
+  output <- key
+  if(as_named_vector) {
+    output <- as.vector(unlist(key[paste0(region, "_name")],))
+    names(output) <- as.vector(unlist(key[paste0(region, "_code")],))
+  }
+  output
 }
 

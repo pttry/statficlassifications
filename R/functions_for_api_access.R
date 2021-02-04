@@ -118,6 +118,7 @@ get_key <- function(localId, print_key_name = TRUE) {
                     target_name = unlist(lapply(key$targetItem$classificationItemNames, '[', "name")))
 
   if(print_key_name) {message(text)}
+
   key
 }
 
@@ -136,19 +137,24 @@ get_key <- function(localId, print_key_name = TRUE) {
 #'   localId <- "siviiliasiat_1_20140101"
 #'   get_classification(localId)
 #'
-get_classification <- function(localId, print_series_name = TRUE) {
+get_classification <- function(localId, print_series_name = TRUE, as_named_vector = FALSE) {
 
   if(length(localId) > 1) {
     stop("Multiple localIds! This function currently gives you only one series at the time.")
   }
 
-  series <- access_API(localId, content = "data", classification_service = "classifications")
-  text <- unlist(unique(series$classification$classificationName))["name"]
-  series <- data.frame(code = series$code,
-                    name = unlist(lapply(series$classificationItemNames, '[', "name")))
+  classif <- access_API(localId, content = "data", classification_service = "classifications")
+  text <- unlist(unique(classif$classification$classificationName))["name"]
+  classif <- data.frame(code = classif$code,
+                       name = unlist(lapply(classif$classificationItemNames, '[', "name")))
 
+  output <- classif
   if(print_series_name) {message(text)}
-  series
+  if(as_named_vector) {
+    output <- classif$name
+    names(output) <- classif$code
+  }
+  output
 }
 
 

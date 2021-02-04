@@ -4,7 +4,7 @@
 \alias{get_classification}
 \title{Get classification series from API}
 \usage{
-get_classification(localId, print_series_name = TRUE)
+get_classification(localId, print_series_name = TRUE, as_named_vector = FALSE)
 }
 \arguments{
 \item{localId}{character, local ID of the required correspondence table}

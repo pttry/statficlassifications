@@ -2,23 +2,35 @@
 % Please edit documentation in R/get_regionkey.R
 \name{get_region_code_name_key}
 \alias{get_region_code_name_key}
-\title{Get region name-code keys.}
+\title{Get region code-name keys}
 \usage{
-get_region_code_name_key(region, year = NULL, offline = TRUE)
+get_region_code_name_key(
+  ...,
+  year = NULL,
+  offline = TRUE,
+  as_named_vector = FALSE
+)
 }
 \arguments{
-\item{region}{character (vector) region(s) of required keys.}
+\item{...}{character(s), (vector), region(s) of required keys.}
 
-\item{offline}{}
+\item{year}{character/numeric, year of the required keys. If NULL uses the latest year.}
+
+\item{offline}{logical, whether uses the key in the package data. Defaults TRUE.}
+
+\item{as_named_vector}{logical, whether returns the key as a named vector rather than a
+data.frame. Defaults FALSE.}
 }
 \value{
-data.frame key
+a data.frame or a named vector. A region code-name key.
 }
 \description{
-A wrapper of \code{get_regionkey} to get region name-code key tables.
+Get region code-name keys
 }
 \examples{
 
-  get_region_code_name_key("seutukunta")
+get_region_code_name_key("seutukunta")
+get_region_code_name_key("seutukunta", as_named_vector = TRUE)
+get_region_code_name_key("seutukunta", "maakunta")
 
 }
