@@ -41,10 +41,27 @@ codes_to_names <- function(x, col = NULL) {
 #'
 codes_to_names_vct <- function(x) {
 
+
+
   x_names <- names(x)
   x <- dplyr::left_join(data.frame(alue_code = x),
                         statficlassifications::region_code_name_key,
                         by = "alue_code")$alue_name
+
+  # if(any(grepl("^\\d+$", x))) {
+  #   message(cat("It appears you are trying to map codes without prefixes to regions.
+  #           In this case, same codes may map to multiple regions so there is a risk
+  #           errors in mapping. I will start by first trying to fit kunnat to
+  #           to your codes and then seutukunnat, then maakunnat then suuralueet and
+  #           then ely-alueet."))
+  #   for(prefix in prefix_name_key$prefix[prefix_name_key$prefix != "SSS"]) {
+  #      key <- statficlassifications::region_code_name_key
+  #      key <- dplyr::filter(key, grepl(prefix, key$alue_code))
+  #      key$alue_code <- unlist(sapply(key$alue_code, stringr::str_remove, pattern = prefix))
+  #   }
+  # }
+
+
   names(x) <- x_names
   x
 
@@ -168,10 +185,10 @@ names_to_codes_df <- function(x, col) {
 #'  prefix_to_name("SK")
 #'
 prefix_to_name <- function(prefix) {
-  if(any(tolower(prefix) %in% prefix_name_key$name)) {
-    return(tolower(prefix))
-  }
-  prefix <- toupper(prefix)
+  # if(any(tolower(prefix) %in% prefix_name_key$name)) {
+  #   return(tolower(prefix))
+  # }
+  # prefix <- toupper(prefix)
   if(!all(prefix %in% prefix_name_key$prefix)) {
     stop(paste0("Unknown region code prefix ", prefix[!(prefix %in% prefix_name_key$prefix)], "."))
   }
@@ -190,10 +207,10 @@ prefix_to_name <- function(prefix) {
 #'  name_to_prefix("seutukunta")
 #'
 name_to_prefix <- function(name) {
-  if(any(toupper(name) %in% prefix_name_key$prefix)) {
-    return(toupper(name))
-  }
-  name <- ifelse(name != "KOKO MAA", tolower(name), name)
+  # if(any(toupper(name) %in% prefix_name_key$prefix)) {
+  #   return(toupper(name))
+  # }
+  # name <- ifelse(name != "KOKO MAA", tolower(name), name)
   if(!all(name %in% prefix_name_key$name)) {
     stop(paste0("Unknown region name ", name[!(name %in% prefix_name_key$name)], "."))
   }

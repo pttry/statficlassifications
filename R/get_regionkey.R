@@ -24,6 +24,8 @@ get_regionkey <- function(source = "kunta", targets = NULL, year = NULL,
                           only_codes = FALSE, only_names = FALSE, offline = TRUE) {
 
   latest_year <- get_latest_year(offline = offline)
+  source <- tolower(source)
+  targets <- tolower(targets)
 
   if(is.null(year)) {
     year <- latest_year
@@ -82,14 +84,17 @@ get_regionkey <- function(source = "kunta", targets = NULL, year = NULL,
 
     if(is.null(targets)) {
          targets <- target_regions[!missed_targets]
-    } else {
-         targets <- tolower(targets)
-         if(any(!(targets %in% c("kunta", target_regions)))) {
-             stop(paste0("This function only produces keys between ",
+    } else if(any(!(targets %in% c("kunta", target_regions)))) {
+             return(message(paste0("This function only produces keys between ",
                     paste(target_regions, collapse = ", "),
-                    " and kunta."))
-         }
+                    " and kunta.")))
+    } else if (any(targets %in% target_regions[missed_targets])) {
+             return(message(paste0("There is no key from ",
+                                  source, " to ",
+                                  paste(target_regions[missed_targets], collapse = ", "),
+                                  " for year ", year)))
     }
+
     regionkey <- dplyr::select(regionkey, c(paste(c(source, targets), "name", sep = "_"),
                                           paste(c(source, targets), "code", sep = "_")))
 
@@ -129,8 +134,43 @@ get_regionkey <- function(source = "kunta", targets = NULL, year = NULL,
 #'
 get_region_code_name_key <- function(..., year = NULL, offline = TRUE, as_named_vector = FALSE) {
 
-  region <- unlist(list(...))
-  key <- get_regionkey(source = region, targets = region, year = year, offline = offline)
+  latest_year <- get_latest_year(offline = offline)
+
+  if(is.null(year)) {
+    year <- latest_year
+  } else if((year != latest_year & offline)) {
+    offline <- FALSE
+    message("Overriding default option for offline regionkey for years other than the latest year.")
+  }
+
+  regions <- tolower(unlist(list(...)))
+  key <- data.frame()
+
+  for(region in regions) {
+    # localId <- grep(region,
+    #                 search_classifications(region, as_localId = TRUE),
+    #                 value = TRUE) %>%
+    #            grep(pattern = year, value = TRUE)
+
+    localId <- paste0(region, "_1_", year, "0101")
+    key_temp <- get_classification(localId, print_series_name = FALSE)
+    if(length(key_temp) == 0) {
+      message(paste0("No region name-code key found for ", region, " for year ", year))
+      next
+     }
+    key_temp$code <- paste0(name_to_prefix(region), key_temp$code)
+    key <- rbind(key, key_temp)
+  }
+
+  if(length(key) == 0){
+    return(message("No keys found!"))
+  }
+
+  if(length(regions) == 1){
+    names(key) <- c(paste0(regions, "_code"), paste0(regions, "_name"))
+  } else {
+    names(key) <- c("alue_code", "alue_name")
+  }
   output <- key
   if(as_named_vector) {
     output <- as.vector(unlist(key[paste0(region, "_name")],))
