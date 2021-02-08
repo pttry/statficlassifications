@@ -24,6 +24,11 @@
 #'
 codes_to_names <- function(x, col = NULL) {
 
+  if(is.numeric(x)) {
+    message("Input codes are numeric, this function currently does nothing to them.")
+    return(x)
+  }
+
    if(is.vector(x)){
       x <- codes_to_names_vct(x)
    } else if(is.factor(x)) {
