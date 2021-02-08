@@ -4,14 +4,14 @@
 \alias{codes_to_names}
 \title{Changes region codes to region names}
 \usage{
-codes_to_names(x, col = NULL)
+codes_to_names(x, year = NULL, offline = TRUE)
 }
 \arguments{
+\item{year}{integer, the year of the applied classification key.}
+
 \item{data}{data.frame, the input data that contains a variable of region codes.}
 
 \item{region}{character, the name of the variable of region codes.}
-
-\item{year}{integer, the year of the applied classification key.}
 }
 \value{
 data.frame
@@ -27,9 +27,5 @@ A wrapper that uses the statficlassifications::recode-function.
   codes_to_names(v)
   f <- factor(c("SSS", "KU103", "KU061","SK213", "MK04"))
   codes_to_names(f)
-  df <- data.frame(kunta_code = c("SSS", "KU103", "KU061","SK213", "MK04"), values = rnorm(5))
-  codes_to_names(df, "kunta_code")
-  df <- data.frame(kunta_code = c("SSS", "KU103", "KU061","SK213", "MK04", "v43y"), values = rnorm(6))
-  codes_to_names(df, "kunta_code")
 
 }

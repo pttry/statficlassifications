@@ -1,7 +1,5 @@
 #' Changes region codes to region names
 #'
-#' A wrapper that uses the statficlassifications::recode-function.
-#'
 #' @param data data.frame, the input data that contains a variable of region codes.
 #' @param region character, the name of the variable of region codes.
 #' @param year integer, the year of the applied classification key.
@@ -17,12 +15,8 @@
 #'   codes_to_names(v)
 #'   f <- factor(c("SSS", "KU103", "KU061","SK213", "MK04"))
 #'   codes_to_names(f)
-#'   df <- data.frame(kunta_code = c("SSS", "KU103", "KU061","SK213", "MK04"), values = rnorm(5))
-#'   codes_to_names(df, "kunta_code")
-#'   df <- data.frame(kunta_code = c("SSS", "KU103", "KU061","SK213", "MK04", "v43y"), values = rnorm(6))
-#'   codes_to_names(df, "kunta_code")
 #'
-codes_to_names <- function(x, col = NULL) {
+codes_to_names <- function(x, year = NULL, offline = TRUE) {
 
   if(is.numeric(x)) {
     message("Input codes are numeric, this function currently does nothing to them.")
@@ -30,13 +24,11 @@ codes_to_names <- function(x, col = NULL) {
   }
 
    if(is.vector(x)){
-      x <- codes_to_names_vct(x)
+      x <- codes_to_names_vct(x, year = year, offline = offline)
    } else if(is.factor(x)) {
-      x <- codes_to_names_fct(x)
-   } else if(is.data.frame(x)) {
-      x <- codes_to_names_df(x, col)
+      x <- codes_to_names_fct(x, year = year, offline = offline)
    } else {
-     stop("Argument not a vector, factor nor a data.frame.")
+     stop("Argument not a vector or factor.")
    }
    x
 }
@@ -44,60 +36,40 @@ codes_to_names <- function(x, col = NULL) {
 #' @describeIn codes_to_names
 #' @export
 #'
-codes_to_names_vct <- function(x) {
-
-
+codes_to_names_vct <- function(x, year = NULL, offline = TRUE) {
 
   x_names <- names(x)
-  x <- dplyr::left_join(data.frame(alue_code = x),
-                        statficlassifications::region_code_name_key,
+
+  if(offline) {
+    key <- statficlassifications::region_code_to_name_key
+  } else {
+    prefixes <- unique(sapply(unique(x), gsub, pattern = "[^a-zA-Z]", replacement = ""))
+    key <- get_region_code_name_key(prefixes, year = year)
+  }
+
+  output <- dplyr::left_join(data.frame(alue_code = x), key,
                         by = "alue_code")$alue_name
 
-  # if(any(grepl("^\\d+$", x))) {
-  #   message(cat("It appears you are trying to map codes without prefixes to regions.
-  #           In this case, same codes may map to multiple regions so there is a risk
-  #           errors in mapping. I will start by first trying to fit kunnat to
-  #           to your codes and then seutukunnat, then maakunnat then suuralueet and
-  #           then ely-alueet."))
-  #   for(prefix in prefix_name_key$prefix[prefix_name_key$prefix != "SSS"]) {
-  #      key <- statficlassifications::region_code_name_key
-  #      key <- dplyr::filter(key, grepl(prefix, key$alue_code))
-  #      key$alue_code <- unlist(sapply(key$alue_code, stringr::str_remove, pattern = prefix))
-  #   }
-  # }
-
-
-  names(x) <- x_names
-  x
+  if(any(is.na(output))) {
+    warning(paste("Code(s)", paste(x[is.na(output)], collapse = ", "), "not recognized as a region code(s) and given NA."))
+  }
+  names(output) <- x_names
+  output
 
 }
 
 #' @describeIn codes_to_names
 #' @export
 #'
-codes_to_names_fct <- function(x) {
+codes_to_names_fct <- function(x, year = NULL, offline = TRUE) {
 
-levels(x) <- codes_to_names_vct(levels(x))
+levels(x) <- codes_to_names_vct(levels(x), year = year, offline = offline)
 x
 
 }
 
-#' @describeIn set_region_codes
-#' @export
-#'
-codes_to_names_df <- function(x, col) {
 
-  if(is.vector(x[[col]])) {
-    x[[col]] <- codes_to_names_vct(x[[col]])
-  } else if(is.factor(x[[col]])) {
-    x[[col]] <- codes_to_names_fct(x[[col]])
-  }
-  x
-}
-
-
-
-#' Changes region codes to region names
+#' Changes region names to region codes
 #'
 #' A wrapper that uses the statficlassifications::recode-function.
 #'
@@ -112,71 +84,68 @@ codes_to_names_df <- function(x, col) {
 #'
 #'   v <- c("KOKO MAA", "Humppila", "Ålands skärgård", "Satakunta")
 #'   names_to_codes(v)
-#'   v <- c("KOKO MAA", "Humppila", "Forssa","Ålands skärgård", "Satakunta")
-#'   names_to_codes(v)
+#'   names_to_codes("Kajaani", region_level = "seutukunta")
+#'   names_to_codes(c("KOKO MAA", "Kajaani"), region_level = "seutukunta")
 #'   f <- factor(c("KOKO MAA", "Humppila","Ålands skärgård", "Satakunta"))
 #'   names_to_codes(f)
-#'   df <- data.frame(kunta_name = c("KOKO MAA", "Humppila", "Ålands skärgård", "Satakunta"),
-#'                    values = rnorm(4))
-#'   names_to_codes(df, "kunta_name")
-#
 #'
-#'
-names_to_codes <- function(x, col = NULL) {
+names_to_codes <- function(x, year = NULL, offline = TRUE, region_level = NULL) {
 
   if(is.vector(x)){
-    x <- names_to_codes_vct(x)
+    x <- names_to_codes_vct(x, year = year, offline = offline, region_level = region_level)
   } else if(is.factor(x)) {
-    x <- names_to_codes_fct(x)
-  } else if(is.data.frame(x)) {
-    x <- names_to_codes_df(x, col)
+    x <- names_to_codes_fct(x, year = year, offline = offline, region_level = region_level)
   } else {
-    stop("Argument not a vector, factor nor a data.frame.")
+    stop("Argument not a vector or factor.")
   }
   x
 }
 
-#' @describeIn codes_to_names
+#' @describeIn names_to_codes
 #' @export
 #'
-names_to_codes_vct <- function(x) {
+names_to_codes_vct <- function(x, year = NULL, offline = TRUE, region_level = NULL) {
 
-  l <- length(x)
   x_names <- names(x)
-  region_code_name_key <- dplyr::filter(statficlassifications::region_code_name_key,
-                                        grepl("[a-zA-Z]", alue_code))
-  x <- dplyr::left_join(data.frame(alue_name = x),
-                        region_code_name_key,
-                        by = "alue_name")$alue_code
-  names(x) <- x_names
-  if(length(x) > l) stop("Some region name(s) can be mapped to multiple region codes!")
-  x
+  prefixes <- prefix_name_key$prefix
 
+  if(!is.null(region_level)) {
+    prefixes <- c(name_to_prefix(tolower(region_level)), "SSS")
+  }
+
+  if(offline) {
+    key <- statficlassifications::region_name_to_code_key %>%
+           filter(grepl(paste(prefixes, collapse = "|"), alue_code))
+  } else {
+    key <- get_region_code_name_key(prefixes, year = year)
+  }
+
+  output <- dplyr::left_join(data.frame(alue_name = x), key,
+                        by = "alue_name")$alue_code
+
+  if(length(output) > length(x)) {
+   stop("Some region name(s) can be mapped to multiple region codes!
+  You may want to have only one region level in your input vector
+  and use the region_level argument to give more information.")
+  }
+  if(any(is.na(output))) {
+    warning(paste("Name(s)", paste(x[is.na(output)], collapse = ", "), "not recognized as a region name(s) and given NA."))
+  }
+
+  names(output) <- x_names
+  output
 }
 
 
-#' @describeIn codes_to_names
+#' @describeIn names_to_codes
 #' @export
 #'
-names_to_codes_fct <- function(x) {
+names_to_codes_fct <- function(x, year = NULL, offline = TRUE, region_level = NULL) {
 
-  levels(x) <- names_to_codes_vct(levels(x))
+  levels(x) <- names_to_codes_vct(levels(x), year = year, offline = offline, region_level = region_level)
   x
 
 }
-
-#' @describeIn set_region_codes
-#'
-names_to_codes_df <- function(x, col) {
-
-  if(is.vector(x[[col]])) {
-    x[[col]] <- names_to_codes_vct(x[[col]])
-  } else if(is.factor(x[[col]])) {
-    x[[col]] <- names_to_codes_fct(x[[col]])
-  }
-  x
-}
-
 
 #' Change region prefixes to names
 #'
@@ -190,10 +159,7 @@ names_to_codes_df <- function(x, col) {
 #'  prefix_to_name("SK")
 #'
 prefix_to_name <- function(prefix) {
-  # if(any(tolower(prefix) %in% prefix_name_key$name)) {
-  #   return(tolower(prefix))
-  # }
-  # prefix <- toupper(prefix)
+
   if(!all(prefix %in% prefix_name_key$prefix)) {
     stop(paste0("Unknown region code prefix ", prefix[!(prefix %in% prefix_name_key$prefix)], "."))
   }
@@ -212,10 +178,7 @@ prefix_to_name <- function(prefix) {
 #'  name_to_prefix("seutukunta")
 #'
 name_to_prefix <- function(name) {
-  # if(any(toupper(name) %in% prefix_name_key$prefix)) {
-  #   return(toupper(name))
-  # }
-  # name <- ifelse(name != "KOKO MAA", tolower(name), name)
+
   if(!all(name %in% prefix_name_key$name)) {
     stop(paste0("Unknown region name ", name[!(name %in% prefix_name_key$name)], "."))
   }

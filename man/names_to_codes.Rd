@@ -2,16 +2,16 @@
 % Please edit documentation in R/codes_to_names_to_codes.R
 \name{names_to_codes}
 \alias{names_to_codes}
-\title{Changes region codes to region names}
+\title{Changes region names to region codes}
 \usage{
-names_to_codes(x, col = NULL)
+names_to_codes(x, year = NULL, offline = TRUE, region_level = NULL)
 }
 \arguments{
+\item{year}{integer, the year of the applied classification key.}
+
 \item{data}{data.frame, the input data that contains a variable of region codes.}
 
 \item{region}{character, the name of the variable of region codes.}
-
-\item{year}{integer, the year of the applied classification key.}
 }
 \value{
 data.frame
@@ -23,13 +23,8 @@ A wrapper that uses the statficlassifications::recode-function.
 
   v <- c("KOKO MAA", "Humppila", "Ã…lands skÃ¤rgÃ¥rd", "Satakunta")
   names_to_codes(v)
-  v <- c("KOKO MAA", "Humppila", "Forssa","Ã…lands skÃ¤rgÃ¥rd", "Satakunta")
-  names_to_codes(v)
+  names_to_codes("Kajaani", region_level = "seutukunta")
   f <- factor(c("KOKO MAA", "Humppila","Ã…lands skÃ¤rgÃ¥rd", "Satakunta"))
   names_to_codes(f)
-  df <- data.frame(kunta_name = c("KOKO MAA", "Humppila", "Ã…lands skÃ¤rgÃ¥rd", "Satakunta"),
-                   values = rnorm(4))
-  names_to_codes(df, "kunta_name")
-
 
 }
