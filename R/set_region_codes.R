@@ -20,14 +20,15 @@
 #'   df <- data.frame(kunta_code = c("020", "047", "15", "133"), values = rnorm(4))
 #'   set_region_codes(df, "kunta_code")
 #'
-set_region_codes <- function(x, col = NULL) {
+set_region_codes <- function(x, region_level = NULL, col = NULL) {
 
   if(is.vector(x)){
-    x <- set_region_codes_vct(x)
+    x <- set_region_codes_vct(x, region_level = region_level)
   } else if(is.factor(x)) {
-    x <- set_region_codes_fct(x)
+    x <- set_region_codes_fct(x, region_level = region_level)
   } else if(is.data.frame(x)) {
-    x <- set_region_codes_df(x, col)
+    stop("Does not currently support data.frames.")
+   # x <- set_region_codes_df(x, col)
   } else {
     stop("Argument not a vector, factor nor a data.frame.")
   }
@@ -38,9 +39,14 @@ set_region_codes <- function(x, col = NULL) {
 #' @describeIn set_region_codes
 #' @export
 #'
-set_region_codes_vct <- function(x) {
+set_region_codes_vct <- function(x, region_level = NULL) {
 
   x_names <- names(x)
+
+  if(is.null(region_level)) {
+    if(is.numeric(x)) {
+      stop("For numeric region codes, please set region_level argument to 'KU', 'SK', 'MK' or 'SA'")
+    }
   # construct a list with all kunta, seutukunta, maakunta codes without prefixes
   abolished_mun_key <- statficlassifications::abolished_mun_key
   regionkey <- statficlassifications::regionkey
@@ -58,7 +64,7 @@ set_region_codes_vct <- function(x) {
   if(!all(x %in% unlist(codes))) {
     warning(paste("Code(s)",
                   paste(x[!(x %in% unlist(codes))], collapse = ", "),
-                  "not recognized as region codes. They have been left as they were."))
+                  "not recognized as region codes. They have been left as they were. Maybe set region_level argument to 'KU', 'SK', 'MK' or 'SA'"))
   }
 
   # For kunta, seutukunta and maakunta, add corresponding prefixes if input does not have
@@ -72,6 +78,14 @@ set_region_codes_vct <- function(x) {
   if(any(grepl("000", x))) {
     x[x%in% c("000")] <- "SSS"
   }
+  } else {
+    if(!region_level %in% c("KU", "SK", "MK", "SA")) {
+      stop("Argument region_level has to be 'KU', 'SK', 'MK' or 'SA'")
+    }
+    x <- numeric_code_to_character(x, region_level_prefix = region_level)
+    x <- paste0(region_level, x)
+  }
+
   names(x) <- x_names
   x
 
@@ -81,9 +95,9 @@ set_region_codes_vct <- function(x) {
 #' @describeIn set_region_codes
 #' @export
 #'
-set_region_codes_fct <- function(x) {
+set_region_codes_fct <- function(x, region_level = NULL) {
 
-  levels(x) <- set_region_codes_vct(levels(x))
+  levels(x) <- set_region_codes_vct(levels(x), region_level = region_level)
   x
 
 }
@@ -101,3 +115,21 @@ set_region_codes_df <- function(x, col) {
   x
 }
 
+
+#' Title
+#'
+#' @param x
+#' @param region_level_prefix
+#'
+#' @return
+#' @export
+#'
+#' @examples
+numeric_code_to_character <- function(x, region_level_prefix) {
+     if(region_level_prefix %in% c("KU", "SK")) {
+       char_length <- 3
+     } else {
+       char_length <- 2
+     }
+     stringr::str_sub(paste0("000", as.character(x)), -char_length,-1)
+}
