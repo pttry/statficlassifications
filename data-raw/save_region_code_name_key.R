@@ -11,7 +11,7 @@
 regions <- c("kunta", "maakunta", "seutukunta", "suuralue", "ely")
 key <- data.frame()
 
-years <- 2008:2020
+years <- 2020:2020
 for(year in years) {
   key_temp <- get_region_code_name_key(regions, year = year)
   key <- rbind(key, key_temp)
@@ -19,6 +19,7 @@ for(year in years) {
 }
 
 key <- key[!duplicated(key), ]
+#key <- key[!duplicated(region_code_name_key$alue_code),]
 
 key <- rbind(key, data.frame(alue_code = "SSS", alue_name = "KOKO MAA"))
 rownames(key) <- NULL
