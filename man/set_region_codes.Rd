@@ -26,7 +26,5 @@ Standardize region codes with prefixes
   set_region_codes(names(v))
   f <- factor(c("020", "047", "15", "133"))
   set_region_codes(f)
-  df <- data.frame(kunta_code = c("020", "047", "15", "133"), values = rnorm(4))
-  set_region_codes(df, "kunta_code")
 
 }

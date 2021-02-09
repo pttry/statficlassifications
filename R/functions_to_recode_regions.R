@@ -31,7 +31,7 @@
 recode_region <- function(data, from_orig, from, to, year = NULL, leave = FALSE, offline = TRUE) {
 
   if(offline) {
-    data(regionkey)
+    regionkey <- statficlassifications::regionkey
   } else {
     regionkey <- get_regionkey(year = year, offline = FALSE)
   }

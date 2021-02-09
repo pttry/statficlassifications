@@ -17,7 +17,7 @@ codes_to_names(x, year = NULL, offline = TRUE)
 data.frame
 }
 \description{
-A wrapper that uses the statficlassifications::recode-function.
+Changes region codes to region names
 }
 \examples{
 

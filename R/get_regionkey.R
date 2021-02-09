@@ -25,7 +25,7 @@ get_regionkey <- function(source = "kunta", targets = NULL, year = NULL,
 
   latest_year <- get_latest_year(offline = offline)
   source <- tolower(source)
-  targets <- tolower(targets)
+  if(!is.null(targets)) {targets <- tolower(targets)}
 
   if(is.null(year)) {
     year <- latest_year
@@ -35,7 +35,7 @@ get_regionkey <- function(source = "kunta", targets = NULL, year = NULL,
   }
 
   target_regions <- prefix_name_key$name[-(1:2)]
-  region_code_prefixes <- prefix_name_key$prefix[-(1:2)]
+  region_code_prefixes <- name_to_prefix(target_regions)
   missed_targets <- logical(length(target_regions))
   names(missed_targets) <- target_regions
 
