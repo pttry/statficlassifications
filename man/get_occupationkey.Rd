@@ -10,6 +10,9 @@ get_occupationkey(code_level = NULL, year = 2010, as_named_vector = FALSE)
 \item{code_level, }{disaggregation level}
 
 \item{year, }{year of the key}
+
+\item{as_named_vector, }{logical, whether to return a named vector rather than
+a data.frame. Defaults to FALSE.}
 }
 \value{
 data.frame with occupation codes and names

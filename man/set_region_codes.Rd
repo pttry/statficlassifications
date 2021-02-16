@@ -2,29 +2,86 @@
 % Please edit documentation in R/set_region_codes.R
 \name{set_region_codes}
 \alias{set_region_codes}
+\alias{set_region_codes_vct}
+\alias{set_region_codes_fct}
 \title{Standardize region codes with prefixes}
 \usage{
-set_region_codes(x, region_level = NULL, col = NULL)
+set_region_codes(
+  x,
+  region_level = NULL,
+  year = NULL,
+  offline = TRUE,
+  use_char_length_info = NULL
+)
+
+set_region_codes_vct(
+  x,
+  region_level = NULL,
+  year = NULL,
+  offline = TRUE,
+  use_char_length_info = NULL
+)
+
+set_region_codes_fct(
+  x,
+  region_level = NULL,
+  year = NULL,
+  offline = TRUE,
+  use_char_length_info = FALSE
+)
 }
 \arguments{
 \item{x}{character vector of region codes}
+
+\item{region_level}{character, optional region level of the input region codes}
+
+\item{year, }{double, optional year of the classification used}
+
+\item{offline, }{logical, whether works offline with package data. Defaults to TRUE.}
+
+\item{use_char_length_info, TRUE}{or named vector, whether to use code character length
+information in determining their region level. Defaults to NULL.}
 }
 \value{
 
 }
 \description{
-Standardize region codes with prefixes
+To avoid non-unique region codes, the most preferable way is to use the
+prefixed region codes. This function "standardizes" region codes in
+this format. Region codes already in this format are left as they are.
 }
+\details{
+The function is strict in not making any assumptions in cases of
+unambiguous region codes. Some plain numbers may map to multiple
+region codes and in these cases the user can restrict the domain
+by giving a set of region levels to whose codes input vector
+codes are allowed to match.
+
+If your vector contains ambiguous codes you may try breaking it
+into pieces where you know the region level of the codes in each
+piece and treat these pieces separately giving region level as
+an argument.
+}
+\section{Functions}{
+\itemize{
+\item \code{set_region_codes_vct}: Standardize region codes with prefixes
+
+For internal use
+
+\item \code{set_region_codes_fct}: #' Standardize region codes with prefixes
+
+For internal use
+}}
+
 \examples{
 
-
-  v <- c("020", "047", "15", "133")
+  v <- c("191", "047", "063")
   set_region_codes(v)
-  v <- c("Akaa" = "020", "EnontekiÃ¶" = "047", "Pohjanmaa" = "15", "Keuruu" =  "133")
-  set_region_codes(v)
-  v <- c("020" = "Akaa", "KU047" = "EnontekiÃ¶", "15" = "Pohjanmaa", "SK133" = "Keuruu")
-  set_region_codes(names(v))
-  f <- factor(c("020", "047", "15", "133"))
-  set_region_codes(f)
+  v <- c("020", "047", "15")
+  set_region_codes(v, use_char_length_info = TRUE)
+  v <- c("005", "020", "047", "MK01", "MK02", "MK04")
+  set_region_codes(v, region_level = "kunta")
+  f <- factor(c("005", "020", "047", "MK01", "MK02", "MK04"))
+  set_region_codes(f, region_level = c("kunta"))
 
 }

@@ -12,7 +12,13 @@ check_region_var_name_code_correspondence(
 )
 }
 \arguments{
-\item{offline}{}
+\item{data}{data.frame}
+
+\item{region_name_var}{character the name of the regional name variable in the data}
+
+\item{region_code_var}{character the name of the regional code variable in the data}
+
+\item{offline}{logical, whether works offline with package data. Defaults to TRUE.}
 }
 \value{
 

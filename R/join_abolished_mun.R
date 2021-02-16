@@ -35,6 +35,11 @@ join_abolished_mun <- function(x, col = NULL) {
 }
 
 #' @describeIn join_abolished_mun
+#'
+#' Join abolished municipalities
+#'
+#' For internal use.
+#'
 #' @export
 #'
 join_abolished_mun_vct <- function(x) {
@@ -67,6 +72,11 @@ join_abolished_mun_vct <- function(x) {
 }
 
 #' @describeIn join_abolished_mun
+#'
+#' Join abolished municipalities
+#'
+#' For internal use.
+#'
 #' @export
 #'
 join_abolished_mun_fct <- function(x) {
@@ -75,14 +85,19 @@ join_abolished_mun_fct <- function(x) {
 }
 
 #' @describeIn join_abolished_mun
+#'
+#' Join abolished municipalities
+#'
+#' For internal use
+#'
 #' @export
 #'
 join_abolished_mun_df <- function(x, col) {
 
   if(is.vector(x[[col]])) {
-     x[[col]] <- join_abolished_mun_vct(x[[col]])
+    x[[col]] <- join_abolished_mun_vct(x[[col]])
   } else if(is.factor(x[[col]])) {
-     x[[col]] <- join_abolished_mun_fct(x[[col]])
+    x[[col]] <- join_abolished_mun_fct(x[[col]])
   }
   x
 }

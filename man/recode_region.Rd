@@ -38,14 +38,14 @@ and vice versa. Uses the 'get_regionkey'-function.
 # Replace municipality names by their codes
 
     # Generate random municipal data
-       data <- get_regionkey(year = 2020) \%>\%
+       data <- get_regionkey() \%>\%
                dplyr::select(kunta_name) \%>\%
-               mutate(values = rnorm(n()))
+               dplyr::mutate(values = rnorm(dplyr::n()))
     # Recode
-    recode(data, "kunta_name", "kunta_code", year = 2020)
+    recode_region(data, "kunta_name", "kunta_name", "kunta_code")
 
 # Add seutukunnat to municipal data
 
-    recode(data, "kunta_name", "seutukunta_name", year = 2020, leave = TRUE)
+    recode_region(data, "kunta_name", "kunta_name", "seutukunta_name", year = 2020, leave = TRUE)
 
 }

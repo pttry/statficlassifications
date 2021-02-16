@@ -7,19 +7,19 @@
 access_API(localId = NULL, content = "data", classification_service = NULL)
 }
 \arguments{
+\item{localId}{character, local ID of the correspondence table or classification}
+
 \item{content, }{character, either "data" or "url" whether the content of the query
 is data or url.}
 
 \item{classification_service}{character, either 'correspondenceTable' or
 'classifications'. Determines the classification service used.}
-
-\item{localID}{character, local ID of the correspondence table or classification}
 }
 \value{
 data.frame either the correspondence table or its url depending on argument \code{content}.
 }
 \description{
-Given a local ID of a correspondence table or classification, gets the data
+Given a local Id of a correspondence table or classification, gets the data
 and transforms it into a data.frame. For internal use of the package.
 }
 \details{

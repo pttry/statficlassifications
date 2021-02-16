@@ -7,9 +7,9 @@
 get_key(localId, print_key_name = TRUE)
 }
 \arguments{
-\item{print_key_name, }{whether prints the long name of the correspondence table.}
+\item{localId, }{character, local ID of the required correspondence table}
 
-\item{localID, }{character, local ID of the required correspondence table}
+\item{print_key_name, }{whether prints the long name of the correspondence table.}
 }
 \value{
 data.frame, the key of the provided localId.

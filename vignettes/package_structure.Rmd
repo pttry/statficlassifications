@@ -1,0 +1,23 @@
+---
+title: "package_structure"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{package_structure}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(statficlassifications)
+```
+
+At the heart of the package are the functions for accessing the API in the file `functions_for_api_access.R`. Functions in this file should not use functions of this package. At the moment, `find_classification_service` uses `search_keys` and `search_classifications`. I guess such a recursion works since these functions set the argument `classification_service` and thus themselves do not rely on function `find_classification_service`. 
+
+File `functions_for_api_search.R` provides the tools for searching and browsing available classifications and classification keys in the API. Functions in this file rely on functions in file `functions_for_api_access.R`. 

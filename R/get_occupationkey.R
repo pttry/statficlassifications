@@ -2,6 +2,8 @@
 #'
 #' @param code_level, disaggregation level
 #' @param year, year of the key
+#' @param as_named_vector, logical, whether to return a named vector rather than
+#'    a data.frame. Defaults to FALSE.
 #'
 #' @return data.frame with occupation codes and names
 #' @export

@@ -4,10 +4,14 @@
 \alias{detect_region_var}
 \title{Detect a region variable in data}
 \usage{
-detect_region_var(data, offline = FALSE)
+detect_region_var(data, year = NULL, offline = TRUE)
 }
 \arguments{
 \item{data}{data.frame}
+
+\item{year, }{double, year of the used classification}
+
+\item{offline, }{logical, whether works offline with package data. Defaults to TRUE.}
 }
 \value{
 character(2) Returns the region variable in the original data and the correponding region
@@ -23,7 +27,7 @@ and the corresponding variable name in get_regionkey()
              data <- get_regionkey() \%>\%
                      dplyr::select(kunta_name) \%>\%
                      dplyr::rename_with(~paste(sample(letters, 4), collapse = "")) \%>\%
-                     dplyr::mutate(values = rnorm(n()))
+                     dplyr::mutate(values = rnorm(dplyr::n()))
 
              detect_region_var(data)
 

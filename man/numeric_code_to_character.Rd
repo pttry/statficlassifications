@@ -2,16 +2,24 @@
 % Please edit documentation in R/set_region_codes.R
 \name{numeric_code_to_character}
 \alias{numeric_code_to_character}
-\title{Title}
+\title{Change numeric region code to character code without prefix}
 \usage{
 numeric_code_to_character(x, region_level_prefix)
 }
 \arguments{
-\item{region_level_prefix}{}
+\item{x}{numeric, numeric region code}
+
+\item{region_level_prefix}{character prefix, "KU", "SK", "MK", or "SA"}
 }
 \value{
 
 }
 \description{
-Title
+Change numeric region code to character code without prefix
+}
+\examples{
+
+  numeric_code_to_character(4, "KU")
+  numeric_code_to_character(11, "MK")
+
 }

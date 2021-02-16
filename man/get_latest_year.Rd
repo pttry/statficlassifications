@@ -6,6 +6,9 @@
 \usage{
 get_latest_year(offline = TRUE)
 }
+\arguments{
+\item{offline, }{logical, whether works offline with package data. Defaults to TRUE.}
+}
 \value{
 double, the year of the newest correspondence table
 }

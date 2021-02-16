@@ -1,8 +1,11 @@
-#' Changes region codes to region names
+#' Change region codes to region names
 #'
-#' @param data data.frame, the input data that contains a variable of region codes.
-#' @param region character, the name of the variable of region codes.
+#' @param x, a character (vector) of region codes
+#' @param region_level character, optional region level of the input region codes
+#' @use_char_length_info, TRUE or named vector, whether to use code character length
+#'    information in determining their region level. Defaults to NULL.
 #' @param year integer, the year of the applied classification key.
+#' @param offline, logical, whether works offline with package data. Defaults to TRUE.
 #'
 #' @return data.frame
 #' @export
@@ -16,13 +19,18 @@
 #'   f <- factor(c("SSS", "KU103", "KU061","SK213", "MK04"))
 #'   codes_to_names(f)
 #'
-codes_to_names <- function(x, year = NULL, offline = TRUE) {
+codes_to_names <- function(x, region_level = NULL,
+                           use_char_length_info = NULL,
+                           year = NULL,
+                           offline = TRUE,
+                           region_codes_check = FALSE) {
 
-  if(is.numeric(x)) {
-    message("Input codes are numeric, this function currently does nothing to them.")
-    return(x)
+  if(region_codes_check) {
+   if(any(is_region_code_without_prefix(x))) {
+     message("Tried to add prefixes to your input codes.")
+     x <- set_region_codes(x, region_level = region_level, use_char_length_info = use_char_length_info)
+   }
   }
-
    if(is.vector(x)){
       x <- codes_to_names_vct(x, year = year, offline = offline)
    } else if(is.factor(x)) {
@@ -33,7 +41,14 @@ codes_to_names <- function(x, year = NULL, offline = TRUE) {
    x
 }
 
+#´
+#
 #' @describeIn codes_to_names
+#'
+#' Change region codes to region names
+#'
+#' For internal use
+#'
 #' @export
 #'
 codes_to_names_vct <- function(x, year = NULL, offline = TRUE) {
@@ -44,7 +59,7 @@ codes_to_names_vct <- function(x, year = NULL, offline = TRUE) {
     key <- statficlassifications::region_code_to_name_key
   } else {
     prefixes <- unique(sapply(unique(x), gsub, pattern = "[^a-zA-Z]", replacement = ""))
-    key <- get_region_code_name_key(prefixes, year = year)
+    key <- get_regionclassification(prefixes, year = year)
   }
 
   output <- dplyr::left_join(data.frame(alue_code = x), key,
@@ -59,6 +74,11 @@ codes_to_names_vct <- function(x, year = NULL, offline = TRUE) {
 }
 
 #' @describeIn codes_to_names
+#'
+#' Change region codes to region names
+#'
+#' For internal use.
+#'
 #' @export
 #'
 codes_to_names_fct <- function(x, year = NULL, offline = TRUE) {
@@ -69,13 +89,14 @@ x
 }
 
 
-#' Changes region names to region codes
+#' Change region names to region codes
 #'
 #' A wrapper that uses the statficlassifications::recode-function.
 #'
 #' @param data data.frame, the input data that contains a variable of region codes.
 #' @param region character, the name of the variable of region codes.
 #' @param year integer, the year of the applied classification key.
+#' @param offline logical, whether works offline with package data. Defaults to TRUE.
 #'
 #' @return data.frame
 #' @export
@@ -101,7 +122,14 @@ names_to_codes <- function(x, year = NULL, offline = TRUE, region_level = NULL) 
   x
 }
 
+
+
 #' @describeIn names_to_codes
+#'
+#' Change region names to region codes
+#'
+#' For internal use.
+#'
 #' @export
 #'
 names_to_codes_vct <- function(x, year = NULL, offline = TRUE, region_level = NULL) {
@@ -117,7 +145,7 @@ names_to_codes_vct <- function(x, year = NULL, offline = TRUE, region_level = NU
     key <- statficlassifications::region_name_to_code_key %>%
            filter(grepl(paste(prefixes, collapse = "|"), alue_code))
   } else {
-    key <- get_region_code_name_key(prefixes, year = year)
+    key <- get_regionclassification(prefixes, year = year)
   }
 
   output <- dplyr::left_join(data.frame(alue_name = x), key,
@@ -137,7 +165,13 @@ names_to_codes_vct <- function(x, year = NULL, offline = TRUE, region_level = NU
 }
 
 
+
 #' @describeIn names_to_codes
+#'
+#' #' Recode name to codes in factors
+#'
+#' For internal use.
+#'
 #' @export
 #'
 names_to_codes_fct <- function(x, year = NULL, offline = TRUE, region_level = NULL) {

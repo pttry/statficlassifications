@@ -10,6 +10,9 @@ get_classification(localId, print_series_name = TRUE, as_named_vector = FALSE)
 \item{localId}{character, local ID of the required correspondence table}
 
 \item{print_series_name}{whether prints the long name of the classification series.}
+
+\item{as_named_vector, }{logical, whether to return the object as a named vector rather
+than data.frame. Defaults to FALSE.}
 }
 \value{
 

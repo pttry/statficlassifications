@@ -7,7 +7,7 @@ Authors@R:
            role = c("aut", "cre"),
            email = "juho.alasalmi@ptt.fi",
            comment = c(ORCID = "YOUR-ORCID-ID"))
-Description: What the package does (one paragraph).
+Description: The `statficlassifications`-package allows the access to the classifications and correspondence tables open classifications API of Statistics Finland.
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true

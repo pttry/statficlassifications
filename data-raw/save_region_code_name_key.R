@@ -9,41 +9,43 @@
 # to region key can map each code to a single region.
 
 # Region code to name key
-   # Mapping from codes to names
+# Mapping from codes to names
 
 regions <- c("kunta", "maakunta", "seutukunta", "suuralue", "ely")
 master_key <- data.frame()
 
-years <- 2008:2020
+sys_current_year <- as.double(substring(Sys.Date(), 1,4))
+
+years <- 2008:sys_current_year
 for(year in years) {
-  master_key_temp <- get_region_code_name_key(regions, year = year)
+  master_key_temp <- get_regionclassification(regions, year = year)
   master_key_temp$year <- year
   master_key <- rbind(master_key, master_key_temp)
   print(year)
 }
 
-  key <- master_key
+key <- master_key
 # Remove duplicates due to repetition of years
-  key <- key[!duplicated(dplyr::select(key, -year)), ]
+key <- key[!duplicated(dplyr::select(key, -year)), ]
 
 # Find duplicated codes and remove them from the key
-  duplicates <- dplyr::filter(key, alue_code %in% key[duplicated(key$alue_code),]$alue_code)
-  key <- dplyr::filter(key, !(alue_code %in% key[duplicated(key$alue_code),]$alue_code))
+duplicates <- dplyr::filter(key, alue_code %in% key[duplicated(key$alue_code),]$alue_code)
+key <- dplyr::filter(key, !(alue_code %in% key[duplicated(key$alue_code),]$alue_code))
 
 # Find the latest name for each duplicated code and mark it with TRUE
-  temp_df<-duplicates %>%
-           group_by(alue_code) %>%
-           summarize(year = max(year)) %>%
-           mutate(leave = TRUE)
+temp_df<-duplicates %>%
+  group_by(alue_code) %>%
+  summarize(year = max(year)) %>%
+  mutate(leave = TRUE)
 
 # Add the marks of latest name to the duplicates and leave those of the latest year
-  duplicates <- left_join(duplicates, temp_df, by = c("alue_code", "year")) %>%
-                filter(leave == TRUE) %>%
-                select(-year, -leave)
+duplicates <- left_join(duplicates, temp_df, by = c("alue_code", "year")) %>%
+  filter(leave == TRUE) %>%
+  select(-year, -leave)
 
-  # Combine with the other codes
-  key <- dplyr::select(key, -year)
-  key <- rbind(key, duplicates)
+# Combine with the other codes
+key <- dplyr::select(key, -year)
+key <- rbind(key, duplicates)
 
 key <- rbind(key, data.frame(alue_code = "SSS", alue_name = "KOKO MAA"))
 rownames(key) <- NULL
@@ -64,9 +66,9 @@ key <- master_key
 # Remove duplicates due to repetition of years
 key <- key[!duplicated(dplyr::select(key, -year)), ]
 
-# Find duplicated codes and remove them from the key
+# Find duplicated names and remove them from the key
 duplicates <- dplyr::filter(key, alue_name %in% key[duplicated(key$alue_name),]$alue_name)
-key <- dplyr::filter(key, !(alue_code %in% key[duplicated(key$alue_code),]$alue_code))
+key <- dplyr::filter(key, !(alue_name %in% key[duplicated(key$alue_name),]$alue_name))
 key <- dplyr::select(key, -year)
 
 # Find the latest name for each duplicated code and mark it with TRUE
@@ -93,31 +95,52 @@ key <- rbind(key, data.frame(alue_code = "SSS", alue_name = "KOKO MAA"))
 key <- key[!duplicated(key),]
 
 nonstandard_key <- c("koko maa" = "SSS",
-         "uudenmaan maakunta" = "MK01",
-         "itä-uudenmaan maakunta" = "MK20",
-         "varsinais-suomen maakunta" = "MK02",
-         "satakunnan maakunta" = "MK04",
-         "kanta-hämeen maakunta" = "MK05",
-         "pirkanmaan maakunta" = "MK06",
-         "päijät-hämeen maakunta" = "MK07",
-         "kymenlaakson maakunta" = "MK08",
-         "etelä-karjalan maakunta" = "MK09",
-         "etelä-savon maakunta" = "MK10",
-         "pohjoissavon maakunta" = "MK11",
-         "pohjois-karjalan maakunta" = "MK12",
-         "keski-suomen maakunta" = "MK13",
-         "etelä-pohjanmaan maakunta" = "MK14",
-         "pohjanmaan maakunta" = "MK15",
-         "keski-pohjanmaan maakunta" = "MK16",
-         "pohjois-pohjanmaan maakunta" = "MK17",
-         "kainuun maakunta" = "MK18",
-         "lapin maakunta" = "MK19",
-         "ahvenanmaa - åland" = "MK21")
+                     "uudenmaan maakunta" = "MK01",
+                     "itä-uudenmaan maakunta" = "MK20",
+                     "varsinais-suomen maakunta" = "MK02",
+                     "satakunnan maakunta" = "MK04",
+                     "kanta-hämeen maakunta" = "MK05",
+                     "pirkanmaan maakunta" = "MK06",
+                     "päijät-hämeen maakunta" = "MK07",
+                     "kymenlaakson maakunta" = "MK08",
+                     "etelä-karjalan maakunta" = "MK09",
+                     "etelä-savon maakunta" = "MK10",
+                     "pohjoissavon maakunta" = "MK11",
+                     "pohjois-karjalan maakunta" = "MK12",
+                     "keski-suomen maakunta" = "MK13",
+                     "etelä-pohjanmaan maakunta" = "MK14",
+                     "pohjanmaan maakunta" = "MK15",
+                     "keski-pohjanmaan maakunta" = "MK16",
+                     "pohjois-pohjanmaan maakunta" = "MK17",
+                     "kainuun maakunta" = "MK18",
+                     "lapin maakunta" = "MK19",
+                     "ahvenanmaa - åland" = "MK21",
+                     "Uudenmaan maakunta" = "MK01",
+                     "Itä-Uudenmaan maakunta" = "MK20",
+                     "Varsinais-Suomen maakunta" = "MK02",
+                     "Satakunnan maakunta" = "MK04",
+                     "Kanta-Hämeen maakunta" = "MK05",
+                     "Pirkanmaan maakunta" = "MK06",
+                     "Päijät-Hämeen maakunta" = "MK07",
+                     "Kymenlaakson maakunta" = "MK08",
+                     "Etelä-Karjalan maakunta" = "MK09",
+                     "Etelä-Savon maakunta" = "MK10",
+                     "Pohjoissavon maakunta" = "MK11",
+                     "Pohjois-Karjalan maakunta" = "MK12",
+                     "Keski-Suomen maakunta" = "MK13",
+                     "Etelä-Pohjanmaan maakunta" = "MK14",
+                     "Pohjanmaan maakunta" = "MK15",
+                     "Keski-Pohjanmaan maakunta" = "MK16",
+                     "Pohjois-Pohjanmaan maakunta" = "MK17",
+                     "Kainuun maakunta" = "MK18",
+                     "Lapin maakunta" = "MK19",
+                     "Ahvenanmaa - Åland" = "MK21",
+                     "Maarianhamina - Mariehamn" = "KU478")
 
 nonstandard_region_names_key <- data.frame(alue_name = names(nonstandard_key), alue_code = nonstandard_key)
 rownames(nonstandard_region_names_key) <- NULL
 
-key <- rbind(key, nonstandard_key)
+key <- rbind(key,nonstandard_region_names_key)
 
 region_name_to_code_key <- key
 

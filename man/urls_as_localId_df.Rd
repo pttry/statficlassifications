@@ -2,8 +2,7 @@
 % Please edit documentation in R/functions_for_api_access.R
 \name{urls_as_localId_df}
 \alias{urls_as_localId_df}
-\title{Transform a list of urls into a data.frame that separates the relevant information of each localId.
-For internal use.}
+\title{Transform a list of urls into a data.frame that separates the relevant information of each localId.}
 \usage{
 urls_as_localId_df(urls)
 }
@@ -14,6 +13,5 @@ urls_as_localId_df(urls)
 data.frame containing the relevant information of each localId correponding to the input urls.
 }
 \description{
-Transform a list of urls into a data.frame that separates the relevant information of each localId.
-For internal use.
+Used when searching localIds among endpoints. For internal use.
 }

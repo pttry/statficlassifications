@@ -1,13 +1,13 @@
 #' API interface
 #'
-#' Given a local ID of a correspondence table or classification, gets the data
+#' Given a local Id of a correspondence table or classification, gets the data
 #' and transforms it into a data.frame. For internal use of the package.
 #'
 #' Currently supported classification services are 'classifications' and
 #' 'correspondenceTables'. For more information on classification services,
 #' see <https://www.stat.fi/en/luokitukset/info/>.
 #'
-#' @param localID character, local ID of the correspondence table or classification
+#' @param localId character, local ID of the correspondence table or classification
 #' @param content, character, either "data" or "url" whether the content of the query
 #'    is data or url.
 #' @param classification_service character, either 'correspondenceTable' or
@@ -29,7 +29,7 @@ access_API <- function(localId = NULL, content = "data", classification_service 
   }
 
   if(is.null(classification_service)) {
-      classification_service <- find_classification_service(localId)
+    classification_service <- find_classification_service(localId)
   }
 
   if(!(classification_service %in% c("classifications", "correspondenceTables"))) {
@@ -48,7 +48,7 @@ access_API <- function(localId = NULL, content = "data", classification_service 
   # Set url either to get url or content
 
   url_ends <- c("classifications" = "/classificationItems",
-                     "correspondenceTables" = "/maps")
+                "correspondenceTables" = "/maps")
 
   url <- paste0("https://data.stat.fi/api/classifications/v2/",
                 classification_service,
@@ -93,7 +93,7 @@ get_url <- function(localId = NULL, classification_service = NULL) {
 #'
 #' A wrapper for \code{access_API} to get data of classification keys.
 #'
-#' @param localID, character, local ID of the required correspondence table
+#' @param localId, character, local ID of the required correspondence table
 #' @param print_key_name, whether prints the long name of the correspondence table.
 #'
 #' @return data.frame, the key of the provided localId.
@@ -128,6 +128,8 @@ get_key <- function(localId, print_key_name = TRUE) {
 #'
 #' @param localId character, local ID of the required correspondence table
 #' @param print_series_name  whether prints the long name of the classification series.
+#' @param as_named_vector, logical, whether to return the object as a named vector rather
+#'    than data.frame. Defaults to FALSE.
 #'
 #' @return
 #' @export
@@ -146,7 +148,7 @@ get_classification <- function(localId, print_series_name = TRUE, as_named_vecto
   classif <- access_API(localId, content = "data", classification_service = "classifications")
   text <- unlist(unique(classif$classification$classificationName))["name"]
   classif <- data.frame(code = classif$code,
-                       name = unlist(lapply(classif$classificationItemNames, '[', "name")))
+                        name = unlist(lapply(classif$classificationItemNames, '[', "name")))
 
   output <- classif
   if(print_series_name) {message(text)}
@@ -160,6 +162,8 @@ get_classification <- function(localId, print_series_name = TRUE, as_named_vecto
 
 #' Get the year of the latest correspondence table
 #'
+#' @param offline, logical, whether works offline with package data. Defaults to TRUE.
+#'
 #' @return double, the year of the newest correspondence table
 #' @export
 #'
@@ -170,28 +174,29 @@ get_classification <- function(localId, print_series_name = TRUE, as_named_vecto
 #'
 get_latest_year <- function(offline = TRUE) {
 
- if(offline) {
-   sys_current_year <- as.double(substring(Sys.Date(), 1,4))
-   sys_current_month <- as.double(substring(Sys.Date(), 6,7))
-   if(sys_current_month == 1) {
-     warning("In January, the offline latest year is the last year in case no fresh keys updated.")
-     return(sys_current_year - 1)
-   } else {
-     sys_current_year
-   }
+  if(offline) {
+    sys_current_year <- as.double(substring(Sys.Date(), 1,4))
+    sys_current_month <- as.double(substring(Sys.Date(), 6,7))
+    if(sys_current_month == 1) {
+      warning("In January, the offline latest year is the last year in case no fresh keys updated.")
+      return(sys_current_year - 1)
+    } else {
+      sys_current_year
+    }
 
- } else {
-     urls <- get_url(classification_service = "correspondenceTables")
-     results <- urls_as_localId_df(urls)
-     as.double(max(c(results$year1, results$year2)))
- }
+  } else {
+    urls <- get_url(classification_service = "correspondenceTables")
+    results <- urls_as_localId_df(urls)
+    as.double(max(c(results$year1, results$year2)))
+  }
 }
 
 
 
 
 #' Transform a list of urls into a data.frame that separates the relevant information of each localId.
-#' For internal use.
+#'
+#' Used when searching localIds among endpoints. For internal use.
 #'
 #' @param urls, a list of characters, urls of localIds..
 #'
@@ -199,22 +204,22 @@ get_latest_year <- function(offline = TRUE) {
 #' @import dplyr
 #' @export
 #'
-#' @examples
 urls_as_localId_df <- function(urls) {
 
   if(grepl("v2/correspondenceTables", urls)) {
 
-  urls <- as.data.frame(sapply(urls, stringr::str_remove,
-                               paste0("https://data.stat.fi/api/classifications/v2/correspondenceTables/")))
-  nros <- as.data.frame(matrix(unlist(lapply(urls, stringr::str_extract_all, "_\\d+_")), ncol = 2, byrow = TRUE))
-  names(nros) <- paste0("nro", 1:2)
-  results <- tidyr::separate(urls, url, c("source", "temp_var", "date2"), sep = "_\\d+_") %>%
-    tidyr::separate(temp_var, c("date1", "target"), sep = "#") %>%
-    dplyr::mutate(year1 = substring(date1, 1,4),
-                  date1 = substring(date1, 5,8),
-                  year2 = substring(date2, 1,4),
-                  date2 = substring(date2, 5,8))
-  output <- cbind(results, nros)
+    urls <- as.data.frame(sapply(urls, stringr::str_remove,
+                                 paste0("https://data.stat.fi/api/classifications/v2/correspondenceTables/")))
+    nros <- as.data.frame(matrix(unlist(lapply(urls, stringr::str_extract_all, "_\\d+_")), ncol = 2, byrow = TRUE))
+    names(nros) <- paste0("nro", 1:2)
+    results <- tidyr::separate(urls, url, c("source", "temp_var", "date2"), sep = "_\\d+_") %>%
+      tidyr::separate(temp_var, c("date1", "target"), sep = "#") %>%
+      dplyr::mutate(year1 = substring(date1, 1,4),
+                    date1 = substring(date1, 5,8),
+                    year2 = substring(date2, 1,4),
+                    date2 = substring(date2, 5,8))
+    output <- cbind(results, nros) %>%
+      dplyr::select(source, nro1, year1, date1, target, nro2, year2, date2)
 
   } else if(grepl("v2/classifications", urls)) {
 
@@ -225,7 +230,8 @@ urls_as_localId_df <- function(urls) {
     results <- tidyr::separate(urls, url, c("series", "date1"), sep = "_\\d+_") %>%
       dplyr::mutate(year = substring(date1, 1,4),
                     date = substring(date1, 5,8))
-    output <- cbind(results, nro)
+    output <- cbind(results, nro) %>%
+      dplyr::select(series, nro, year, date)
   }
   output
 }
@@ -251,7 +257,7 @@ find_classification_service <- function(localId) {
     stop("Multiple localIds! This function currently gives you only one series at the time.")
   }
 
-  indicator <- c(localId %in% search_series(as_localId = TRUE),
+  indicator <- c(localId %in% search_classifications(as_localId = TRUE),
                  localId %in% search_keys(as_localId = TRUE))
 
   if(all(!indicator)) {stop("Classification service not found.")}
@@ -259,3 +265,80 @@ find_classification_service <- function(localId) {
   c("classifications", "correspondenceTables")[indicator]
 
 }
+
+
+#' Create correspondence table localId
+#'
+#' Given the inputs, creates a localId. For internal use.
+#'
+#' @param source character
+#' @param target character
+#' @param year integer
+#' @param year1 integer
+#' @param year2 integer
+#' @param date character defaults to "0101" which the most correspondence tables have.
+#' @param date1 character
+#' @param date2 character
+#' @param nro1, character, defaults to "_1_".
+#' @param nro2, character, defaults to "_1_".
+#' @param input_vector named vector
+#'
+#' @return character
+#' @export
+#'
+#' @examples
+#'
+#' # Create a localId for the key that maps "kunta" to "maakunta" for year 2015
+#'    create_localId_name("kunta", "maakunta", year = 2015)
+#'
+create_localId_name <- function(source, target,
+                                year, year1 = year, year2 = year,
+                                date = "0101", date1 = date, date2 = date,
+                                nro1 = "_1_", nro2 = "_1_",
+                                input_vector = NULL) {
+
+  if(!is.null(input_vector)) {
+    source <- input_vector["source"]
+    target <- input_vector["target"]
+    date1 <- input_vector["date1"]
+    date2 <- input_vector["date2"]
+    year1 <- input_vector["year1"]
+    year2 <- input_vector["year2"]
+    nro1 <- input_vector["nro1"]
+    nro2 <- input_vector["nro2"]
+  }
+
+  paste0(source, nro1, as.character(year1), date1,"%23", target, nro2, as.character(year2), date2)
+
+}
+
+
+
+# find_localId <- function(..., year = NULL, classification_service, localId_list = NULL) {
+#
+#   xs <- unlist(list(...))
+#
+#   if(classification_service == "correspondenceTables") {
+#     if(is.null(localId_list)) {
+#       results <- search_keys(xs[1], year = year, as_localId = TRUE)
+#     } else {
+#       results <- localId_list
+#     }
+#     for(x in xs) {
+#       results <- grep(x, results, value = TRUE)
+#     }
+#   } else if(classification_service == "classifications") {
+#
+#     if(is.null(localId_list)) {
+#       results <- search_classifications(xs[1], year = year, as_localId = TRUE)
+#     } else {
+#       results <- localId_list
+#     }
+#     for(x in xs) {
+#       results <- grep(x, results, value = TRUE)
+#     }
+#   }
+#   if(length(results) > 1) {stop("No unique localIds found! Maybe give more search words.")}
+#   if(length(results) == 0) {stop("No localIds found!")}
+#   results
+# }

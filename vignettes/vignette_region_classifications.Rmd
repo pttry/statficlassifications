@@ -1,5 +1,5 @@
 ---
-title: "Region keys"
+title: "vignette_region_classifications"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{vignette_region_classifications}
@@ -20,9 +20,23 @@ library(statficlassifications)
 
 The package provides more more specialised ways for dealing with regional classifications.
 
+### Getting regional classifications
+
+To load regional classifications, use `get_region_code_name_key`:
+
+```{r}
+region_classification <- get_regionclassification()
+head(region_classification)
+seutukunta_classification <- get_regionclassification("seutukunta")
+head(seutukunta_classification)
+kunta_2010_classification <- get_regionclassification("kunta", year = 2010)
+head(kunta_2010_classification)
+```
+
+
 ### Getting regional classification keys
 
-To load regional classification keys, use `get_regionkey`:
+To load regional correspondence tables / classification keys, use `get_regionkey`:
 
 ```{r}
 regionkey <- get_regionkey(only_names = TRUE)
@@ -38,9 +52,9 @@ kunta_maakunta_key <- get_regionkey("kunta", "maakunta")
 head(kunta_maakunta_key)
 ```
 
-### Manipulating regional variables
+### Manipulate regional variables
 
-´statficlassifications´ also gives you a selection of ways and functions that help you to standardize and manipulate the regional information in your data. For examples, generate random municipal data:
+`statficlassifications` also gives you a selection of ways and functions that help you to standardize and manipulate the regional information in your data. For examples, generate random municipal data:
 
 ```{r}
 data <- get_regionkey() %>% dplyr::select(kunta_name) %>% dplyr::mutate(values = rnorm(dplyr::n()))
@@ -68,25 +82,50 @@ data %>% add_region("maakunta") %>%
          dplyr::summarize(maakunta_mean = mean(values)) %>% head()
 ```
 
+### Region code prefixes
+
 `statficlassifications` aims to impose the use of prefixed region codes. Prefixes are useful in making sure codes do not map to multiple names. There are, for instance, kuntia and seutukuntia with identical numbers. Prefixes help distinguish between these. The correpondence of region names and prefixes is
 
 ```{r, echo = FALSE}
 statficlassifications:::prefix_name_key
 ```
 
-Function ´set_region_codes´helps you set your region codes in a standard format:
+Function `set_region_codes` helps you set the prefixes of you region codes:
 
 ```{r}
-v <- c("020", "047", "15", "063")
+v <- c("191", "047", "063")
 set_region_codes(v)
 ```
 
-It also easy to map region codes to corresponding names and vice versa:
+If your input vector has codes that may match to multiple region codes, you get an error without giving more information. If you know the region level to which your codes correspond to you can submit the region level to `region_level`-argument.
 
 ```{r}
-v <- set_region_codes(v)
+v <- c("5", "47", "20")
+set_region_codes(v, region_level = "kunta")
+```
+
+Often you find data where kunta codes are not prefixed but the codes of other regions are. With your information on to which region level codes the codes without prefixes should be mapped, you can restrict the domain of this mapping by providing the `region_level`-argument:
+
+```{r}
+v <- c("020", "047", "005", "MK01", "MK02")
+set_region_codes(v, region_level = "kunta")
+```
+
+Again sometimes you have codes of multiple region levels mixed in the data without prefixes but the charachter length of the codes might make a difference. In these cases you can set `use_char_length_info = TRUE`. The default is way to use character length information is that three characters incidate kuntia and two characters indicate maakuntia.
+
+```{r}
+v <- c("020", "047", "005", "01", "02")
+set_region_codes(v, use_char_length_info = TRUE)
+```
+
+Prefixed region codes map unambiguosly to region names so it is then easy to map the codes to names. Note, however, that some region names do not map uniquely to region codes. In these cases you have to supply the `region_level`-argument again.
+
+```{r}
+
+v <- c("020", "047", "005", "MK01", "MK02")
+v <- set_region_codes(v, region_level = "kunta")
 codes_to_names(v)
 v <- codes_to_names(v)
-#names_to_codes(v)
+names_to_codes(v)
 ```
 

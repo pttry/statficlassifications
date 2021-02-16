@@ -1,4 +1,4 @@
-#' Import region classification key
+#' Get region classification key
 #'
 #' Imports NUTS-region classification keys from Statistics Finland API. Use together with 'dplyr::left_join'
 #' to add regions to data. A wrapper for the \code{get_key} function that it calls under the hood.
@@ -115,53 +115,72 @@ get_regionkey <- function(source = "kunta", targets = NULL, year = NULL,
 
 }
 
-#' Get region code-name keys
+#' Get region classifications / code-name keys
 #'
 #' @param ... character(s), (vector), region(s) of required keys.
 #' @param year character/numeric, year of the required keys. If NULL uses the latest year.
 #' @param offline logical, whether uses the key in the package data. Defaults TRUE.
 #' @param as_named_vector logical, whether returns the key as a named vector rather than a
 #'    data.frame. Defaults FALSE.
+#' @param suppress_message, logical, whether to suppress any messages the function might produce.
+#' @param only_names, logical, whether to return only the names in the classification.
+#'     Defaults to FALSE.
+#' @param only_codes,logical, whether to return only the codes in the classification.
+#'     Defaults to FALSE.
+#'
 #'
 #' @return a data.frame or a named vector. A region code-name key.
 #' @export
 #'
 #' @examples
 #'
-#' get_region_code_name_key("seutukunta")
-#' get_region_code_name_key("seutukunta", as_named_vector = TRUE)
-#' get_region_code_name_key("seutukunta", "maakunta")
+#' get_regionclassification("seutukunta")
+#' get_regionclassification("seutukunta", as_named_vector = TRUE)
+#' get_regionclassification("seutukunta", "maakunta")
 #'
-get_region_code_name_key <- function(..., year = NULL, offline = TRUE, as_named_vector = FALSE) {
+get_regionclassification <- function(...,
+                                     year = NULL,
+                                     offline = TRUE,
+                                     as_named_vector = FALSE,
+                                     suppress_message = FALSE,
+                                     only_names = FALSE,
+                                     only_codes = FALSE) {
 
   latest_year <- get_latest_year(offline = offline)
 
   if(is.null(year)) {
     year <- latest_year
-  } else if((year != latest_year & offline)) {
+  } else {
     offline <- FALSE
-    message("Overriding default option for offline regionkey for years other than the latest year.")
+    if(!suppress_message) {
+    message("Overriding default option for offline when specific year is required.")
+    }
   }
 
   regions <- tolower(unlist(list(...)))
+  if(length(regions) == 0) {regions <- prefix_name_key$name[-1]}
   key <- data.frame()
 
+  if(offline) {
+    key <- statficlassifications::region_code_name_key
+    key <- key[grepl(pattern = paste(name_to_prefix(regions), collapse = "|"),
+                     x = key$alue_code),]
+  } else {
+
   for(region in regions) {
-    # localId <- grep(region,
-    #                 search_classifications(region, as_localId = TRUE),
-    #                 value = TRUE) %>%
-    #            grep(pattern = year, value = TRUE)
 
     localId <- paste0(region, "_1_", year, "0101")
     key_temp <- get_classification(localId, print_series_name = FALSE)
     if(length(key_temp) == 0) {
-      message(paste0("No region name-code key found for ", region, " for year ", year))
+      if(!suppress_message) {
+         message(paste0("No region name-code key found for ", region, " for year ", year))
+      }
       next
      }
     key_temp$code <- paste0(name_to_prefix(region), key_temp$code)
     key <- rbind(key, key_temp)
   }
-
+  }
   if(length(key) == 0){
     return(message("No keys found!"))
   }
@@ -171,11 +190,25 @@ get_region_code_name_key <- function(..., year = NULL, offline = TRUE, as_named_
   } else {
     names(key) <- c("alue_code", "alue_name")
   }
+
+  if(only_codes & only_names) {
+    stop("Can't give you a key that has only codes but also only names!")
+  }
+
+  if(as_named_vector & (only_names | only_codes)) {
+    stop("There is no named vector with either only codes or names.")
+  }
+
   output <- key
   if(as_named_vector) {
-    output <- as.vector(unlist(key[paste0(region, "_name")],))
-    names(output) <- as.vector(unlist(key[paste0(region, "_code")],))
+    output <- as.vector(unlist(key[paste0(regions, "_name")],))
+    names(output) <- as.vector(unlist(key[paste0(regions, "_code")],))
   }
+
+  if(only_codes) {output <- dplyr::select(key, contains("code"))[,1]}
+  if(only_names) {output <- dplyr::select(key, contains("name"))[,1]}
+
+  rownames(output) <- NULL
   output
 }
 
