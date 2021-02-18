@@ -60,8 +60,8 @@ statfi_recode <- function(x, ..., year = NULL, key = NULL, leave = FALSE) {
 #' # Replace municipality names by their codes
 #'
 #'     # Generate random municipal data
-#'        data <- get_regionkey() %>%
-#'                dplyr::select(kunta_code) %>%
+#'        data <- get_regionkey("seutukunta") %>%
+#'                dplyr::select(seutukunta_code) %>%
 #'                dplyr::mutate(values = rnorm(dplyr::n()))
 #'     # Recode
 #'     recode_region(data, "kunta_name", "kunta_name", "kunta_code")
@@ -82,7 +82,7 @@ recode_region <- function(data, from_orig, from, to, year = NULL, leave = FALSE,
     df <- dplyr::select(df, -from_orig)
     df <- dplyr::relocate(df, to)
   }
-  df
+  df[!duplicated(df),]
 }
 
 
