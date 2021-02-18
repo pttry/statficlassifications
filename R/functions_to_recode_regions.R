@@ -61,7 +61,7 @@ statfi_recode <- function(x, ..., year = NULL, key = NULL, leave = FALSE) {
 #'
 #'     # Generate random municipal data
 #'        data <- get_regionkey() %>%
-#'                dplyr::select(kunta_name) %>%
+#'                dplyr::select(kunta_code) %>%
 #'                dplyr::mutate(values = rnorm(dplyr::n()))
 #'     # Recode
 #'     recode_region(data, "kunta_name", "kunta_name", "kunta_code")
@@ -106,8 +106,9 @@ recode_region <- function(data, from_orig, from, to, year = NULL, leave = FALSE,
 #'
 #' @examples
 #'
-add_region <- function(data, to, from = NULL, year = NULL, offline = TRUE) {
+add_region <- function(data, ..., from = NULL, year = NULL, offline = TRUE) {
 
+  to <- unlist(list(...))
   region_var <- detect_region_var(data, year = year, offline = offline)
   from_key <- names(region_var)
 
@@ -118,7 +119,7 @@ add_region <- function(data, to, from = NULL, year = NULL, offline = TRUE) {
     stop("input to argument 'from' not in the data!")
   }
 
-  if(!(to %in% c("kunta", "seutukunta", "maakunta", "suuralue"))) {
+  if(!all(to %in% c("kunta", "seutukunta", "maakunta", "suuralue"))) {
     stop("Argument to has to be either 'kunta', 'seutukunta', 'maakunta' or 'suuralue'")
   }
   to <- paste(to, gsub(".*_", "", from_key), sep = "_")
