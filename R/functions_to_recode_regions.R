@@ -124,7 +124,7 @@ add_region <- function(data, ..., from = NULL, year = NULL, offline = TRUE) {
   }
   to <- paste(to, gsub(".*_", "", from_key), sep = "_")
 
-  recode_region(data, from_orig = from, from = from_key, to = to, leave = TRUE)
+  recode_region(data, from_orig = from, from = from_key, year = year, to = to, leave = TRUE)
 }
 
 
