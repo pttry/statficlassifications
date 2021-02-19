@@ -8,7 +8,7 @@
 <!-- badges: end -->
 
 The `statficlassifications`-package allows the access to the
-classifications and correspondence tables open classifications API of
+classifications and correspondence tables of open classifications API of
 Statistics Finland at <https://data.stat.fi/api/classifications/v2>.
 (For information on the API, see
 <https://www.stat.fi/fi/luokitukset/info/>.) `statficlassifications`
@@ -156,7 +156,7 @@ regional classifications.
 
 ### Getting regional classifications
 
-To load regional classifications, use `get_region_code_name_key`:
+To load regional classifications, use `get_regionclassification`:
 
 ``` r
 region_classification <- get_regionclassification()
