@@ -4,10 +4,18 @@
 \alias{get_classification}
 \title{Get classification series from API}
 \usage{
-get_classification(localId, print_series_name = TRUE, as_named_vector = FALSE)
+get_classification(
+  localId,
+  lang = "fi",
+  print_series_name = TRUE,
+  as_named_vector = FALSE
+)
 }
 \arguments{
 \item{localId}{character, local ID of the required correspondence table}
+
+\item{lang, }{\code{fi}, \code{en}, or \code{sv}, language of the classification required.
+Defaults to \code{fi}.}
 
 \item{print_series_name}{whether prints the long name of the classification series.}
 

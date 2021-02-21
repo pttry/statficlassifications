@@ -4,12 +4,10 @@
 \alias{add_region}
 \title{Add regions to data}
 \usage{
-add_region(data, to, from = NULL, year = NULL, offline = TRUE)
+add_region(data, ..., from = NULL, year = NULL, offline = TRUE)
 }
 \arguments{
 \item{data}{data.frame}
-
-\item{to}{character, the region to add.}
 
 \item{from}{character, variable in the data that is used to add regions to the data. Defaults
 to NULL, in which case function tries to guess the variable in the data.}
@@ -17,6 +15,8 @@ to NULL, in which case function tries to guess the variable in the data.}
 \item{year, }{double, year of region classification}
 
 \item{offline, }{logical, whether works offline with package data. Defaults to TRUE.}
+
+\item{to}{character, the region to add.}
 }
 \value{
 

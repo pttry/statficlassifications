@@ -110,6 +110,19 @@ add_region <- function(data, ..., from = NULL, year = NULL, offline = TRUE) {
 
   to <- unlist(list(...))
   region_var <- detect_region_var(data, year = year, offline = offline)
+  region_var_name_lgl <- sapply(region_var, grepl, pattern = "name")
+  region_var_code_lgl <- sapply(region_var, grepl, pattern = "code")
+
+  if(any(region_var_name_lgl)) {
+  if(any(!is_region_name(data[[region_var[names(region_var)[region_var_name_lgl]]]]))) {
+    stop("Unknown region names.")
+  } }
+
+  if(any(region_var_code_lgl)) {
+  if(any(!is_region_code_with_prefix(data[[region_var[names(region_var)[region_var_code_lgl]]]]))) {
+    stop("Standardize your region codes first.")
+  }  }
+
   from_key <- names(region_var)
 
   if(is.null(from)) {

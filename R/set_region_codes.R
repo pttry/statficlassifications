@@ -42,16 +42,15 @@ set_region_codes <- function(x,
                              offline = TRUE,
                              use_char_length_info = NULL) {
 
+  args <- list(x, region_level = region_level,
+               year = year,
+               offline = offline,
+               use_char_length_info = use_char_length_info)
+
   if(is.vector(x)){
-    x <- set_region_codes_vct(x, region_level = region_level,
-                              year = year,
-                              offline = offline,
-                              use_char_length_info = use_char_length_info)
+    x <- do.call(set_region_codes_vct, args)
   } else if(is.factor(x)) {
-    x <- set_region_codes_fct(x, region_level = region_level,
-                              year = year,
-                              offline = offline,
-                              use_char_length_info = use_char_length_info)
+    x <- do.call(set_region_codes_fct, args)
   } else {
     stop("Argument not a vector or factor.")
   }

@@ -4,7 +4,12 @@
 \alias{access_API}
 \title{API interface}
 \usage{
-access_API(localId = NULL, content = "data", classification_service = NULL)
+access_API(
+  localId = NULL,
+  content = "data",
+  classification_service = NULL,
+  lang = "fi"
+)
 }
 \arguments{
 \item{localId}{character, local ID of the correspondence table or classification}
@@ -13,7 +18,11 @@ access_API(localId = NULL, content = "data", classification_service = NULL)
 is data or url.}
 
 \item{classification_service}{character, either 'correspondenceTable' or
-'classifications'. Determines the classification service used.}
+'classifications'. Determines the classification service used. See Details for
+information on the classification services.}
+
+\item{lang, }{\code{fi}, \code{en}, or \code{sv}, language required.
+Defaults to \code{fi}.}
 }
 \value{
 data.frame either the correspondence table or its url depending on argument \code{content}.

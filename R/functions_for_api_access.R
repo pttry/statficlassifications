@@ -11,7 +11,10 @@
 #' @param content, character, either "data" or "url" whether the content of the query
 #'    is data or url.
 #' @param classification_service character, either 'correspondenceTable' or
-#'    'classifications'. Determines the classification service used.
+#'    'classifications'. Determines the classification service used. See Details for
+#'    information on the classification services.
+#' @param lang, \code{fi}, \code{en}, or \code{sv}, language required.
+#'    Defaults to \code{fi}.
 #'
 #' @return data.frame either the correspondence table or its url depending on argument \code{content}.
 #' @export
@@ -22,41 +25,60 @@
 #'   access_API(localId, content = "data")
 #'   access_API(localId, content = "url")
 #'
-access_API <- function(localId = NULL, content = "data", classification_service = NULL) {
+access_API <- function(localId = NULL,
+                       content = "data",
+                       classification_service = NULL,
+                       lang = "fi") {
 
-  if(is.null(localId) & is.null(classification_service)) {
-    stop("Please provide either a localId or a classification_service.")
+  # Test if neither localId nor classification_service is given. If not, give
+  # an error as the function does not know what to access.
+    if(is.null(localId) & is.null(classification_service)) {
+      stop("Please provide either a localId or a classification_service.")
+    }
+
+  # If classification service is not given, use the given localId to determine it.
+    if(is.null(classification_service)) {
+      classification_service <- find_classification_service(localId)
+    }
+
+  # Test if the classification_service given is among the supported
+  # classification services. If not, give an error.
+    if(!(classification_service %in% c("classifications", "correspondenceTables"))) {
+      stop("Unknown classification service.")
+    }
+
+  # Test if argument content is among allowed contents url and data. If not,
+  # give an error.
+    if(!(content %in% c("url", "data"))) {
+      stop("Argument 'content' has to be either 'data' or 'url'.")
+    }
+
+  # Change default content from data to url if no localId given.
+  if(is.null(localId)) {
+    content <- "url"
+    # message("If localId not given, only urls accessed.")
   }
 
-  if(is.null(classification_service)) {
-    classification_service <- find_classification_service(localId)
-  }
+  # If localId provided, prepend with "/" to build url to the endpoint. If localId
+  # is not provided the function accesses all the endpoints in the given classification
+  # service. In this case, the url cannot end with '/'.
+    if(!is.null(localId)) {
+      localId <- paste0("/", localId)
+    }
 
-  if(!(classification_service %in% c("classifications", "correspondenceTables"))) {
-    stop("Unknown classification service.")
-  }
 
-  if(!(content %in% c("url", "data"))) {
-    stop("Argument 'content' has to be either 'data' or 'url'.")
-  }
+  # Create a vector that maps classification service name to url path.
+    url_ends <- c("classifications" = "/classificationItems",
+                 "correspondenceTables" = "/maps")
 
-  # If localId provided, prepend with "/" to build url to the endpoint.
-  if(!is.null(localId)) {
-    localId <- paste0("/", localId)
-  }
-
-  # Set url either to get url or content
-
-  url_ends <- c("classifications" = "/classificationItems",
-                "correspondenceTables" = "/maps")
-
-  url <- paste0("https://data.stat.fi/api/classifications/v2/",
-                classification_service,
-                localId,
-                ifelse(content == "data", url_ends[classification_service], ""))
+  # Set url.
+    url <- paste0("https://data.stat.fi/api/classifications/v2/",
+                  classification_service,
+                  localId,
+                  ifelse(content == "data", url_ends[classification_service], ""))
 
   # access API and return
-  resp <- httr::GET(url, query = list(content = content, meta = "min"))
+  resp <- httr::GET(url, query = list(content = content, meta = "min", lang = lang))
   cont <- httr::content(resp, "text", encoding = "UTF-8")
 
   as.data.frame(jsonlite::fromJSON(cont))
@@ -94,7 +116,10 @@ get_url <- function(localId = NULL, classification_service = NULL) {
 #' A wrapper for \code{access_API} to get data of classification keys.
 #'
 #' @param localId, character, local ID of the required correspondence table
+#' @param lang, \code{fi}, \code{en}, or \code{sv}, language of the key required.
+#'    Defaults to \code{fi}.
 #' @param print_key_name, whether prints the long name of the correspondence table.
+#'    Defaults to \code{TRUE}.
 #'
 #' @return data.frame, the key of the provided localId.
 #' @export
@@ -104,13 +129,14 @@ get_url <- function(localId = NULL, classification_service = NULL) {
 #'    localId <- "kunta_1_20200101%23seutukunta_1_20200101"
 #'    get_key(localId)
 #'
-get_key <- function(localId, print_key_name = TRUE) {
+get_key <- function(localId, lang = "fi", print_key_name = TRUE) {
 
   if(length(localId) > 1) {
     stop("Multiple localIds! This function currently gives you only one key at the time.")
   }
 
-  key <- access_API(localId, content = "data", classification_service = "correspondenceTables")
+  key <- access_API(localId, content = "data", lang = lang,
+                    classification_service = "correspondenceTables")
   text <- unique(key$correspondenceTable$correspondenceTableTexts)
   key <- data.frame(source_code = key$sourceItem$code,
                     source_name = unlist(lapply(key$sourceItem$classificationItemNames, '[', "name")),
@@ -127,9 +153,11 @@ get_key <- function(localId, print_key_name = TRUE) {
 #' A wrapper for \code{access_API} to get data of classifications.
 #'
 #' @param localId character, local ID of the required correspondence table
+#' @param lang, \code{fi}, \code{en}, or \code{sv}, language of the classification required.
+#'    Defaults to \code{fi}.
 #' @param print_series_name  whether prints the long name of the classification series.
 #' @param as_named_vector, logical, whether to return the object as a named vector rather
-#'    than data.frame. Defaults to FALSE.
+#'    than data.frame. Defaults to \code{FALSE}.
 #'
 #' @return
 #' @export
@@ -139,13 +167,17 @@ get_key <- function(localId, print_key_name = TRUE) {
 #'   localId <- "siviiliasiat_1_20140101"
 #'   get_classification(localId)
 #'
-get_classification <- function(localId, print_series_name = TRUE, as_named_vector = FALSE) {
+get_classification <- function(localId,
+                               lang = "fi",
+                               print_series_name = TRUE,
+                               as_named_vector = FALSE) {
 
   if(length(localId) > 1) {
     stop("Multiple localIds! This function currently gives you only one series at the time.")
   }
 
-  classif <- access_API(localId, content = "data", classification_service = "classifications")
+  classif <- access_API(localId, content = "data", lang = lang,
+                        classification_service = "classifications")
   text <- unlist(unique(classif$classification$classificationName))["name"]
   classif <- data.frame(code = classif$code,
                         name = unlist(lapply(classif$classificationItemNames, '[', "name")))

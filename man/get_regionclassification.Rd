@@ -11,7 +11,8 @@ get_regionclassification(
   as_named_vector = FALSE,
   suppress_message = FALSE,
   only_names = FALSE,
-  only_codes = FALSE
+  only_codes = FALSE,
+  lang = "fi"
 )
 }
 \arguments{
@@ -31,6 +32,9 @@ Defaults to FALSE.}
 
 \item{only_codes, logical, }{whether to return only the codes in the classification.
 Defaults to FALSE.}
+
+\item{lang, }{\code{fi}, \code{en}, or \code{sv}, language of the classification required.
+Defaults to \code{fi}.}
 }
 \value{
 a data.frame or a named vector. A region code-name key.

@@ -57,20 +57,25 @@ check_region_codes_fct <- function(x, year = NULL, offline = TRUE) {
 
 #' Check region names
 #'
-#' @param x character vector or factor
-#' @param year double or character, year of classification
+#' For a vector or a factor of region names, find the names that are not recognized and
+#' if does not find such names returns true. \code{check_region_names} uses
+#' \code{check_region_names_vct} for vectors and \code{check_region_names_fct} for factors.
+#'
+#' @param x character vector or factor.
+#' @param year double or character, year of classification.
 #' @param offline logical, whether works offline with package data. Defaults to TRUE.
+#' @param lang, \code{fi}, \code{sv} or \code{en}. Language of the input name. Defaults to \code{fi}.
 #'
 #' @return
 #' @export
 #'
 #'
-check_region_names <- function(x, year = NULL, offline = TRUE) {
+check_region_names <- function(x, lang = "fi", year = NULL, offline = TRUE) {
 
   if(is.vector(x)){
-    x <- check_region_names_vct(x, offline = offline, year = year)
+    x <- check_region_names_vct(x, lang = lang, offline = offline, year = year)
   } else if(is.factor(x)) {
-    x <- check_region_names_fct(x, offline = offline, year = year)
+    x <- check_region_names_fct(x, lang = lang, offline = offline, year = year)
   } else {
     stop("Argument not a vector or factor.")
   }
@@ -85,9 +90,9 @@ check_region_names <- function(x, year = NULL, offline = TRUE) {
 #'
 #' @export
 #'
-check_region_names_vct <- function(x, year = NULL, offline = TRUE) {
+check_region_names_vct <- function(x, lang = "fi", year = NULL, offline = TRUE) {
 
-  logical <- is_region_name(x, offline = offline, year = year)
+  logical <- is_region_name(x, lang = lang, offline = offline, year = year)
   if(all(logical)) {
     return(TRUE)
   } else {
@@ -106,8 +111,8 @@ check_region_names_vct <- function(x, year = NULL, offline = TRUE) {
 #'
 #' @export
 #'
-check_region_names_fct <- function(x, year = NULL, offline = TRUE) {
-  check_region_names_vct(levels(x), offline = offline, year = year)
+check_region_names_fct <- function(x, lang = "fi", year = NULL, offline = TRUE) {
+  check_region_names_vct(levels(x), lang = lang, offline = offline, year = year)
 }
 
 #' Check if region names and codes correspond as in regionkey.
@@ -205,6 +210,8 @@ is_region_code_without_prefix <- function(x, region_level = NULL, year = NULL, o
 #' @param offline logical, whether works offline with package data. Defaults to TRUE.
 #' @param allow_nonstandard_names logical, whether to accept a broader set of names as
 #'    region names.
+#' @param lang, \code{fi}, \code{sv} or \code{en}. Language of the input name.
+#'    Defaults to \code{fi}.
 #'
 #' @return
 #' @export
@@ -214,15 +221,27 @@ is_region_code_without_prefix <- function(x, region_level = NULL, year = NULL, o
 #'  is_region_name(c("Kainuu", "Kainuun maakunta"))
 #'  is_region_name(c("Kainuu", "Kainuun maakunta"), allow_nonstandard_names = TRUE)
 #'
-is_region_name <- function(x, region_level = NULL, year = NULL, offline = TRUE, allow_nonstandard_names = FALSE) {
+is_region_name <- function(x,
+                           region_level = NULL,
+                           year = NULL,
+                           offline = TRUE,
+                           allow_nonstandard_names = FALSE,
+                           lang = "fi") {
+
+  if(lang != "fi") {
+    offline <- FALSE
+    message("Overriding default option for offline when language other than Finnish required.")
+  }
+
+  names <- get_regionclassification(region_level, year = year, lang = lang,
+                                      offline = offline, suppress_message = TRUE, only_names = TRUE)
 
   if(allow_nonstandard_names) {
-    names <- statficlassifications::region_name_to_code_key %>%
-      dplyr::filter(grepl(paste(name_to_prefix(region_level), collapse = "|"), alue_code))
-    names <- names$alue_name
-  } else {
-    names <- get_regionclassification(region_level, year = year, offline = offline, suppress_message = TRUE, only_names = TRUE)
+      nonstandard_names <- statficlassifications::region_name_to_code_key %>%
+        dplyr::filter(grepl(paste(name_to_prefix(region_level), collapse = "|"), alue_code))
+      names <- c(names, nonstandard_names$alue_name)
   }
+
   x %in% names
 
 }

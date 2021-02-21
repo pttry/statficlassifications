@@ -8,6 +8,7 @@ get_regionkey(
   source = "kunta",
   targets = NULL,
   year = NULL,
+  lang = "fi",
   only_codes = FALSE,
   only_names = FALSE,
   offline = TRUE
@@ -15,6 +16,9 @@ get_regionkey(
 }
 \arguments{
 \item{year}{character or numerical, the year of the desired classification key.}
+
+\item{lang, }{\code{fi}, \code{en}, or \code{sv}, language of the key required.
+Defaults to \code{fi}.}
 
 \item{only_codes}{logical, whether the key should contain only the region codes. Defaults to FALSE.}
 

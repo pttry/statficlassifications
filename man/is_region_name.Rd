@@ -9,7 +9,8 @@ is_region_name(
   region_level = NULL,
   year = NULL,
   offline = TRUE,
-  allow_nonstandard_names = FALSE
+  allow_nonstandard_names = FALSE,
+  lang = "fi"
 )
 }
 \arguments{
@@ -23,6 +24,9 @@ is_region_name(
 
 \item{allow_nonstandard_names}{logical, whether to accept a broader set of names as
 region names.}
+
+\item{lang, }{\code{fi}, \code{sv} or \code{en}. Language of the input name.
+Defaults to \code{fi}.}
 }
 \value{
 

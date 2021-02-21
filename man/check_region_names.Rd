@@ -6,16 +6,18 @@
 \alias{check_region_names_fct}
 \title{Check region names}
 \usage{
-check_region_names(x, year = NULL, offline = TRUE)
+check_region_names(x, lang = "fi", year = NULL, offline = TRUE)
 
-check_region_names_vct(x, year = NULL, offline = TRUE)
+check_region_names_vct(x, lang = "fi", year = NULL, offline = TRUE)
 
-check_region_names_fct(x, year = NULL, offline = TRUE)
+check_region_names_fct(x, lang = "fi", year = NULL, offline = TRUE)
 }
 \arguments{
-\item{x}{character vector or factor}
+\item{x}{character vector or factor.}
 
-\item{year}{double or character, year of classification}
+\item{lang, }{\code{fi}, \code{sv} or \code{en}. Language of the input name. Defaults to \code{fi}.}
+
+\item{year}{double or character, year of classification.}
 
 \item{offline}{logical, whether works offline with package data. Defaults to TRUE.}
 }
@@ -23,7 +25,9 @@ check_region_names_fct(x, year = NULL, offline = TRUE)
 
 }
 \description{
-Check region names
+For a vector or a factor of region names, find the names that are not recognized and
+if does not find such names returns true. \code{check_region_names} uses
+\code{check_region_names_vct} for vectors and \code{check_region_names_fct} for factors.
 }
 \section{Functions}{
 \itemize{

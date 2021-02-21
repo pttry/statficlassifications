@@ -5,7 +5,9 @@
 #' @use_char_length_info, TRUE or named vector, whether to use code character length
 #'    information in determining their region level. Defaults to NULL.
 #' @param year integer, the year of the applied classification key.
-#' @param offline, logical, whether works offline with package data. Defaults to TRUE.
+#' @param lang, \code{fi}, \code{sv}, \code{en}. Language of output names.
+#'    Defaults to \code{fi}.
+#' @param offline, logical, whether works offline with package data. Defaults to \code{TRUE}.
 #'
 #' @return data.frame
 #' @export
@@ -22,6 +24,7 @@
 codes_to_names <- function(x, region_level = NULL,
                            use_char_length_info = NULL,
                            year = NULL,
+                           lang = "fi",
                            offline = TRUE,
                            region_codes_check = FALSE) {
 
@@ -31,10 +34,13 @@ codes_to_names <- function(x, region_level = NULL,
      x <- set_region_codes(x, region_level = region_level, use_char_length_info = use_char_length_info)
    }
   }
+
+  args <- list(x = x, year = year, lang = lang, offline = offline)
+
    if(is.vector(x)){
-      x <- codes_to_names_vct(x, year = year, offline = offline)
+      x <- do.call(codes_to_names_vct, args)
    } else if(is.factor(x)) {
-      x <- codes_to_names_fct(x, year = year, offline = offline)
+      x <- do.call(codes_to_names_fct, args)
    } else {
      stop("Argument not a vector or factor.")
    }
@@ -51,17 +57,17 @@ codes_to_names <- function(x, region_level = NULL,
 #'
 #' @export
 #'
-codes_to_names_vct <- function(x, year = NULL, offline = TRUE) {
+codes_to_names_vct <- function(x, year = NULL, lang = "fi", offline = TRUE) {
 
   x_names <- names(x)
 
-  if(offline) {
-    key <- statficlassifications::region_code_to_name_key
-  } else {
-    prefixes <- unique(sapply(unique(x), gsub, pattern = "[^a-zA-Z]", replacement = ""))
-    key <- get_regionclassification(prefixes, year = year)
-  }
+  prefixes <- unique(sapply(unique(x), gsub, pattern = "[^a-zA-Z]", replacement = ""))
+  region_levels <- prefix_to_name(prefixes)
+  key <- get_regionclassification(region_levels, year = year,
+                                  lang = lang, offline = offline)
 
+
+  names(key) <- c("alue_code", "alue_name")
   output <- dplyr::left_join(data.frame(alue_code = x), key,
                         by = "alue_code")$alue_name
 
@@ -81,9 +87,9 @@ codes_to_names_vct <- function(x, year = NULL, offline = TRUE) {
 #'
 #' @export
 #'
-codes_to_names_fct <- function(x, year = NULL, offline = TRUE) {
+codes_to_names_fct <- function(x, year = NULL, lang = "fi", offline = TRUE) {
 
-levels(x) <- codes_to_names_vct(levels(x), year = year, offline = offline)
+levels(x) <- codes_to_names_vct(levels(x), year = year, lang = lang, offline = offline)
 x
 
 }
@@ -96,7 +102,8 @@ x
 #' @param data data.frame, the input data that contains a variable of region codes.
 #' @param region character, the name of the variable of region codes.
 #' @param year integer, the year of the applied classification key.
-#' @param offline logical, whether works offline with package data. Defaults to TRUE.
+#' @param lang, \code{fi}, \code{sv} or \code{en}. Input language. Defaults to \code{fi}.
+#' @param offline logical, whether works offline with package data. Defaults to \code{TRUE}.
 #'
 #' @return data.frame
 #' @export
@@ -110,12 +117,14 @@ x
 #'   f <- factor(c("KOKO MAA", "Humppila","Ålands skärgård", "Satakunta"))
 #'   names_to_codes(f)
 #'
-names_to_codes <- function(x, year = NULL, offline = TRUE, region_level = NULL) {
+names_to_codes <- function(x, year = NULL, lang = "fi", offline = TRUE, region_level = NULL) {
+
+  args <- list(x, year = year, lang = lang, offline = offline, region_level = region_level)
 
   if(is.vector(x)){
-    x <- names_to_codes_vct(x, year = year, offline = offline, region_level = region_level)
+    x <- do.call(names_to_codes_vct, args)
   } else if(is.factor(x)) {
-    x <- names_to_codes_fct(x, year = year, offline = offline, region_level = region_level)
+    x <- do.call(names_to_codes_fct, args)
   } else {
     stop("Argument not a vector or factor.")
   }
@@ -132,22 +141,18 @@ names_to_codes <- function(x, year = NULL, offline = TRUE, region_level = NULL) 
 #'
 #' @export
 #'
-names_to_codes_vct <- function(x, year = NULL, offline = TRUE, region_level = NULL) {
+names_to_codes_vct <- function(x,
+                               year = NULL,
+                               lang = "fi",
+                               offline = TRUE,
+                               region_level = NULL) {
 
   x_names <- names(x)
-  prefixes <- prefix_name_key$prefix
 
-  if(!is.null(region_level)) {
-    prefixes <- c(name_to_prefix(tolower(region_level)), "SSS")
-  }
+  key <- get_regionclassification(region_level, year = year,
+                                  lang = lang, offline = offline)
 
-  if(offline) {
-    key <- statficlassifications::region_name_to_code_key %>%
-           filter(grepl(paste(prefixes, collapse = "|"), alue_code))
-  } else {
-    key <- get_regionclassification(prefixes, year = year)
-  }
-
+  names(key) <- c("alue_code", "alue_name")
   output <- dplyr::left_join(data.frame(alue_name = x), key,
                         by = "alue_name")$alue_code
 
@@ -157,7 +162,9 @@ names_to_codes_vct <- function(x, year = NULL, offline = TRUE, region_level = NU
   and use the region_level argument to give more information.")
   }
   if(any(is.na(output))) {
-    warning(paste("Name(s)", paste(x[is.na(output)], collapse = ", "), "not recognized as a region name(s) and given NA."))
+    warning(paste("Name(s)", paste(x[is.na(output)], collapse = ", "),
+                  "not recognized as a region name(s) in language",
+                  lang, "and is given NA."))
   }
 
   names(output) <- x_names
@@ -174,9 +181,9 @@ names_to_codes_vct <- function(x, year = NULL, offline = TRUE, region_level = NU
 #'
 #' @export
 #'
-names_to_codes_fct <- function(x, year = NULL, offline = TRUE, region_level = NULL) {
+names_to_codes_fct <- function(x, year = NULL, lang = "fi", offline = TRUE, region_level = NULL) {
 
-  levels(x) <- names_to_codes_vct(levels(x), year = year, offline = offline, region_level = region_level)
+  levels(x) <- names_to_codes_vct(levels(x), year = year, lang = lang, offline = offline, region_level = region_level)
   x
 
 }

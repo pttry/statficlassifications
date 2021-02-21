@@ -12,6 +12,8 @@
 #' @param only_codes logical, whether the key should contain only the region codes. Defaults to FALSE.
 #' @param only_names logical, whether the key should contain only the region names. Defaults to FALSE.
 #' @param year character or numerical, the year of the desired classification key.
+#' @param lang, \code{fi}, \code{en}, or \code{sv}, language of the key required.
+#'    Defaults to \code{fi}.
 #' @return data.frame Returns a classification key as a data.frame.
 #' @import dplyr
 #' @export
@@ -20,7 +22,7 @@
 #' regionkey <- get_regionkey()
 #'
 
-get_regionkey <- function(source = "kunta", targets = NULL, year = NULL,
+get_regionkey <- function(source = "kunta", targets = NULL, year = NULL, lang = "fi",
                           only_codes = FALSE, only_names = FALSE, offline = TRUE) {
 
   latest_year <- get_latest_year(offline = offline)
@@ -32,6 +34,11 @@ get_regionkey <- function(source = "kunta", targets = NULL, year = NULL,
   } else if((year != latest_year & offline)) {
     offline <- FALSE
     message("Overriding default option for offline regionkey for years other than the latest year.")
+  }
+
+  if(lang != "fi") {
+    offline <- FALSE
+    message("Overriding default option for offline when language other than Finnish required.")
   }
 
   target_regions <- prefix_name_key$name[-(1:2)]
@@ -52,7 +59,7 @@ get_regionkey <- function(source = "kunta", targets = NULL, year = NULL,
 
     # Create local ID and get key
     localId <- create_localId_name("kunta", target, year)
-    key <- get_key(localId, print_key_name = FALSE)
+    key <- get_key(localId, lang = lang, print_key_name = FALSE)
 
     if(length(key) == 0) {
       missed_targets[target] <- TRUE
@@ -127,6 +134,8 @@ get_regionkey <- function(source = "kunta", targets = NULL, year = NULL,
 #'     Defaults to FALSE.
 #' @param only_codes,logical, whether to return only the codes in the classification.
 #'     Defaults to FALSE.
+#' @param lang, \code{fi}, \code{en}, or \code{sv}, language of the classification required.
+#'    Defaults to \code{fi}.
 #'
 #'
 #' @return a data.frame or a named vector. A region code-name key.
@@ -144,7 +153,8 @@ get_regionclassification <- function(...,
                                      as_named_vector = FALSE,
                                      suppress_message = FALSE,
                                      only_names = FALSE,
-                                     only_codes = FALSE) {
+                                     only_codes = FALSE,
+                                     lang = "fi") {
 
   latest_year <- get_latest_year(offline = offline)
 
@@ -154,6 +164,13 @@ get_regionclassification <- function(...,
     offline <- FALSE
     if(!suppress_message) {
     message("Overriding default option for offline when specific year is required.")
+    }
+  }
+
+  if(lang != "fi") {
+    offline <- FALSE
+    if(!suppress_message) {
+      message("Overriding default option for offline when language other than Finnish required.")
     }
   }
 
@@ -170,7 +187,7 @@ get_regionclassification <- function(...,
   for(region in regions) {
 
     localId <- paste0(region, "_1_", year, "0101")
-    key_temp <- get_classification(localId, print_series_name = FALSE)
+    key_temp <- get_classification(localId, lang = lang, print_series_name = FALSE)
     if(length(key_temp) == 0) {
       if(!suppress_message) {
          message(paste0("No region name-code key found for ", region, " for year ", year))
@@ -192,7 +209,7 @@ get_regionclassification <- function(...,
   }
 
   if(only_codes & only_names) {
-    stop("Can't give you a key that has only codes but also only names!")
+    stop("Cannot give you a key that has only codes but also only names!")
   }
 
   if(as_named_vector & (only_names | only_codes)) {
