@@ -11,13 +11,14 @@ codes_to_names(
   region_level = NULL,
   use_char_length_info = NULL,
   year = NULL,
+  lang = "fi",
   offline = TRUE,
   region_codes_check = FALSE
 )
 
-codes_to_names_vct(x, year = NULL, offline = TRUE)
+codes_to_names_vct(x, year = NULL, lang = "fi", offline = TRUE)
 
-codes_to_names_fct(x, year = NULL, offline = TRUE)
+codes_to_names_fct(x, year = NULL, lang = "fi", offline = TRUE)
 }
 \arguments{
 \item{x, }{a character (vector) of region codes}
@@ -26,7 +27,10 @@ codes_to_names_fct(x, year = NULL, offline = TRUE)
 
 \item{year}{integer, the year of the applied classification key.}
 
-\item{offline, }{logical, whether works offline with package data. Defaults to TRUE.}
+\item{lang, }{\code{fi}, \code{sv}, \code{en}. Language of output names.
+Defaults to \code{fi}.}
+
+\item{offline, }{logical, whether works offline with package data. Defaults to \code{TRUE}.}
 }
 \value{
 data.frame

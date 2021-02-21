@@ -20,7 +20,7 @@ Defaults to \code{fi}.}
 \item{print_series_name}{whether prints the long name of the classification series.}
 
 \item{as_named_vector, }{logical, whether to return the object as a named vector rather
-than data.frame. Defaults to FALSE.}
+than data.frame. Defaults to \code{FALSE}.}
 }
 \value{
 

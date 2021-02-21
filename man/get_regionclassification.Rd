@@ -20,20 +20,20 @@ get_regionclassification(
 
 \item{year}{character/numeric, year of the required keys. If NULL uses the latest year.}
 
-\item{offline}{logical, whether uses the key in the package data. Defaults TRUE.}
+\item{offline}{logical, whether uses the key in the package data. Defaults \code{TRUE}.}
 
 \item{as_named_vector}{logical, whether returns the key as a named vector rather than a
-data.frame. Defaults FALSE.}
+data.frame. Defaults \code{FALSE}.}
 
-\item{suppress_message, }{logical, whether to suppress any messages the function might produce.}
+\item{suppress_message}{logical, whether to suppress any messages the function might produce.}
 
-\item{only_names, }{logical, whether to return only the names in the classification.
-Defaults to FALSE.}
+\item{only_names}{logical, whether to return only the names in the classification.
+Defaults to \code{FALSE}.}
 
-\item{only_codes, logical, }{whether to return only the codes in the classification.
-Defaults to FALSE.}
+\item{only_codes}{logical, whether to return only the codes in the classification.
+Defaults to \code{FALSE}.}
 
-\item{lang, }{\code{fi}, \code{en}, or \code{sv}, language of the classification required.
+\item{lang}{\code{fi}, \code{en}, or \code{sv}, language of the classification required.
 Defaults to \code{fi}.}
 }
 \value{

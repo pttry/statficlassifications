@@ -1,20 +1,25 @@
 #' Get region classification key
 #'
-#' Imports NUTS-region classification keys from Statistics Finland API. Use together with 'dplyr::left_join'
-#' to add regions to data. A wrapper for the \code{get_key} function that it calls under the hood.
+#' Imports region classification keys from Statistics Finland API. Use together with
+#' \code{dplyr::left_join} to add regions to data. A wrapper for the
+#' \code{get_key}-function that it calls under the hood.
 #'
 #' The classification keys e.g. from seutukunta to maakunta or maakunta to suuralue are not very well
 #' available. Thus, the logic of the function is to first get all keys from kunta to all other regions,
 #' construct a table that contains all municipalities with their corresponding larger regions and
-#' then apply the selection implied by the arguments set by the used possible removing duplicates.
+#' then apply the selection implied by the arguments set by the user possible removing duplicates.
 #'
-#' @param region character, the smallest region desired in the resulting classification key.
-#' @param only_codes logical, whether the key should contain only the region codes. Defaults to FALSE.
-#' @param only_names logical, whether the key should contain only the region names. Defaults to FALSE.
+#' @param from character, the smallest region desired in the resulting classification key.
+#' @param ... character(s), the regions to include in the key other than \code{from}.
 #' @param year character or numerical, the year of the desired classification key.
-#' @param lang, \code{fi}, \code{en}, or \code{sv}, language of the key required.
+#' @param lang \code{fi}, \code{en}, or \code{sv}, language of the key required.
 #'    Defaults to \code{fi}.
-#' @return data.frame Returns a classification key as a data.frame.
+#' @param only_codes logical, whether the key should contain only the region codes.
+#'    Defaults to \code{FALSE}.
+#' @param only_names logical, whether the key should contain only the region names.
+#'    Defaults to \code{FALSE}.
+#' @param offline logical, whether uses the key in the package data. Defaults \code{TRUE}.
+#' @return Region classification key as a data.frame.
 #' @import dplyr
 #' @export
 #' @examples
@@ -22,11 +27,12 @@
 #' regionkey <- get_regionkey()
 #'
 
-get_regionkey <- function(source = "kunta", targets = NULL, year = NULL, lang = "fi",
+get_regionkey <- function(from = "kunta", ..., year = NULL, lang = "fi",
                           only_codes = FALSE, only_names = FALSE, offline = TRUE) {
 
   latest_year <- get_latest_year(offline = offline)
-  source <- tolower(source)
+  source <- tolower(from)
+  targets <- unlist(list(...))
   if(!is.null(targets)) {targets <- tolower(targets)}
 
   if(is.null(year)) {
@@ -38,7 +44,7 @@ get_regionkey <- function(source = "kunta", targets = NULL, year = NULL, lang = 
 
   if(lang != "fi") {
     offline <- FALSE
-    message("Overriding default option for offline when language other than Finnish required.")
+    message("Overriding default option for offline for language other than Finnish.")
   }
 
   target_regions <- prefix_name_key$name[-(1:2)]
@@ -106,35 +112,37 @@ get_regionkey <- function(source = "kunta", targets = NULL, year = NULL, lang = 
                                           paste(c(source, targets), "code", sep = "_")))
 
   # Apply potential user selection regarding names and codes
+    if(only_codes & only_names) {
+      stop("Can't give you a key that has only codes but also only names!")
+    }
+    if(only_codes) {regionkey <- dplyr::select(regionkey, contains("code"))}
+    if(only_names) {regionkey <- dplyr::select(regionkey, contains("name"))}
 
-  if(only_codes & only_names) {
-    stop("Can't give you a key that has only codes but also only names!")
-  }
+  # Remove potential duplicate rows. Since regionkey is constructed using municipalities
+  # no matter what the source argument is, using source argument other than municipality
+  # generated duplicate rows.
+    regionkey <- regionkey[!duplicated(regionkey),]
 
-  if(only_codes) {
-    regionkey <- dplyr::select(regionkey, contains("code"))
-  } else if(only_names) {
-    regionkey <- dplyr::select(regionkey, contains("name"))
-  }
+  # All columns to factors
+    regionkey <- dplyr::mutate_all(regionkey, as.factor)
 
-  regionkey <- regionkey[!duplicated(regionkey),]
-  dplyr::mutate_all(regionkey, as.factor)
-
+  # Return
+    regionkey
 }
 
 #' Get region classifications / code-name keys
 #'
 #' @param ... character(s), (vector), region(s) of required keys.
 #' @param year character/numeric, year of the required keys. If NULL uses the latest year.
-#' @param offline logical, whether uses the key in the package data. Defaults TRUE.
+#' @param offline logical, whether uses the key in the package data. Defaults \code{TRUE}.
 #' @param as_named_vector logical, whether returns the key as a named vector rather than a
-#'    data.frame. Defaults FALSE.
-#' @param suppress_message, logical, whether to suppress any messages the function might produce.
-#' @param only_names, logical, whether to return only the names in the classification.
-#'     Defaults to FALSE.
-#' @param only_codes,logical, whether to return only the codes in the classification.
-#'     Defaults to FALSE.
-#' @param lang, \code{fi}, \code{en}, or \code{sv}, language of the classification required.
+#'    data.frame. Defaults \code{FALSE}.
+#' @param suppress_message logical, whether to suppress any messages the function might produce.
+#' @param only_names logical, whether to return only the names in the classification.
+#'     Defaults to \code{FALSE}.
+#' @param only_codes logical, whether to return only the codes in the classification.
+#'     Defaults to \code{FALSE}.
+#' @param lang \code{fi}, \code{en}, or \code{sv}, language of the classification required.
 #'    Defaults to \code{fi}.
 #'
 #'
@@ -170,7 +178,7 @@ get_regionclassification <- function(...,
   if(lang != "fi") {
     offline <- FALSE
     if(!suppress_message) {
-      message("Overriding default option for offline when language other than Finnish required.")
+      message("Overriding default option for offline for language other than Finnish.")
     }
   }
 
@@ -198,34 +206,38 @@ get_regionclassification <- function(...,
     key <- rbind(key, key_temp)
   }
   }
+
+  # Check if any keys were found, if not, return an error.
   if(length(key) == 0){
     return(message("No keys found!"))
   }
 
-  if(length(regions) == 1){
-    names(key) <- c(paste0(regions, "_code"), paste0(regions, "_name"))
-  } else {
-    names(key) <- c("alue_code", "alue_name")
-  }
+  # Set columns names
+    if(length(regions) == 1){
+      names(key) <- c(paste0(regions, "_code"), paste0(regions, "_name"))
+    } else {
+      names(key) <- c("alue_code", "alue_name")
+    }
 
-  if(only_codes & only_names) {
-    stop("Cannot give you a key that has only codes but also only names!")
-  }
+  # Tranform to named vector if required
+    if(as_named_vector & (only_names | only_codes)) {
+      stop("There is no named vector with either only codes or names.")
+    }
+    output <- key
+    if(as_named_vector) {
+      output <- as.vector(unlist(key[paste0(regions, "_name")],))
+      names(output) <- as.vector(unlist(key[paste0(regions, "_code")],))
+    }
 
-  if(as_named_vector & (only_names | only_codes)) {
-    stop("There is no named vector with either only codes or names.")
-  }
+  # Apply potential user selection regarding names and codes
+    if(only_codes & only_names) {
+      stop("Cannot give you a key that has only codes but also only names!")
+    }
+    if(only_codes) {output <- dplyr::select(key, contains("code"))[,1]}
+    if(only_names) {output <- dplyr::select(key, contains("name"))[,1]}
 
-  output <- key
-  if(as_named_vector) {
-    output <- as.vector(unlist(key[paste0(regions, "_name")],))
-    names(output) <- as.vector(unlist(key[paste0(regions, "_code")],))
-  }
-
-  if(only_codes) {output <- dplyr::select(key, contains("code"))[,1]}
-  if(only_names) {output <- dplyr::select(key, contains("name"))[,1]}
-
-  rownames(output) <- NULL
-  output
+  # Return
+    rownames(output) <- NULL
+    output
 }
 

@@ -5,8 +5,8 @@
 \title{Get region classification key}
 \usage{
 get_regionkey(
-  source = "kunta",
-  targets = NULL,
+  from = "kunta",
+  ...,
   year = NULL,
   lang = "fi",
   only_codes = FALSE,
@@ -15,29 +15,36 @@ get_regionkey(
 )
 }
 \arguments{
+\item{from}{character, the smallest region desired in the resulting classification key.}
+
+\item{...}{character(s), the regions to include in the key other than \code{from}.}
+
 \item{year}{character or numerical, the year of the desired classification key.}
 
-\item{lang, }{\code{fi}, \code{en}, or \code{sv}, language of the key required.
+\item{lang}{\code{fi}, \code{en}, or \code{sv}, language of the key required.
 Defaults to \code{fi}.}
 
-\item{only_codes}{logical, whether the key should contain only the region codes. Defaults to FALSE.}
+\item{only_codes}{logical, whether the key should contain only the region codes.
+Defaults to \code{FALSE}.}
 
-\item{only_names}{logical, whether the key should contain only the region names. Defaults to FALSE.}
+\item{only_names}{logical, whether the key should contain only the region names.
+Defaults to \code{FALSE}.}
 
-\item{region}{character, the smallest region desired in the resulting classification key.}
+\item{offline}{logical, whether uses the key in the package data. Defaults \code{TRUE}.}
 }
 \value{
-data.frame Returns a classification key as a data.frame.
+Region classification key as a data.frame.
 }
 \description{
-Imports NUTS-region classification keys from Statistics Finland API. Use together with 'dplyr::left_join'
-to add regions to data. A wrapper for the \code{get_key} function that it calls under the hood.
+Imports region classification keys from Statistics Finland API. Use together with
+\code{dplyr::left_join} to add regions to data. A wrapper for the
+\code{get_key}-function that it calls under the hood.
 }
 \details{
 The classification keys e.g. from seutukunta to maakunta or maakunta to suuralue are not very well
 available. Thus, the logic of the function is to first get all keys from kunta to all other regions,
 construct a table that contains all municipalities with their corresponding larger regions and
-then apply the selection implied by the arguments set by the used possible removing duplicates.
+then apply the selection implied by the arguments set by the user possible removing duplicates.
 }
 \examples{
 

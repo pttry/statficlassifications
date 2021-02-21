@@ -12,7 +12,8 @@ get_key(localId, lang = "fi", print_key_name = TRUE)
 \item{lang, }{\code{fi}, \code{en}, or \code{sv}, language of the key required.
 Defaults to \code{fi}.}
 
-\item{print_key_name, }{whether prints the long name of the correspondence table.}
+\item{print_key_name, }{whether prints the long name of the correspondence table.
+Defaults to \code{TRUE}.}
 }
 \value{
 data.frame, the key of the provided localId.

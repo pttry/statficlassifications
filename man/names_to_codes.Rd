@@ -6,16 +6,36 @@
 \alias{names_to_codes_fct}
 \title{Change region names to region codes}
 \usage{
-names_to_codes(x, year = NULL, offline = TRUE, region_level = NULL)
+names_to_codes(
+  x,
+  year = NULL,
+  lang = "fi",
+  offline = TRUE,
+  region_level = NULL
+)
 
-names_to_codes_vct(x, year = NULL, offline = TRUE, region_level = NULL)
+names_to_codes_vct(
+  x,
+  year = NULL,
+  lang = "fi",
+  offline = TRUE,
+  region_level = NULL
+)
 
-names_to_codes_fct(x, year = NULL, offline = TRUE, region_level = NULL)
+names_to_codes_fct(
+  x,
+  year = NULL,
+  lang = "fi",
+  offline = TRUE,
+  region_level = NULL
+)
 }
 \arguments{
 \item{year}{integer, the year of the applied classification key.}
 
-\item{offline}{logical, whether works offline with package data. Defaults to TRUE.}
+\item{lang, }{\code{fi}, \code{sv} or \code{en}. Input language. Defaults to \code{fi}.}
+
+\item{offline}{logical, whether works offline with package data. Defaults to \code{TRUE}.}
 
 \item{data}{data.frame, the input data that contains a variable of region codes.}
 
