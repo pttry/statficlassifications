@@ -12,8 +12,8 @@
 #' @param from character, the smallest region desired in the resulting classification key.
 #' @param ... character(s), the regions to include in the key other than \code{from}.
 #' @param year character or numerical, the year of the desired classification key.
-#' @param lang \code{fi}, \code{en}, or \code{sv}, language of the key required.
-#'    Defaults to \code{fi}.
+#' @param lang \code{"fi"}, \code{"en"}, or \code{"sv"}, language of the key required.
+#'    Defaults to \code{"fi"}.
 #' @param only_codes logical, whether the key should contain only the region codes.
 #'    Defaults to \code{FALSE}.
 #' @param only_names logical, whether the key should contain only the region names.
@@ -134,16 +134,16 @@ get_regionkey <- function(from = "kunta", ..., year = NULL, lang = "fi",
 #'
 #' @param ... character(s), (vector), region(s) of required keys.
 #' @param year character/numeric, year of the required keys. If NULL uses the latest year.
-#' @param offline logical, whether uses the key in the package data. Defaults \code{TRUE}.
+#' @param lang \code{"fi"}, \code{"en"}, or \code{"sv"}, language of the classification required.
+#'    Defaults to \code{"fi"}.
 #' @param as_named_vector logical, whether returns the key as a named vector rather than a
 #'    data.frame. Defaults \code{FALSE}.
 #' @param suppress_message logical, whether to suppress any messages the function might produce.
-#' @param only_names logical, whether to return only the names in the classification.
-#'     Defaults to \code{FALSE}.
 #' @param only_codes logical, whether to return only the codes in the classification.
 #'     Defaults to \code{FALSE}.
-#' @param lang \code{fi}, \code{en}, or \code{sv}, language of the classification required.
-#'    Defaults to \code{fi}.
+#' @param only_names logical, whether to return only the names in the classification.
+#'     Defaults to \code{FALSE}.
+#' @param offline logical, whether uses the key in the package data. Defaults \code{TRUE}.
 #'
 #'
 #' @return a data.frame or a named vector. A region code-name key.

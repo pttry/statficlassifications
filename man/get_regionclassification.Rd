@@ -33,8 +33,8 @@ Defaults to \code{FALSE}.}
 \item{only_codes}{logical, whether to return only the codes in the classification.
 Defaults to \code{FALSE}.}
 
-\item{lang}{\code{fi}, \code{en}, or \code{sv}, language of the classification required.
-Defaults to \code{fi}.}
+\item{lang}{\code{"fi"}, \code{"en"}, or \code{"sv"}, language of the classification required.
+Defaults to \code{"fi"}.}
 }
 \value{
 a data.frame or a named vector. A region code-name key.

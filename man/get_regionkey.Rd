@@ -21,8 +21,8 @@ get_regionkey(
 
 \item{year}{character or numerical, the year of the desired classification key.}
 
-\item{lang}{\code{fi}, \code{en}, or \code{sv}, language of the key required.
-Defaults to \code{fi}.}
+\item{lang}{\code{"fi"}, \code{"en"}, or \code{"sv"}, language of the key required.
+Defaults to \code{"fi"}.}
 
 \item{only_codes}{logical, whether the key should contain only the region codes.
 Defaults to \code{FALSE}.}
