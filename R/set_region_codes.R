@@ -11,7 +11,7 @@
 #' codes are allowed to match.
 #'
 #' If your vector contains ambiguous codes you may try breaking it
-#' into pieces where you know the region level of the codes in each
+#' into pieces where you know the unique region level of the codes in each
 #' piece and treat these pieces separately giving region level as
 #' an argument.
 #'
@@ -20,7 +20,7 @@
 #' @param year, double, optional year of the classification used
 #' @param offline, logical, whether works offline with package data. Defaults to TRUE.
 #' @param use_char_length_info,TRUE or named vector, whether to use code character length
-#'    information in determining their region level. Defaults to NULL.
+#'    information in determining their region level. Defaults to \code{NULL}.
 #'
 #' @return
 #' @export

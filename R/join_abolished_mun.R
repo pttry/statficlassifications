@@ -51,6 +51,7 @@ join_abolished_mun_vct <- function(x) {
   }
 
   # Save potential names
+  n_names <- names(x)
 
   # Load a vector with all past and current municipality codes
   abolished_mun_key <- statficlassifications::abolished_mun_key
@@ -64,9 +65,22 @@ join_abolished_mun_vct <- function(x) {
   new_kunta <- dplyr::left_join(data.frame(joiner = kunta_names), abolished_mun_key, by = "joiner")$joinee
   if(length(new_kunta) > length(x)) {stop("Let Juho know about this error!")}
 
-  # Assign the newly created vector to the position of the original codes
-  x[x %in% kunta_codes] <- new_kunta
+  # Let user know what the function did
+  joined_lgl <- !x %in% new_kunta
 
+  if(any(joined_lgl)) {
+   message(paste0("Joined ",
+                  paste0(x[joined_lgl],
+                " to ",
+                new_kunta[joined_lgl], collapse = ", "), "."))
+  } else {
+    message("No abolished municipalities to join.")
+  }
+
+   # Assign the newly created vector to the position of the original codes
+   x[x %in% kunta_codes] <- new_kunta
+
+  names(x) <- x_names
   x
 
 }
