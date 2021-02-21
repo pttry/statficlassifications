@@ -262,7 +262,6 @@ match_region_codes_internal <- function(x, key,
 
   if(x == "000") {return("SSS")}
 
-
   if(!is.null(use_char_length_info)) {
     if(is.logical(use_char_length_info)) {
       if(use_char_length_info == TRUE) {

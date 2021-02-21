@@ -1,13 +1,13 @@
 #' Change region codes to region names
 #'
-#' @param x, a character (vector) of region codes
+#' @param x a character (vector) of region codes
 #' @param region_level character, optional region level of the input region codes
-#' @use_char_length_info, TRUE or named vector, whether to use code character length
+#' @param use_char_length_info TRUE or named vector, whether to use code character length
 #'    information in determining their region level. Defaults to NULL.
 #' @param year integer, the year of the applied classification key.
-#' @param lang, \code{fi}, \code{sv}, \code{en}. Language of output names.
-#'    Defaults to \code{fi}.
-#' @param offline, logical, whether works offline with package data. Defaults to \code{TRUE}.
+#' @param lang \code{"fi"}, \code{"sv"}, \code{"en"}. Language of output names.
+#'    Defaults to \code{"fi"}.
+#' @param offline logical, whether works offline with package data. Defaults to \code{TRUE}.
 #'
 #' @return data.frame
 #' @export
@@ -190,7 +190,7 @@ names_to_codes_fct <- function(x, year = NULL, lang = "fi", offline = TRUE, regi
 
 #' Change region prefixes to names
 #'
-#' @param prefix, region level code prefix
+#' @param prefix region level code prefix
 #'
 #' @return region name
 #' @export
@@ -204,12 +204,12 @@ prefix_to_name <- function(prefix) {
   if(!all(prefix %in% prefix_name_key$prefix)) {
     stop(paste0("Unknown region code prefix ", prefix[!(prefix %in% prefix_name_key$prefix)], "."))
   }
-  prefix_name_key[prefix_name_key$prefix %in% prefix,]$name
+  prefix_name_key$name[prefix_name_key$prefix %in% prefix]
 }
 
 #' Change region names to prefixes
 #'
-#' @param name, region level name
+#' @param name region level name
 #'
 #' @return region prefix
 #' @export
@@ -223,5 +223,6 @@ name_to_prefix <- function(name) {
   if(!all(name %in% prefix_name_key$name)) {
     stop(paste0("Unknown region name ", name[!(name %in% prefix_name_key$name)], "."))
   }
-  prefix_name_key[prefix_name_key$name %in% name,]$prefix
+
+  prefix_name_key$prefix[prefix_name_key$name %in% name]
 }

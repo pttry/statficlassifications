@@ -24,7 +24,8 @@
 #' @export
 #' @examples
 #'
-#' regionkey <- get_regionkey()
+#' get_regionkey()
+#' get_regionkey("kunta", "seutukunta", only_codes = TRUE)
 #'
 
 get_regionkey <- function(from = "kunta", ..., year = NULL, lang = "fi",
@@ -182,17 +183,23 @@ get_regionclassification <- function(...,
     }
   }
 
-  regions <- tolower(unlist(list(...)))
-  if(length(regions) == 0) {regions <- prefix_name_key$name[-1]}
+  regions <- unlist(list(...))
+  if(length(regions) == 0) { regions <- prefix_name_key$name}
   key <- data.frame()
 
   if(offline) {
-    key <- statficlassifications::region_code_name_key
-    key <- key[grepl(pattern = paste(name_to_prefix(regions), collapse = "|"),
-                     x = key$alue_code),]
+    key <- statficlassifications::region_code_to_name_key
+    filter_regexp <- paste(name_to_prefix(regions), collapse = "|")
+    key <- key[grepl(pattern = filter_regexp, x = key$alue_code),]
   } else {
 
   for(region in regions) {
+
+    if(region == "KOKO MAA") {
+      key_temp <- data.frame(code = "SSS", name = "KOKO MAA")
+      key <- rbind(key, key_temp)
+      next
+    }
 
     localId <- paste0(region, "_1_", year, "0101")
     key_temp <- get_classification(localId, lang = lang, print_series_name = FALSE)
@@ -212,7 +219,8 @@ get_regionclassification <- function(...,
     return(message("No keys found!"))
   }
 
-  # Set columns names
+
+  # Set column names
     if(length(regions) == 1){
       names(key) <- c(paste0(regions, "_code"), paste0(regions, "_name"))
     } else {

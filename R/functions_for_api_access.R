@@ -8,13 +8,12 @@
 #' see <https://www.stat.fi/en/luokitukset/info/>.
 #'
 #' @param localId character, local ID of the correspondence table or classification
-#' @param content, character, either "data" or "url" whether the content of the query
-#'    is data or url.
-#' @param classification_service character, either 'correspondenceTable' or
-#'    'classifications'. Determines the classification service used. See Details for
+#' @param content, character, \code{"data"} or \code{"url"} determines the content of query
+#' @param classification_service character, \code{"correspondenceTable"} or
+#'    \code{"classifications"}. Determines the classification service used. See Details for
 #'    information on the classification services.
-#' @param lang, \code{fi}, \code{en}, or \code{sv}, language required.
-#'    Defaults to \code{fi}.
+#' @param lang, \code{"fi"}, \code{"en"}, or \code{"sv"}, language required.
+#'    Defaults to \code{"fi"}.
 #'
 #' @return data.frame either the correspondence table or its url depending on argument \code{content}.
 #' @export
@@ -66,7 +65,6 @@ access_API <- function(localId = NULL,
       localId <- paste0("/", localId)
     }
 
-
   # Create a vector that maps classification service name to url path.
     url_ends <- c("classifications" = "/classificationItems",
                  "correspondenceTables" = "/maps")
@@ -77,11 +75,12 @@ access_API <- function(localId = NULL,
                   localId,
                   ifelse(content == "data", url_ends[classification_service], ""))
 
-  # access API and return
-  resp <- httr::GET(url, query = list(content = content, meta = "min", lang = lang))
-  cont <- httr::content(resp, "text", encoding = "UTF-8")
+  # Access API.
+    resp <- httr::GET(url, query = list(content = content, meta = "min", lang = lang))
+    cont <- httr::content(resp, "text", encoding = "UTF-8")
 
-  as.data.frame(jsonlite::fromJSON(cont))
+  # Return.
+    as.data.frame(jsonlite::fromJSON(cont))
 }
 
 
@@ -90,6 +89,9 @@ access_API <- function(localId = NULL,
 #' A wrapper for \code{access_API} function to get url.
 #'
 #' @param localId, character, localId of the required table.
+#' @param classification_service character, \code{"correspondenceTable"} or
+#'    \code{"classifications"}. Determines the classification service used. See Details for
+#'    information on the classification services.
 #'
 #' @return character, url of the provided localId.
 #' @export
@@ -116,8 +118,8 @@ get_url <- function(localId = NULL, classification_service = NULL) {
 #' A wrapper for \code{access_API} to get data of classification keys.
 #'
 #' @param localId, character, local ID of the required correspondence table
-#' @param lang, \code{fi}, \code{en}, or \code{sv}, language of the key required.
-#'    Defaults to \code{fi}.
+#' @param lang, \code{"fi"}, \code{"en"}, or \code{"sv"}, language of the key required.
+#'    Defaults to \code{"fi"}.
 #' @param print_key_name, whether prints the long name of the correspondence table.
 #'    Defaults to \code{TRUE}.
 #'
@@ -152,10 +154,11 @@ get_key <- function(localId, lang = "fi", print_key_name = TRUE) {
 #'
 #' A wrapper for \code{access_API} to get data of classifications.
 #'
-#' @param localId character, local ID of the required correspondence table
-#' @param lang, \code{fi}, \code{en}, or \code{sv}, language of the classification required.
-#'    Defaults to \code{fi}.
+#' @param localId character, localId of the required correspondence table
+#' @param lang, \code{"fi"}, \code{"en"}, or \code{"sv"}, language of the classification required.
+#'    Defaults to \code{"fi"}.
 #' @param print_series_name  whether prints the long name of the classification series.
+#'    Defaults to \code{TRUE}.
 #' @param as_named_vector, logical, whether to return the object as a named vector rather
 #'    than data.frame. Defaults to \code{FALSE}.
 #'

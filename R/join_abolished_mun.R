@@ -4,7 +4,7 @@
 #' the abolished municipalities to the codes of the municipality to which they have
 #' joined.
 #'
-#' @param x, an object containing municipality codes, a vector, a factor or a data.frame.
+#' @param x an object containing municipality codes, a vector, a factor or a data.frame.
 #'
 #' @return
 #' @export
