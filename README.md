@@ -30,7 +30,9 @@ library(statficlassifications)
 
 The two supported classification services are the service for classifications and the service for classification keys (correspondence tables). The package refers to the former as classifications and the latter as keys. These two classification services can be accessed with separate functions.
 
-### Searching for keys
+### Keys
+
+#### Searching for keys
 
 To list all available classification keys (correspondence tables), use
 `search_keys` without arguments:
@@ -71,7 +73,7 @@ search_keys(source = "kunta", target = "suuralue", year = 2020)
 #> [1] "kunta 2020 -> suuralue 2020"
 ```
 
-### Getting keys
+#### Getting keys
 
 The API uniquely identifies each classification key by a local ID.
 Having found the suitable key, you can use `search_keys` with an
