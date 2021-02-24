@@ -198,6 +198,8 @@ is_region_code_without_prefix <- function(x, region_level = NULL, year = NULL, o
 
   codes <- get_regionclassification(region_level, year = year, offline = offline, suppress_message = TRUE, only_codes = TRUE)
   codes <- as.double(sapply(codes, gsub, pattern = "[^0-9.-]", replacement = ""))
+
+  suppressWarnings(if(is.na(as.double(as.vector(x)))) {return(FALSE)})
   suppressWarnings(as.double(as.vector(x)) %in% codes)
 
 }
