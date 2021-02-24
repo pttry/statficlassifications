@@ -109,7 +109,9 @@ head(key)
 #> 6         505    Mäntsälä          01     Uusimaa
 ```
 
-### Searching for classifications
+### Classifications
+
+#### Searching for classifications
 
 To list all available classifications, use `search_classifications`
 without arguments:
@@ -130,7 +132,7 @@ search_classifications("ammatti", year = 2021)
 #> [1] "ammatti 2021"
 ```
 
-### Getting classifications
+#### Getting classifications
 
 To print the localId of the desired classification, use `as_localId =
 TRUE`.
