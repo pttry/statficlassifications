@@ -28,6 +28,8 @@ library(statficlassifications)
 
 ## Accessing API
 
+The two supported classification services are the service for classifications and the service for classification keys (correspondence tables). The package refers to the former as classifications and the latter as keys. These two classification services can be accessed with separate functions.
+
 ### Searching for keys
 
 To list all available classification keys (correspondence tables), use
