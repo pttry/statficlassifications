@@ -15,11 +15,18 @@
 #' piece and treat these pieces separately giving region level as
 #' an argument.
 #'
+#' The function does not create region codes from scratch itself but, inputs
+#' are matched to the potential codes in the official classifications.
+#' These classifications are accessed using \code{get_regionclassification}-function.
+#' Thus, only real region codes can be set. The matching of inputs into
+#' potential region codes occurs in \code{match_region_codes_interal}- and
+#' \code{match_region_codes}-functions.
+#'
 #' @param x character vector of region codes
 #' @param region_level character, optional region level of the input region codes
-#' @param year, double, optional year of the classification used
-#' @param offline, logical, whether works offline with package data. Defaults to TRUE.
-#' @param use_char_length_info,TRUE or named vector, whether to use code character length
+#' @param year double, optional year of the classification used
+#' @param offline logical, whether works offline with package data. Defaults to TRUE.
+#' @param use_char_length_info TRUE or named vector, whether to use code character length
 #'    information in determining their region level. Defaults to \code{NULL}.
 #'
 #' @return
@@ -256,11 +263,13 @@ match_region_codes_internal <- function(x, key,
 
   if(length(x) != 1) {stop("This function is for one element inputs.")}
 
-  if(is_region_code_with_prefix(x)) {
-    return(x)
-  }
+  # If input is already a valid region code, return
+    if(is_region_code_with_prefix(x)) {
+      return(x)
+    }
 
-  if(x == "000") {return("SSS")}
+  # "000" as a special case is matched to "SSS".
+    if(x == "000") {return("SSS")}
 
   if(!is.null(use_char_length_info)) {
     if(is.logical(use_char_length_info)) {

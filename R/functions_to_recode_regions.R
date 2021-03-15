@@ -72,6 +72,18 @@ statfi_recode <- function(x, ..., year = NULL, key = NULL, leave = FALSE) {
 #'
 recode_region <- function(data, from_orig, from, to, year = NULL, leave = FALSE, offline = TRUE) {
 
+  year_in_data <- detect_region_year(data[[from_orig]], detect_region_level(data[[from_orig]]))
+
+  if(is.null(year)) {
+    year <- get_latest_year(offline = TRUE)
+  }
+
+  if(!(year %in% year_in_data)) {
+    message(paste0("The region classification in data seems to fit to year(s) ",
+                   paste(year_in_data, collapse = ", "),
+                  ". A key corresponding to this year is used."))
+  }
+
   regionkey <- get_regionkey(year = year, offline = offline)
 
   regionkey <- dplyr::select(regionkey, to, from)
@@ -214,6 +226,32 @@ detect_region_level_name <- function(x, year = NULL, offline = TRUE) {
 
 }
 
+detect_region_level <- function(x, year = NULL, offline = TRUE) {
+  c(detect_region_level_code(x, year = year, offline = offline),
+    detect_region_level_name(x, year = year, offline = offline))
+}
+
+#' Detect year of region classification
+#'
+#' Given a vector of region names or codes and region level determines the year of regional
+#' classification from the number of unique elements in the vector
+#'
+#' @param x
+#' @param region_level
+#'
+#' @return vector
+#' @export
+#'
+#' @examples
+#'    df <- get_regionclassification("kunta", year = 2010)
+#'    detect_region_year(df$kunta_name, region_level = "kunta")
+#'
+detect_region_year <- function(x, region_level) {
+  statficlassifications::number_of_regions %>%
+    dplyr::filter(region_level == region_level,
+                  number_of_regions == length(unique(x))) %>%
+    `$`(year)
+}
 
 #add_region <- function(data, to, from = NULL, year = NULL, offline = TRUE) {
 
