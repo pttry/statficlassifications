@@ -210,6 +210,7 @@ prefix_to_name <- function(prefix) {
 #' Change region names to prefixes
 #'
 #' @param name region level name
+#' @param pass_unknown If TRUE pass unknown names as names.
 #'
 #' @return region prefix
 #' @export
@@ -218,11 +219,12 @@ prefix_to_name <- function(prefix) {
 #'
 #'  name_to_prefix("seutukunta")
 #'
-name_to_prefix <- function(name) {
+name_to_prefix <- function(name, pass_unknown = FALSE) {
 
-  if(!all(name %in% prefix_name_key$name)) {
+  if(!pass_unknown & !all(name %in% prefix_name_key$name)) {
     stop(paste0("Unknown region name ", name[!(name %in% prefix_name_key$name)], "."))
   }
 
-  prefix_name_key$prefix[prefix_name_key$name %in% name]
+  # pass names that are not in prefix_name_key
+  dplyr::coalesce(prefix_name_key$prefix[match(name, prefix_name_key$name)], name)
 }

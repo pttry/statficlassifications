@@ -5,7 +5,8 @@ key <- c("SSS" = "KOKO MAA",
          "SK" = "seutukunta",
          "MK" = "maakunta",
          "SA" = "suuralue",
-         "ELY" = "ely")
+         "ELY" = "ely",
+         "TK" = "kuntaryhmitys")
 
 prefix_name_key<- data.frame(prefix = names(key), name = key)
 rownames(prefix_name_key) <- NULL

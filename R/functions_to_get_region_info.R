@@ -34,7 +34,11 @@ get_regionkey <- function(from = "kunta", ..., year = NULL, lang = "fi",
   latest_year <- get_latest_year(offline = offline)
   source <- tolower(from)
   targets <- unlist(list(...))
-  if(!is.null(targets)) {targets <- tolower(targets)}
+  if(is.null(targets)) {
+    targets <- c("seutukunta", "maakunta")
+  } else {
+    targets <- tolower(targets)
+  }
 
   if(is.null(year)) {
     year <- latest_year
@@ -48,13 +52,21 @@ get_regionkey <- function(from = "kunta", ..., year = NULL, lang = "fi",
     message("Overriding default option for offline for language other than Finnish.")
   }
 
-  target_regions <- prefix_name_key$name[-(1:2)]
-  region_code_prefixes <- name_to_prefix(target_regions)
-  missed_targets <- logical(length(target_regions))
-  names(missed_targets) <- target_regions
+  # target_regions <- prefix_name_key$name[-(1:2)]
+  region_code_prefixes <- name_to_prefix(targets, pass_unknown = TRUE)
+  # missed_targets <- logical(length(target_regions))
+  # names(missed_targets) <- target_regions
 
   if(offline) {
     regionkey <- statficlassifications::regionkey
+
+    if(!any(paste0(targets, "_code") %in% names(regionkey))){
+      stop("Not all classifications: ", targets, " in offline classification. Try offline = FALSE")
+    }
+
+    regionkey <- dplyr::select(regionkey, c(paste(c(source, targets), "name", sep = "_"),
+                                          paste(c(source, targets), "code", sep = "_")))
+
   } else {
 
 
@@ -62,7 +74,7 @@ get_regionkey <- function(from = "kunta", ..., year = NULL, lang = "fi",
 
   regionkey <- NULL
 
-  for(target in target_regions) {
+  for(target in targets) {
 
     # Create local ID and get key
     localId <- create_localId_name("kunta", target, year)
@@ -77,7 +89,7 @@ get_regionkey <- function(from = "kunta", ..., year = NULL, lang = "fi",
     # these region markers.
 
       key$source_code <- paste0("KU", key$source_code)
-      key$target_code <- paste0(region_code_prefixes[which(target_regions == target)], key$target_code)
+      key$target_code <- paste0(region_code_prefixes[which(targets == target)], key$target_code)
 
     # set the variable names, codes get prefix '_code' and names get prefix '_name'. e.g. '(maa)kunta_name'
     # and '(maa)kunta_code'.
@@ -96,21 +108,20 @@ get_regionkey <- function(from = "kunta", ..., year = NULL, lang = "fi",
 
   # Apply potential user selection regarding regions
 
-    if(is.null(targets)) {
-         targets <- target_regions[!missed_targets]
-    } else if(any(!(targets %in% c("kunta", target_regions)))) {
-             return(message(paste0("This function only produces keys between ",
-                    paste(target_regions, collapse = ", "),
-                    " and kunta.")))
-    } else if (any(targets %in% target_regions[missed_targets])) {
-             return(message(paste0("There is no key from ",
-                                  source, " to ",
-                                  paste(target_regions[missed_targets], collapse = ", "),
-                                  " for year ", year)))
-    }
+    # if(is.null(targets)) {
+    #      targets <- target_regions[!missed_targets]
+    # } else if(any(!(targets %in% c("kunta", target_regions)))) {
+    #          return(message(paste0("This function only produces keys between ",
+    #                 paste(target_regions, collapse = ", "),
+    #                 " and kunta.")))
+    # } else if (any(targets %in% target_regions[missed_targets])) {
+    #          return(message(paste0("There is no key from ",
+    #                               source, " to ",
+    #                               paste(target_regions[missed_targets], collapse = ", "),
+    #                               " for year ", year)))
+    # }
 
-    regionkey <- dplyr::select(regionkey, c(paste(c(source, targets), "name", sep = "_"),
-                                          paste(c(source, targets), "code", sep = "_")))
+
 
   # Apply potential user selection regarding names and codes
     if(only_codes & only_names) {
@@ -125,7 +136,7 @@ get_regionkey <- function(from = "kunta", ..., year = NULL, lang = "fi",
     regionkey <- regionkey[!duplicated(regionkey),]
 
   # All columns to factors
-    regionkey <- dplyr::mutate_all(regionkey, as.factor)
+    regionkey <- dplyr::mutate(regionkey, across(.fns = as.factor))
 
   # Return
     regionkey
