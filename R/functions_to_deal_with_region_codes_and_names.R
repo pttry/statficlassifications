@@ -62,7 +62,7 @@ codes_to_names_vct <- function(x, year = NULL, lang = "fi", offline = TRUE) {
   x_names <- names(x)
 
   prefixes <- unique(sapply(unique(x), gsub, pattern = "[^a-zA-Z]", replacement = ""))
-  region_levels <- prefix_to_name(prefixes)
+  region_levels <- prefix_to_name(prefixes, pass_unknown = TRUE)
   key <- get_regionclassification(region_levels, year = year,
                                   lang = lang, offline = offline)
 
@@ -191,6 +191,8 @@ names_to_codes_fct <- function(x, year = NULL, lang = "fi", offline = TRUE, regi
 #' Change region prefixes to names
 #'
 #' @param prefix region level code prefix
+#' @param pass_unknown If TRUE pass unknown prefix as prefix.
+#'
 #'
 #' @return region name
 #' @export
@@ -199,12 +201,12 @@ names_to_codes_fct <- function(x, year = NULL, lang = "fi", offline = TRUE, regi
 #'
 #'  prefix_to_name("SK")
 #'
-prefix_to_name <- function(prefix) {
+prefix_to_name <- function(prefix, pass_unknown = FALSE) {
 
-  if(!all(prefix %in% prefix_name_key$prefix)) {
+  if(!pass_unknown & !all(prefix %in% prefix_name_key$prefix)) {
     stop(paste0("Unknown region code prefix ", prefix[!(prefix %in% prefix_name_key$prefix)], "."))
   }
-  prefix_name_key$name[prefix_name_key$prefix %in% prefix]
+  dplyr::coalesce(prefix_name_key$name[match(prefix, prefix_name_key$prefix)], prefix)
 }
 
 #' Change region names to prefixes
