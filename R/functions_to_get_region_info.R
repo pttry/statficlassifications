@@ -80,10 +80,10 @@ get_regionkey <- function(from = "kunta", ..., year = NULL, lang = "fi",
     localId <- create_localId_name("kunta", target, year)
     key <- get_key(localId, lang = lang, print_key_name = FALSE)
 
-    if(length(key) == 0) {
-      missed_targets[target] <- TRUE
-      next
-    }
+    # if(length(key) == 0) {
+    #   missed_targets[target] <- TRUE
+    #   next
+    # }
 
     # The codes in classification tables have only the numbers, not the region marker (e.g. MK, SK). Add
     # these region markers.

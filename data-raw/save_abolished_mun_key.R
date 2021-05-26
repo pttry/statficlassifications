@@ -10,26 +10,40 @@
    # municipalities) also add (the trivial correspondeces of) the municipalities that were
    # never abolished.
 
-     df2 <- get_regionkey(source = "kunta", targets = "kunta", year = 2020, offline = TRUE) %>%
+   df_key <- get_regionkey(from = "kunta", "seutukunta", offline = FALSE) %>%
        dplyr::mutate(joiner = kunta_code, joinee = kunta_code) %>%
        dplyr::select(joiner, joinee)
      current_muns <- df2$joinee
 
   # Haetaan tiedosto lakkautetut kunnat aakkosjarjestyksessa osoitteesta https://www.stat.fi/fi/luokitukset/tupa/
-      url <-  "https://www.stat.fi/static/media/uploads/meta/luokitukset/lakkautetut_kunnat_aakkosjarj20_taul6.xlsx"
-      tmp = tempfile(fileext = ".xlsx")
-      download.file(url = url, destfile = tmp, mode="wb")
-      df <- readxl::read_excel(tmp)
+      # url <-  "https://www.stat.fi/static/media/uploads/meta/luokitukset/lakkautetut_kunnat_aakkosjarj20_taul6.xlsx"
+      # tmp = tempfile(fileext = ".xlsx")
+      # download.file(url = url, destfile = tmp, mode="wb")
+      # df <- readxl::read_excel(tmp)
+
+
+      url2 <-  "https://www.stat.fi/static/media/uploads/meta/luokitukset/lakkautetut_kunnat_vuoteen_2020_asti.xlsx"
+      tmp2 = tempfile(fileext = ".xlsx")
+      download.file(url = url2, destfile = tmp2, mode="wb")
+      df2 <- readxl::read_excel(tmp2)
 
   # Poimitaan aineistosta lakkautettujen kuntien koodit ja niiden kuntien koodit, johon lakkautetut
   # kunnat ovat liittyneet
-      df <- df[-(1:8),]
-      df <- dplyr::select(df, 1,4)
-      names(df) <- c("joiner", "joinee")
+      # df <- df[-(1:8),]
+      # df <- dplyr::select(df, 1,4)
+      # names(df) <- c("joiner", "joinee")
+
+      df2 <- df2[-(1:2),]
+      df2 <- dplyr::select(df2, 3,5)
+      names(df2) <- c("joiner", "joinee")
+
 
   # Remove municipalities in luovutetulla alueella
-      df <- filter(df, joinee != "-")
+      # df <- filter(df, joinee != "-")
 
+      df2 <- filter(df2, joinee != "-")
+
+      df <- df2
   # Set prefixes
       df$joiner <- paste0("KU", df$joiner)
       df$joinee <- paste0("KU", df$joinee)
@@ -82,7 +96,7 @@
 
   # Combine the components to create the final correspondence table.
 
-    abolished_mun_key <- rbind(df, df2)
+    abolished_mun_key <- rbind(df, df2_key)
 
   # Save
     usethis::use_data(abolished_mun_key, overwrite = TRUE)
