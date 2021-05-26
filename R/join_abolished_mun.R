@@ -12,7 +12,7 @@
 #' @examples
 #'
 #'   v <- c("KU414", "KU609", "KU429", "KU272")
-#'   join_abolished_mun(v)
+#'   join_abolished_mun(x = v)
 #'   f <- factor(c("KU414", "KU609", "KU429", "KU272"))
 #'   join_abolished_mun(f)
 #'   df <- data.frame(kunta_code =  c("KU414", "KU609", "KU429", "KU272"), values = rnorm(4))
@@ -51,7 +51,7 @@ join_abolished_mun_vct <- function(x) {
   }
 
   # Save potential names
-  n_names <- names(x)
+  x_names <- names(x)
 
   # Load a vector with all past and current municipality codes
   abolished_mun_key <- statficlassifications::abolished_mun_key

@@ -49,6 +49,6 @@ aluetyyppi2 <-
              TRUE ~ as.character(aluetyyppi2_code))) %>%
   mutate(aluetyyppi2_name = recode(aluetyyppi2_code, !!!aluetyyppi2_alueet)) %>%
   select(kunta_code, kunta_name, aluetyyppi2_code, aluetyyppi2_name) %>%
-  add_row(kunta_code = "SSS", kunta_name = "KOKO MAA", aluetyyppi2_code = "SSS", aluetyyppi2_name = "SSS")
+  add_row(kunta_code = "SSS", kunta_name = "KOKO MAA", aluetyyppi2_code = "SSS", aluetyyppi2_name = "KOKO MAA")
 
 use_data(aluetyyppi2, overwrite = TRUE)

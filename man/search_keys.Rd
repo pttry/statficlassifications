@@ -35,3 +35,23 @@ character vector
 \description{
 A function to search and browse available classification keys / correspondence tables.
 }
+\examples{
+
+# Browse all keys
+   search_keys()
+
+# Search for keys with search word "maakunta"
+   search_keys("maakunta")
+
+# Search for keys that have "maakunta" as source
+   search_keys(search_source = "maakunta")
+
+# Search for keys that map "kunta" to "maakunta"
+   search_keys(source_searchterm = "kunta", target_searchterm = "maakunta")
+
+# Search for keys that map "kunta" to "maakunta" for year 2016 and print as localId
+  search_keys(source_searchterm = "kunta", target_searchterm = "maakunta",
+              year = 2016, as_localId = TRUE)
+
+
+}

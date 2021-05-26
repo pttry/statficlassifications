@@ -14,15 +14,14 @@ access_API(
 \arguments{
 \item{localId}{character, local ID of the correspondence table or classification}
 
-\item{content, }{character, either "data" or "url" whether the content of the query
-is data or url.}
+\item{content, }{character, \code{"data"} or \code{"url"} determines the content of query}
 
-\item{classification_service}{character, either 'correspondenceTable' or
-'classifications'. Determines the classification service used. See Details for
+\item{classification_service}{character, \code{"correspondenceTable"} or
+\code{"classifications"}. Determines the classification service used. See Details for
 information on the classification services.}
 
-\item{lang, }{\code{fi}, \code{en}, or \code{sv}, language required.
-Defaults to \code{fi}.}
+\item{lang, }{\code{"fi"}, \code{"en"}, or \code{"sv"}, language required.
+Defaults to \code{"fi"}.}
 }
 \value{
 data.frame either the correspondence table or its url depending on argument \code{content}.

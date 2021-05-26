@@ -35,11 +35,11 @@ set_region_codes_fct(
 
 \item{region_level}{character, optional region level of the input region codes}
 
-\item{year, }{double, optional year of the classification used}
+\item{year}{double, optional year of the classification used}
 
-\item{offline, }{logical, whether works offline with package data. Defaults to TRUE.}
+\item{offline}{logical, whether works offline with package data. Defaults to TRUE.}
 
-\item{use_char_length_info, TRUE}{or named vector, whether to use code character length
+\item{use_char_length_info}{TRUE or named vector, whether to use code character length
 information in determining their region level. Defaults to \code{NULL}.}
 }
 \value{
@@ -61,6 +61,13 @@ If your vector contains ambiguous codes you may try breaking it
 into pieces where you know the unique region level of the codes in each
 piece and treat these pieces separately giving region level as
 an argument.
+
+The function does not create region codes from scratch itself but, inputs
+are matched to the potential codes in the official classifications.
+These classifications are accessed using \code{get_regionclassification}-function.
+Thus, only real region codes can be set. The matching of inputs into
+potential region codes occurs in \code{match_region_codes_interal}- and
+\code{match_region_codes}-functions.
 }
 \section{Functions}{
 \itemize{

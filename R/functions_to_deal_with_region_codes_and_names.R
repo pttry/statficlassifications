@@ -191,7 +191,7 @@ names_to_codes_fct <- function(x, year = NULL, lang = "fi", offline = TRUE, regi
 #' Change region prefixes to names
 #'
 #' @param prefix region level code prefix
-#' @param pass_unknown If TRUE pass unknown prefix as prefix.
+#' @param pass_unknown If TRUE pass unknown prefix as prefix. Not in use
 #'
 #'
 #' @return region name
@@ -203,10 +203,15 @@ names_to_codes_fct <- function(x, year = NULL, lang = "fi", offline = TRUE, regi
 #'
 prefix_to_name <- function(prefix, pass_unknown = FALSE) {
 
-  if(!pass_unknown & !all(prefix %in% prefix_name_key$prefix)) {
+  # if(!pass_unknown & !all(prefix %in% prefix_name_key$prefix)) {
+  if(!all(prefix %in% prefix_name_key$prefix)) {
     stop(paste0("Unknown region code prefix ", prefix[!(prefix %in% prefix_name_key$prefix)], "."))
   }
-  dplyr::coalesce(prefix_name_key$name[match(prefix, prefix_name_key$prefix)], prefix)
+
+  if (is.null(prefix)) return(NULL)
+
+  # dplyr::coalesce(prefix_name_key$name[match(prefix, prefix_name_key$prefix)], prefix)
+  prefix_name_key$name[prefix_name_key$prefix %in% prefix]
 }
 
 #' Change region names to prefixes
@@ -226,6 +231,8 @@ name_to_prefix <- function(name, pass_unknown = FALSE) {
   if(!pass_unknown & !all(name %in% prefix_name_key$name)) {
     stop(paste0("Unknown region name ", name[!(name %in% prefix_name_key$name)], "."))
   }
+
+  if (is.null(name)) return(NULL)
 
   # pass names that are not in prefix_name_key
   dplyr::coalesce(prefix_name_key$prefix[match(name, prefix_name_key$name)], name)

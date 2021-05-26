@@ -4,10 +4,12 @@
 \alias{name_to_prefix}
 \title{Change region names to prefixes}
 \usage{
-name_to_prefix(name)
+name_to_prefix(name, pass_unknown = FALSE)
 }
 \arguments{
-\item{name, }{region level name}
+\item{name}{region level name}
+
+\item{pass_unknown}{If TRUE pass unknown names as names.}
 }
 \value{
 region prefix

@@ -21,7 +21,7 @@
 #'    search_keys()
 #'
 #' # Search for keys with search word "maakunta"
-#'    search_keys("maakunta)
+#'    search_keys("maakunta")
 #'
 #' # Search for keys that have "maakunta" as source
 #'    search_keys(search_source = "maakunta")

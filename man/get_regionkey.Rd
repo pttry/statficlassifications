@@ -48,6 +48,7 @@ then apply the selection implied by the arguments set by the user possible remov
 }
 \examples{
 
-regionkey <- get_regionkey()
+get_regionkey()
+get_regionkey("kunta", "seutukunta", only_codes = TRUE)
 
 }

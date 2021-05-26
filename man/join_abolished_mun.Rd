@@ -16,7 +16,7 @@ join_abolished_mun_fct(x)
 join_abolished_mun_df(x, col)
 }
 \arguments{
-\item{x, }{an object containing municipality codes, a vector, a factor or a data.frame.}
+\item{x}{an object containing municipality codes, a vector, a factor or a data.frame.}
 }
 \value{
 
@@ -44,7 +44,7 @@ For internal use
 \examples{
 
   v <- c("KU414", "KU609", "KU429", "KU272")
-  join_abolished_mun(v)
+  join_abolished_mun(x = v)
   f <- factor(c("KU414", "KU609", "KU429", "KU272"))
   join_abolished_mun(f)
   df <- data.frame(kunta_code =  c("KU414", "KU609", "KU429", "KU272"), values = rnorm(4))

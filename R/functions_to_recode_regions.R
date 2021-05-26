@@ -179,7 +179,7 @@ add_region <- function(data, ..., from = NULL, year = NULL, offline = TRUE) {
 #'
 detect_region_var <- function(data, year = NULL, offline = TRUE) {
 
-  region_name_var <- purrr::map_lgl(names(data), function(x) {all(is_region_name(data[[x]], year = year, offline = offline,
+  region_name_var <- purrr::map_lgl(names(data), function(x) {all(is_region_name(x = data[[x]], year = year, offline = offline,
                                                                                  allow_nonstandard_names = TRUE))})
   region_code_var <- purrr::map_lgl(names(data), function(x) {all(is_region_code(data[[x]], year = year, offline = offline))})
 
@@ -213,7 +213,7 @@ detect_region_var <- function(data, year = NULL, offline = TRUE) {
 detect_region_level_code <- function(x, year = NULL, offline = TRUE) {
 
   logical <- purrr::map_lgl(prefix_name_key[-1,]$name, function(region_level)
-  {all(is_region_code(x, region_level, year = year, offline = offline))})
+    {all(is_region_code(x, region_level, year = year, offline = offline))})
   prefix_name_key[-1,]$name[logical]
 
 }
