@@ -22,7 +22,7 @@
       # df <- readxl::read_excel(tmp)
 
 
-      url2 <-  "https://www.stat.fi/static/media/uploads/meta/luokitukset/lakkautetut_kunnat_vuoteen_2020_asti.xlsx"
+      url2 <-  "https://www.stat.fi/static/media/uploads/meta/luokitukset/lakkautetut_kunnat_vuoteen_2021_asti.xlsx"
       tmp2 = tempfile(fileext = ".xlsx")
       download.file(url = url2, destfile = tmp2, mode="wb")
       df2 <- readxl::read_excel(tmp2)
@@ -43,7 +43,9 @@
 
       df2 <- filter(df2, joinee != "-")
 
+      # otetaan käyttöön uusi (vanhan df koodin voisi poistaa, jos toimii)
       df <- df2
+
   # Set prefixes
       df$joiner <- paste0("KU", df$joiner)
       df$joinee <- paste0("KU", df$joinee)
@@ -96,7 +98,7 @@
 
   # Combine the components to create the final correspondence table.
 
-    abolished_mun_key <- rbind(df, df2_key)
+    abolished_mun_key <- rbind(df, df_key)
 
   # Save
     usethis::use_data(abolished_mun_key, overwrite = TRUE)
