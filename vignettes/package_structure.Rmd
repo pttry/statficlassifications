@@ -1,5 +1,5 @@
 ---
-title: "package_structure"
+title: "Package Structure"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{package_structure}
@@ -12,10 +12,6 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
-```
-
-```{r setup}
-library(statficlassifications)
 ```
 
 ## Accessing and browsing API
