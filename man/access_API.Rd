@@ -17,10 +17,9 @@ access_API(
 \item{content, }{character, \code{"data"} or \code{"url"} determines the content of query}
 
 \item{classification_service}{character, \code{"correspondenceTable"} or
-\code{"classifications"}. Determines the classification service used. See Details for
-information on the classification services.}
+\code{"classifications"}. Determines the classification service used.}
 
-\item{lang, }{\code{"fi"}, \code{"en"}, or \code{"sv"}, language required.
+\item{lang, }{\code{"fi"}, \code{"en"}, or \code{"sv"}, desired language.
 Defaults to \code{"fi"}.}
 }
 \value{

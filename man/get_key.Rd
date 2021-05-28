@@ -2,14 +2,14 @@
 % Please edit documentation in R/functions_for_api_access.R
 \name{get_key}
 \alias{get_key}
-\title{Get classification key from API}
+\title{Get classification keys}
 \usage{
 get_key(localId, lang = "fi", print_key_name = TRUE)
 }
 \arguments{
 \item{localId, }{character, local ID of the required correspondence table}
 
-\item{lang, }{\code{"fi"}, \code{"en"}, or \code{"sv"}, language of the key required.
+\item{lang, }{\code{"fi"}, \code{"en"}, or \code{"sv"}, desired language.
 Defaults to \code{"fi"}.}
 
 \item{print_key_name, }{whether prints the long name of the correspondence table.
@@ -19,7 +19,7 @@ Defaults to \code{TRUE}.}
 data.frame, the key of the provided localId.
 }
 \description{
-A wrapper for \code{access_API} to get data of classification keys.
+A wrapper for \code{access_API} to get classification keys.
 }
 \examples{
 

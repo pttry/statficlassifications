@@ -2,7 +2,7 @@
 % Please edit documentation in R/functions_for_api_access.R
 \name{get_classification}
 \alias{get_classification}
-\title{Get classification series from API}
+\title{Get classification series}
 \usage{
 get_classification(
   localId,
@@ -14,7 +14,7 @@ get_classification(
 \arguments{
 \item{localId}{character, localId of the required correspondence table}
 
-\item{lang, }{\code{"fi"}, \code{"en"}, or \code{"sv"}, language of the classification required.
+\item{lang, }{\code{"fi"}, \code{"en"}, or \code{"sv"}, desired language.
 Defaults to \code{"fi"}.}
 
 \item{print_series_name}{whether prints the long name of the classification series.
@@ -24,10 +24,10 @@ Defaults to \code{TRUE}.}
 than data.frame. Defaults to \code{FALSE}.}
 }
 \value{
-
+a data.frame, a classification series
 }
 \description{
-A wrapper for \code{access_API} to get data of classifications.
+A wrapper for \code{access_API} to get classifications.
 }
 \examples{
 

@@ -33,7 +33,8 @@ search_keys(
 character vector
 }
 \description{
-A function to search and browse available classification keys / correspondence tables.
+Searches and browses available classification keys / correspondence tables in
+the correspondenceTables classification service
 }
 \examples{
 

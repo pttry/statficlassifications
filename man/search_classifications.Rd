@@ -17,7 +17,7 @@ search_classifications(..., year = NULL, as_localId = FALSE)
 
 }
 \description{
-A function to search and browse available classifications.
+Searches and browses available classifications.
 }
 \examples{
 

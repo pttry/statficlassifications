@@ -10,14 +10,15 @@ find_classification_service(localId)
 \item{localId}{character}
 }
 \value{
-
+classification service name(s), character vector
 }
 \description{
-Given a localId finds whether the localId is a localId in classifications or correspondenceTables
+Given a localId finds whether the it is a localId in classifications or correspondenceTables
 classification services. For internal use.
 }
 \examples{
 
-    find_classification_service(search_classifications(as_localId = TRUE)[1])
+    find_classification_service("siviiliasiat_1_20140101")
+    find_classification_service("instit_sektori_1_19960101\%23sektoriluokitus_1_20000101")
 
 }
