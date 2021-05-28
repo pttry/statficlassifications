@@ -19,6 +19,8 @@ library(statficlassifications)
 library(dplyr)
 ```
 
+There are two types of classification objects of interest: keys and classifications. Keys are used to convert between different classifications and classifications are can be used to convert names to codes and vice versa.
+
 ### Searching for keys
 
 To list all available classification keys (correspondence tables), use `search_keys` without arguments:
