@@ -37,27 +37,19 @@ search_keys(source = "kunta", target = "suuralue", year = 2020)
 
 ### Getting keys
 
-The API uniquely identifies each classification key by a local ID. Having found the suitable key, you can use `search_keys` with an argument `as_localId = TRUE` to print the localId of the key:
+The open classifications API uniquely identifies each classification key by a local ID. Having found the suitable key, you can use `search_keys` with an argument `as_localId = TRUE` to print the localId of the key:
 
 ```{r}
 localId <- search_keys(source = "kunta", target = "suuralue", year = 2020, as_localId = TRUE)
 localId
 ```
 
-You can also create a local Id yourself:
-
-```{r}
-localId <- create_localId_name("kunta", "maakunta", year = 2020)
-localId
-```
-
-Finally, you can get the key by:
+Then you can get the key by:
 
 ```{r}
 key <- get_key(localId)
 head(key)
 ```
-
 
 ### Searching for classifications
 

@@ -18,6 +18,14 @@ knitr::opts_chunk$set(
 library(statficlassifications)
 ```
 
-At the heart of the package are the functions for accessing the API in the file `functions_for_api_access.R`. Functions in this file should not use functions of this package. At the moment, `find_classification_service` uses `search_keys` and `search_classifications`. I guess such a recursion works since these functions set the argument `classification_service` and thus themselves do not rely on function `find_classification_service`. 
+## Accessing and browsing API
 
-File `functions_for_api_search.R` provides the tools for searching and browsing available classifications and classification keys in the API. Functions in this file rely on functions in file `functions_for_api_access.R`. 
+### Accessing API
+
+The core of the package are the functions for API access in the file `functions_for_api_access.R`. The function `access_API` accesses the open classification API of Statistics Finland. The functions `get_urls`, `get_keys` and `get_classifications` are wrappers of function `access_API` to get urls of endpoint, classification series and correspondence tables, respectively. 
+
+Functions in this file should generally avoid using functions of this package. The function `find_classification_service` uses `search_keys` and `search_classifications`. This recursion works since the `search_keys` and `search_classifications`s set the argument `classification_service` and thus themselves do not rely on function `find_classification_service`. 
+
+### Browsing API
+
+File `functions_for_api_search.R` provides the tools for searching and browsing available classifications and classification keys in the API. Functions in this file rely on functions in file `functions_for_api_access.R`. There are two functions: `search_keys` and `search_classifications` corresponding to the two supported classification services correspondenceTables and classifications, respectively.

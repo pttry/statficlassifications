@@ -1,6 +1,7 @@
 #' Search for classification keys
 #'
-#' A function to search and browse available classification keys / correspondence tables.
+#' Searches and browses available classification keys / correspondence tables in
+#' the correspondenceTables classification service
 #'
 #' @param ... character, search words.
 #' @param search_source logical, whether search only among the sources.
@@ -47,11 +48,9 @@ search_keys <- function(...,
 
   # Get a list of all correspondence table urls and create a data.frame that isolates the components
   # of the endpoints
-
   results <- urls_as_localId_df(get_url(classification_service = "correspondenceTables"))
 
   # Filter results by the searchterms
-
   searchterms <- unlist(list(...))
 
    if(length(searchterms) > 0) {
@@ -73,24 +72,25 @@ search_keys <- function(...,
      results <- results_temp
    }
 
-   if(!is.null(year)) {
-    results <- dplyr::filter(results, year1 == year | year2 == year)
-   }
-
-   if(!is.null(source_searchterm)) {
+  if(!is.null(source_searchterm)) {
      results <- dplyr::filter(results, source_searchterm == source)
-   }
+  }
 
   if(!is.null(target_searchterm)) {
     results <- dplyr::filter(results, target_searchterm == target)
   }
 
+  # Filter results by year.
+  if(!is.null(year)) {
+    results <- dplyr::filter(results, year1 == year | year2 == year)
+  }
+
+  # Interrupt if nothing found.
    if(dim(results)[1] == 0) {
      return("No search results!")
    }
 
-  # Format output
-
+  # Format output.
    output <- character(dim(results)[1])
    if(as_localId) {
      for(i in 1:dim(results)[1]) {
@@ -106,6 +106,7 @@ search_keys <- function(...,
        }
      }
 
+   # Return.
    unique(output)
 }
 
@@ -113,7 +114,7 @@ search_keys <- function(...,
 
 #' Search for classifications
 #'
-#' A function to search and browse available classifications.
+#' Searches and browses available classifications.
 #'
 #' @param ... character, search words.
 #' @param year character or numerical, search for specific years.
@@ -131,11 +132,12 @@ search_classifications <- function(...,
                                    year = NULL,
                                    as_localId = FALSE){
 
+  # Get a list of all correspondence table urls and create a data.frame that isolates the components
+  # of the endpoints
   results <- urls_as_localId_df(get_url(classification_service = "classifications"))
   search_year <- year
 
   # Filter results by the searchterms
-
   searchterms <- unlist(list(...))
 
   if(length(searchterms) > 0) {
@@ -145,12 +147,12 @@ search_classifications <- function(...,
     results <- dplyr::filter(results, year == search_year)
   }
 
+  # Interrupt of nothing found.
   if(dim(results)[1] == 0) {
     return("No search results!")
   }
 
   # Format output
-
   output <- character(dim(results)[1])
   if(as_localId) {
     for(i in 1:dim(results)[1]) {
@@ -162,6 +164,7 @@ search_classifications <- function(...,
     }
   }
 
+  # Return.
   unique(output)
 }
 
