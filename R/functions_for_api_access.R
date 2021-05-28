@@ -363,33 +363,3 @@ create_localId_name <- function(source, target,
 
 }
 
-
-
-# find_localId <- function(..., year = NULL, classification_service, localId_list = NULL) {
-#
-#   xs <- unlist(list(...))
-#
-#   if(classification_service == "correspondenceTables") {
-#     if(is.null(localId_list)) {
-#       results <- search_keys(xs[1], year = year, as_localId = TRUE)
-#     } else {
-#       results <- localId_list
-#     }
-#     for(x in xs) {
-#       results <- grep(x, results, value = TRUE)
-#     }
-#   } else if(classification_service == "classifications") {
-#
-#     if(is.null(localId_list)) {
-#       results <- search_classifications(xs[1], year = year, as_localId = TRUE)
-#     } else {
-#       results <- localId_list
-#     }
-#     for(x in xs) {
-#       results <- grep(x, results, value = TRUE)
-#     }
-#   }
-#   if(length(results) > 1) {stop("No unique localIds found! Maybe give more search words.")}
-#   if(length(results) == 0) {stop("No localIds found!")}
-#   results
-# }

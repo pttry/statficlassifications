@@ -4,7 +4,7 @@
 # for all possible regions. In this way the the key will have all regions that have existed
 # in year 2008 and after.
 
-# A key only works if it is a function. That is, it maps all possible codes to unique names.
+# A key only works if it maps all possible codes to unique names.
 # This means that the region to code key can map each region to a single code and the code
 # to region key can map each code to a single region.
 
