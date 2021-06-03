@@ -31,8 +31,7 @@ search_keys <- function(..., as_localId = FALSE) {
 
   # Filter results by the searchterms
   searchterms <- unlist(list(...))
-  results <-  dplyr::filter(results, sapply(1:dim(results)[1],
-                            function(i) { all(searchterms %in% c(results[i,])) }))
+  results <-  results[sapply(1:dim(results)[1], function(i) { all(searchterms %in% c(results[i,])) }), ]
 
   # Interrupt if nothing found.
   if(dim(results)[1] == 0) {
@@ -84,8 +83,7 @@ search_classifications <- function(..., as_localId = FALSE){
 
   # Filter results by the searchterms
   searchterms <- unlist(list(...))
-  results <-  dplyr::filter(results, sapply(1:dim(results)[1],
-                            function(i) { all(searchterms %in% c(results[i,])) }))
+  results <-  results[sapply(1:dim(results)[1], function(i) { all(searchterms %in% c(results[i,]))}), ]
 
   # Interrupt of nothing found.
   if(dim(results)[1] == 0) {
