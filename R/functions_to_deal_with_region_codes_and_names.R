@@ -8,6 +8,8 @@
 #' @param lang \code{"fi"}, \code{"sv"}, \code{"en"}. Language of output names.
 #'    Defaults to \code{"fi"}.
 #' @param offline logical, whether works offline with package data. Defaults to \code{TRUE}.
+#' @param region_codes_check logical, whether tries to set standard region codes.
+#'    Defaults to \code{FALSE}.
 #'
 #' @return data.frame
 #' @export
@@ -97,15 +99,13 @@ x
 
 #' Change region names to region codes
 #'
-#' A wrapper that uses the statficlassifications::recode-function.
-#'
-#' @param data data.frame, the input data that contains a variable of region codes.
-#' @param region character, the name of the variable of region codes.
+#' @param x character vector of factor of region codes.
 #' @param year integer, the year of the applied classification key.
 #' @param lang, \code{fi}, \code{sv} or \code{en}. Input language. Defaults to \code{fi}.
 #' @param offline logical, whether works offline with package data. Defaults to \code{TRUE}.
+#' @param region_level character, region level of input codes, optional.
 #'
-#' @return data.frame
+#' @return vector or factor
 #' @export
 #'
 #' @examples

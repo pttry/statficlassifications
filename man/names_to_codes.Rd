@@ -31,21 +31,21 @@ names_to_codes_fct(
 )
 }
 \arguments{
+\item{x}{character vector of factor of region codes.}
+
 \item{year}{integer, the year of the applied classification key.}
 
 \item{lang, }{\code{fi}, \code{sv} or \code{en}. Input language. Defaults to \code{fi}.}
 
 \item{offline}{logical, whether works offline with package data. Defaults to \code{TRUE}.}
 
-\item{data}{data.frame, the input data that contains a variable of region codes.}
-
-\item{region}{character, the name of the variable of region codes.}
+\item{region_level}{character, region level of input codes, optional.}
 }
 \value{
-data.frame
+vector or factor
 }
 \description{
-A wrapper that uses the statficlassifications::recode-function.
+Change region names to region codes
 }
 \section{Functions}{
 \itemize{

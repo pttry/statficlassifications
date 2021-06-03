@@ -29,12 +29,11 @@ To list all available classification keys (correspondence tables), use `search_k
 head(search_keys())
 ```
 
-Plug in search terms to search for available keys or use more specific options:
+Plug in search terms to search for available keys:
 
 ```{r}
 search_keys("maakunta")
-search_keys("maakunta", search_source = TRUE)
-search_keys(source = "kunta", target = "suuralue", year = 2020)
+search_keys("kunta", "suuralue", 2020)
 ```
 
 ### Getting keys
@@ -61,11 +60,11 @@ To list all available classifications, use `search_classifications` without argu
 head(search_classifications())
 ```
 
-Plug in search terms to search for available classifications or use more specific options:
+Plug in search terms to search for available classifications:
 
 ```{r}
 search_classifications("ammatti")
-search_classifications("ammatti", year = 2021)
+search_classifications("ammatti", 2021)
 ```
 
 ### Getting classifications

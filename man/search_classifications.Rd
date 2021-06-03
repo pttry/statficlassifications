@@ -4,12 +4,10 @@
 \alias{search_classifications}
 \title{Search for classifications}
 \usage{
-search_classifications(..., year = NULL, as_localId = FALSE)
+search_classifications(..., as_localId = FALSE)
 }
 \arguments{
 \item{...}{character, search words.}
-
-\item{year}{character or numerical, search for specific years.}
 
 \item{as_localId}{logical, whether returns the localID of the found table. Defaults to FALSE.}
 }
@@ -17,7 +15,8 @@ search_classifications(..., year = NULL, as_localId = FALSE)
 
 }
 \description{
-Searches and browses available classifications.
+Searches and browses available classifications in the Classifications
+classification service
 }
 \examples{
 

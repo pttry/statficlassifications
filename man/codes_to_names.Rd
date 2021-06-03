@@ -34,6 +34,9 @@ information in determining their region level. Defaults to NULL.}
 Defaults to \code{"fi"}.}
 
 \item{offline}{logical, whether works offline with package data. Defaults to \code{TRUE}.}
+
+\item{region_codes_check}{logical, whether tries to set standard region codes.
+Defaults to \code{FALSE}.}
 }
 \value{
 data.frame
