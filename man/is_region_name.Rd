@@ -10,6 +10,7 @@ is_region_name(
   year = NULL,
   offline = TRUE,
   allow_nonstandard_names = FALSE,
+  case_sensitive = TRUE,
   lang = "fi"
 )
 }
@@ -25,11 +26,14 @@ is_region_name(
 \item{allow_nonstandard_names}{logical, whether to accept a broader set of names as
 region names.}
 
+\item{case_sensitive, }{logical, whether recognition is case sensitive, defaults
+to FALSE}
+
 \item{lang, }{\code{fi}, \code{sv} or \code{en}. Language of the input name.
 Defaults to \code{fi}.}
 }
 \value{
-
+logical
 }
 \description{
 Check if character is region name.

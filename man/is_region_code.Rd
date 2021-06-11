@@ -18,16 +18,16 @@ is_region_code_without_prefix(
 )
 }
 \arguments{
-\item{x}{character}
+\item{x}{character, potential region code}
 
-\item{region_level}{character, optional region level of the input region codes}
+\item{region_level, }{character, optional region level of the input region codes}
 
-\item{year}{double}
+\item{year}{double, year of region classification searched}
 
 \item{offline}{logical, whether works offline with package data. Defaults to TRUE.}
 }
 \value{
-
+logical
 }
 \description{
 Check if character is prefixed region code

@@ -235,7 +235,10 @@ get_latest_year <- function(offline = TRUE) {
     }
 
   } else {
-    urls <- get_url(classification_service = "correspondenceTables")
+
+    suppressMessages(
+       urls <- get_url(classification_service = "correspondenceTables")
+    )
     results <- urls_as_localId_df(urls)
     as.double(max(c(results$year1, results$year2)))
   }

@@ -20,7 +20,7 @@ check_region_codes_fct(x, year = NULL, offline = TRUE)
 \item{offline}{logical, whether works offline with package data. Defaults to TRUE.}
 }
 \value{
-
+vector of logicals
 }
 \description{
 Check region codes

@@ -21,7 +21,7 @@ check_region_var_name_code_correspondence(
 \item{offline}{logical, whether works offline with package data. Defaults to TRUE.}
 }
 \value{
-
+logical
 }
 \description{
 Check if region names and codes correspond as in regionkey.

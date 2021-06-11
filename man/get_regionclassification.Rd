@@ -18,7 +18,8 @@ get_regionclassification(
 \arguments{
 \item{...}{character(s), (vector), region(s) of required keys.}
 
-\item{year}{character/numeric, year of the required keys. If NULL uses the latest year.}
+\item{year}{character/numeric, year of the required keys. As default returns a general
+classification containing also abolished municipalities.}
 
 \item{offline}{logical, whether uses the key in the package data. Defaults \code{TRUE}.}
 

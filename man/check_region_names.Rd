@@ -22,11 +22,11 @@ check_region_names_fct(x, lang = "fi", year = NULL, offline = TRUE)
 \item{offline}{logical, whether works offline with package data. Defaults to TRUE.}
 }
 \value{
-
+logical
 }
 \description{
 For a vector or a factor of region names, find the names that are not recognized and
-if does not find such names returns true. \code{check_region_names} uses
+if does not find such names returns \code{TRUE}. \code{check_region_names} uses
 \code{check_region_names_vct} for vectors and \code{check_region_names_fct} for factors.
 }
 \section{Functions}{

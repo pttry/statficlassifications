@@ -1,10 +1,12 @@
+################# CHECK REGION CODES ##################
+
 #' Check region codes
 #'
 #' @param x character vector or factor
 #' @param year double or character, year of classification
 #' @param offline logical, whether works offline with package data. Defaults to TRUE.
 #'
-#' @return
+#' @return vector of logicals
 #' @export
 #'
 #'
@@ -55,10 +57,13 @@ check_region_codes_fct <- function(x, year = NULL, offline = TRUE) {
 
 }
 
+
+################### CHECK REGION NAMES ####################
+
 #' Check region names
 #'
 #' For a vector or a factor of region names, find the names that are not recognized and
-#' if does not find such names returns true. \code{check_region_names} uses
+#' if does not find such names returns \code{TRUE}. \code{check_region_names} uses
 #' \code{check_region_names_vct} for vectors and \code{check_region_names_fct} for factors.
 #'
 #' @param x character vector or factor.
@@ -66,7 +71,7 @@ check_region_codes_fct <- function(x, year = NULL, offline = TRUE) {
 #' @param offline logical, whether works offline with package data. Defaults to TRUE.
 #' @param lang, \code{fi}, \code{sv} or \code{en}. Language of the input name. Defaults to \code{fi}.
 #'
-#' @return
+#' @return logical
 #' @export
 #'
 #'
@@ -122,7 +127,7 @@ check_region_names_fct <- function(x, lang = "fi", year = NULL, offline = TRUE) 
 #' @param region_code_var character the name of the regional code variable in the data
 #' @param offline logical, whether works offline with package data. Defaults to TRUE.
 #'
-#' @return
+#' @return logical
 #' @export
 #'
 check_region_var_name_code_correspondence <- function(data,

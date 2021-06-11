@@ -61,7 +61,7 @@ get_regionkey <- function(from = "kunta", ..., year = NULL, lang = "fi",
     regionkey <- statficlassifications::regionkey
 
     if(!any(paste0(targets, "_code") %in% names(regionkey))){
-      stop("Not all classifications: ", targets, " in offline classification. Try offline = FALSE")
+      stop("Not all classifications: ", targets, " in offline classification. Try set offline = FALSE")
     }
 
     regionkey <- dplyr::select(regionkey, c(paste(c(source, targets), "name", sep = "_"),
@@ -145,7 +145,8 @@ get_regionkey <- function(from = "kunta", ..., year = NULL, lang = "fi",
 #' Get region classifications / code-name keys
 #'
 #' @param ... character(s), (vector), region(s) of required keys.
-#' @param year character/numeric, year of the required keys. If NULL uses the latest year.
+#' @param year character/numeric, year of the required keys. As default returns a general
+#'    classification containing also abolished municipalities.
 #' @param lang \code{"fi"}, \code{"en"}, or \code{"sv"}, language of the classification required.
 #'    Defaults to \code{"fi"}.
 #' @param as_named_vector logical, whether returns the key as a named vector rather than a
@@ -176,11 +177,7 @@ get_regionclassification <- function(...,
                                      only_codes = FALSE,
                                      lang = "fi") {
 
-  latest_year <- get_latest_year(offline = offline)
-
-  if(is.null(year)) {
-    year <- latest_year
-  } else {
+  if(!is.null(year)) {
     offline <- FALSE
     if(!suppress_message) {
     message("Overriding default option for offline when specific year is required.")
@@ -195,42 +192,48 @@ get_regionclassification <- function(...,
   }
 
   regions <- unlist(list(...))
+
+  # If no specific region required, give the regions listed in the prefix_name_key
   if(length(regions) == 0) { regions <- prefix_name_key$name}
   key <- data.frame()
 
   if(offline) {
+
     key <- statficlassifications::region_code_to_name_key
     filter_regexp <- paste(name_to_prefix(regions), collapse = "|")
     key <- key[grepl(pattern = filter_regexp, x = key$alue_code),]
     message("Without year-argument a general region classification including abolished municipalities got.")
+
   } else {
 
-  for(region in regions) {
+    # If user has not set the year of classification, use the latest available year
+       if(is.null(year)) {year <- get_latest_year(offline = FALSE)}
 
-    if(region == "KOKO MAA") {
-      key_temp <- data.frame(code = "SSS", name = "KOKO MAA")
-      key <- rbind(key, key_temp)
-      next
-    }
+        for(region in regions) {
 
-    localId <- paste0(region, "_1_", year, "0101")
-    key_temp <- get_classification(localId, lang = lang, print_series_name = FALSE)
-    if(length(key_temp) == 0) {
-      if(!suppress_message) {
-         message(paste0("No region name-code key found for ", region, " for year ", year))
-      }
-      next
-     }
-    key_temp$code <- paste0(name_to_prefix(region), key_temp$code)
-    key <- rbind(key, key_temp)
-  }
+           if(region == "KOKO MAA") {
+              key_temp <- data.frame(code = "SSS", name = "KOKO MAA")
+              key <- rbind(key, key_temp)
+              next
+           }
+
+           localId <- paste0(region, "_1_", year, "0101")
+           key_temp <- get_classification(localId, lang = lang, print_series_name = FALSE)
+           if(length(key_temp) == 0) {
+             if(!suppress_message) {
+                message(paste0("No region name-code key found for ", region, " for year ", year))
+             }
+           next
+           }
+           key_temp$code <- paste0(name_to_prefix(region), key_temp$code)
+           key <- rbind(key, key_temp)
+       }
   }
 
   # Check if any keys were found, if not, return an error.
   if(length(key) == 0){
     return(message("No keys found!"))
   }
-
 
   # Set column names
     if(length(regions) == 1){
