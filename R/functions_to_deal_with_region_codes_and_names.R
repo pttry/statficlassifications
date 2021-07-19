@@ -1,5 +1,10 @@
 #' Change region codes to region names
 #'
+#' Works with standardized region codes. A good practice is to first standardize
+#' your region codes using `set_region_codes`-function. This `codes_to_names`,
+#' however checks if the region codes are standardized and applies `set_region_codes`
+#' if they are not.
+#'
 #' @param x a character (vector) of region codes
 #' @param region_level character, optional region level of the input region codes
 #' @param use_char_length_info TRUE or named vector, whether to use code character length
@@ -9,7 +14,7 @@
 #'    Defaults to \code{"fi"}.
 #' @param offline logical, whether works offline with package data. Defaults to \code{TRUE}.
 #' @param region_codes_check logical, whether tries to set standard region codes.
-#'    Defaults to \code{FALSE}.
+#'    Defaults to \code{TRUE}.
 #'
 #' @return data.frame
 #' @export
@@ -28,10 +33,10 @@ codes_to_names <- function(x, region_level = NULL,
                            year = NULL,
                            lang = "fi",
                            offline = TRUE,
-                           region_codes_check = FALSE) {
+                           region_codes_check = TRUE) {
 
   if(region_codes_check) {
-   if(any(is_region_code_without_prefix(x))) {
+   if(any(!is_region_code_with_prefix(x))) {
      message("Tried to add prefixes to your input codes.")
      x <- set_region_codes(x, region_level = region_level, use_char_length_info = use_char_length_info)
    }
@@ -57,14 +62,18 @@ codes_to_names <- function(x, region_level = NULL,
 #'
 #' For internal use
 #'
-#' @export
-#'
 codes_to_names_vct <- function(x, year = NULL, lang = "fi", offline = TRUE) {
 
+  # Save potential names to add later back to output
   x_names <- names(x)
 
+  # Find all valid unique prefixes in input region codes to find all required
+  # region levels
   prefixes <- unique(sapply(unique(x), gsub, pattern = "[^a-zA-Z]", replacement = ""))
+  prefixes <- prefixes[prefixes %in% prefix_name_key$prefix]
   region_levels <- prefix_to_name(prefixes, pass_unknown = TRUE)
+
+  # Get a code-to-name classification for required region levels
   key <- get_regionclassification(region_levels, year = year,
                                   lang = lang, offline = offline)
 
@@ -86,8 +95,6 @@ codes_to_names_vct <- function(x, year = NULL, lang = "fi", offline = TRUE) {
 #' Change region codes to region names
 #'
 #' For internal use.
-#'
-#' @export
 #'
 codes_to_names_fct <- function(x, year = NULL, lang = "fi", offline = TRUE) {
 
@@ -139,8 +146,6 @@ names_to_codes <- function(x, year = NULL, lang = "fi", offline = TRUE, region_l
 #'
 #' For internal use.
 #'
-#' @export
-#'
 names_to_codes_vct <- function(x,
                                year = NULL,
                                lang = "fi",
@@ -178,8 +183,6 @@ names_to_codes_vct <- function(x,
 #' #' Recode name to codes in factors
 #'
 #' For internal use.
-#'
-#' @export
 #'
 names_to_codes_fct <- function(x, year = NULL, lang = "fi", offline = TRUE, region_level = NULL) {
 

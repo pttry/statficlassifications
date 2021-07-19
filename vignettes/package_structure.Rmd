@@ -25,3 +25,7 @@ Functions in this file should generally avoid using functions of this package. T
 ### Browsing API
 
 File `functions_for_api_search.R` provides the tools for searching and browsing available classifications and classification keys in the API. Functions in this file rely on functions in file `functions_for_api_access.R`. There are two functions: `search_keys` and `search_classifications` corresponding to the two supported classification services correspondenceTables and classifications, respectively.
+
+## Region classifications and keys
+
+`statficlassifications` provides tools for checking the correspondence of region classifications in the data to the classifications of Statistic Finland and to standardize classifications. 

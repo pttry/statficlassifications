@@ -1,11 +1,11 @@
-#' Standardize region codes with prefixes
+#' Standardize region codes
 #'
-#' To avoid non-unique region codes, the most preferable way is to use the
-#' prefixed region codes. This function "standardizes" region codes in
-#' this format. Region codes already in this format are left as they are.
+#' To avoid non-unique region codes, use the prefixed region codes.
+#' This function "standardizes" region codes in this format.
+#' Region codes already in this format are left as they are.
 #'
 #' The function is strict in not making any assumptions in cases of
-#' unambiguous region codes. Some plain numbers may map to multiple
+#' ambiguous region codes. Some plain numbers may map to multiple
 #' region codes and in these cases the user can restrict the domain
 #' by giving a set of region levels to whose codes input vector
 #' codes are allowed to match.
@@ -84,9 +84,6 @@ set_region_codes_vct <- function(x,
   # Save potential names of the input vector.
   x_names <- names(x)
 
-  # Find elements of the input vector that are not set.
-  to_be_set <- !is_region_code_with_prefix(x)
-
   # Match the not-set region codes to region codes in classifications.
   new_codes <- match_region_codes(x, offline = offline,
                                   year = year,
@@ -94,15 +91,15 @@ set_region_codes_vct <- function(x,
                                   use_char_length_info = use_char_length_info,
                                   suppress_message = TRUE)
 
-  # Join the new codes to the old codes by giving them names.
-  names(new_codes) <- x[to_be_set]
+  # Join the new codes to the old codes by naming.
+  names(new_codes) <- x
 
   # Find non-unique matches and return an error if there are any.
   non_uniques <- sapply(new_codes, length) > 1
   if(any(non_uniques)) {
     stop(paste("Code(s)",
                paste(names(new_codes)[non_uniques], collapse = ", "),
-               "are ambiguous. You can restrict the ambiguity by giving regions to region_level argument or try use charachter length information."))
+               "are ambiguous. You can restrict the ambiguity by giving regions to region_level argument or try use character length information."))
   }
 
   # Find region codes for which matches could not be found.
@@ -114,7 +111,7 @@ set_region_codes_vct <- function(x,
                   paste(x[not_set], collapse = ", "),
                   "not recognized as",
                   paste(region_level, collapse = ", "),
-                  "code(s) and are left as they were."))
+                  "region code(s) and are left as they were."))
   }
 
   # Join new names to the input vector.
