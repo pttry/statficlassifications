@@ -65,7 +65,7 @@ search_keys <- function(..., as_localId = FALSE) {
 #' classification service
 #'
 #' @param ... character, search words.
-#' @param as_localId logical, whether returns the localID of the found table. Defaults to FALSE.
+#' @param as_localId logical, whether returns the localID of the found table. Defaults to \code{FALSE}.
 #'
 #' @return
 #' @export
