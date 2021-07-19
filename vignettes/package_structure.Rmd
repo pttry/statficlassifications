@@ -29,3 +29,11 @@ File `functions_for_api_search.R` provides the tools for searching and browsing 
 ## Region classifications and keys
 
 `statficlassifications` provides tools for checking the correspondence of region classifications in the data to the classifications of Statistic Finland and to standardize classifications. 
+
+### Standardized region codes
+
+`statficlassifications` aims to impose the use of prefixed region codes. Prefixes are useful in making sure codes do not map to multiple names. There are, for instance, kuntia and seutukuntia with identical numbers. Prefixes help distinguish between these. The prefixed region codes are what are throughout the package called the "standardized region codes". 
+
+The idea of handling regional information that the package imposes is that the region codes are first standardized as the prefixed codes. The function `set_region_codes` is the workhorse. Standardized region codes can then be recoded to region names.
+
+If the data has region codes, the workflow in standardizing both region names and codes in data would be to first set the region codes using `set_region_codes`, then use `codes_to_names` to set the region names.

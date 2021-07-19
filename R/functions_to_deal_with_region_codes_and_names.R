@@ -1,3 +1,12 @@
+# Functions to recode region codes to region names and vice versa. Defines two
+# functions that are exported: `codes_to_names` and `names_to_codes`.
+
+# This file also contains functions to recode between prefixes and region levels:
+# `prefix_to_name` and `name_to_prefix`.
+
+
+############################# CODES TO NAMES #################################
+
 #' Change region codes to region names
 #'
 #' Works with standardized region codes. A good practice is to first standardize
@@ -35,10 +44,13 @@ codes_to_names <- function(x, region_level = NULL,
                            offline = TRUE,
                            region_codes_check = TRUE) {
 
+  # If required, check if the the input contains region codes that are not
+  # in the standardized form
   if(region_codes_check) {
    if(any(!is_region_code_with_prefix(x))) {
      message("Tried to add prefixes to your input codes.")
-     x <- set_region_codes(x, region_level = region_level, use_char_length_info = use_char_length_info)
+     x <- set_region_codes(x, region_level = region_level,
+                           use_char_length_info = use_char_length_info)
    }
   }
 
@@ -51,6 +63,8 @@ codes_to_names <- function(x, region_level = NULL,
    } else {
      stop("Argument not a vector or factor.")
    }
+
+   # Return
    x
 }
 
@@ -78,14 +92,21 @@ codes_to_names_vct <- function(x, year = NULL, lang = "fi", offline = TRUE) {
                                   lang = lang, offline = offline)
 
 
+  # Join names to codes
   names(key) <- c("alue_code", "alue_name")
   output <- dplyr::left_join(data.frame(alue_code = x), key,
                         by = "alue_code")$alue_name
 
+  # Give a warning if some given codes could not be recoded to name and is given NA
   if(any(is.na(output))) {
-    warning(paste("Code(s)", paste(x[is.na(output)], collapse = ", "), "not recognized as a region code(s) and given NA."))
+    warning(paste("Code(s)", paste(x[is.na(output)], collapse = ", "),
+                  "not recognized as a region code(s) and given NA."))
   }
+
+  # Return potential names
   names(output) <- x_names
+
+  # Return
   output
 
 }
@@ -103,6 +124,7 @@ x
 
 }
 
+######################### NAMES TO CODES #############################
 
 #' Change region names to region codes
 #'
@@ -152,27 +174,36 @@ names_to_codes_vct <- function(x,
                                offline = TRUE,
                                region_level = NULL) {
 
+  # Save potential names to add later back to output
   x_names <- names(x)
 
+  # Get names-to-codes mapping
   key <- get_regionclassification(region_level, year = year,
                                   lang = lang, offline = offline)
 
+  # Join codes to names using the names-to-codes mapping got above
   names(key) <- c("alue_code", "alue_name")
   output <- dplyr::left_join(data.frame(alue_name = x), key,
                         by = "alue_name")$alue_code
 
+  # Stop if ambiguity in name-to-code mapping
   if(length(output) > length(x)) {
    stop("Some region name(s) can be mapped to multiple region codes!
   You may want to have only one region level in your input vector
   and use the region_level argument to give more information.")
   }
+
+  # Give a warning if some given names could not be recoded to codes and is given NA
   if(any(is.na(output))) {
     warning(paste("Name(s)", paste(x[is.na(output)], collapse = ", "),
                   "not recognized as a region name(s) in language",
                   lang, "and is given NA."))
   }
 
+  # Return potential names
   names(output) <- x_names
+
+  # Return
   output
 }
 
@@ -186,10 +217,13 @@ names_to_codes_vct <- function(x,
 #'
 names_to_codes_fct <- function(x, year = NULL, lang = "fi", offline = TRUE, region_level = NULL) {
 
-  levels(x) <- names_to_codes_vct(levels(x), year = year, lang = lang, offline = offline, region_level = region_level)
+  levels(x) <- names_to_codes_vct(levels(x), year = year, lang = lang,
+                                  offline = offline, region_level = region_level)
   x
 
 }
+
+################# PREFIXES TO NAMES ###############################
 
 #' Change region prefixes to names
 #'
@@ -216,6 +250,9 @@ prefix_to_name <- function(prefix, pass_unknown = FALSE) {
   # dplyr::coalesce(prefix_name_key$name[match(prefix, prefix_name_key$prefix)], prefix)
   prefix_name_key$name[prefix_name_key$prefix %in% prefix]
 }
+
+
+##################### NAMES TO PREFIXES #############################
 
 #' Change region names to prefixes
 #'
