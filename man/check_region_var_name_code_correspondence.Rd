@@ -4,12 +4,7 @@
 \alias{check_region_var_name_code_correspondence}
 \title{Check if region names and codes correspond as in regionkey.}
 \usage{
-check_region_var_name_code_correspondence(
-  data,
-  region_name_var,
-  region_code_var,
-  offline = TRUE
-)
+check_region_var_name_code_correspondence(region_names, region_codes)
 }
 \arguments{
 \item{data}{data.frame}

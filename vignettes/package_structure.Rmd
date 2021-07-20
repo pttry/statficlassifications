@@ -16,13 +16,17 @@ knitr::opts_chunk$set(
 
 ## Accessing and browsing API
 
-### Accessing API
+### Accessing API 
+
+in file functions_for_api_access.R
 
 The core of the package are the functions for API access in the file `functions_for_api_access.R`. The function `access_API` accesses the open classification API of Statistics Finland. The functions `get_urls`, `get_keys` and `get_classifications` are wrappers of function `access_API` to get urls of endpoint, classification series and correspondence tables, respectively. 
 
 Functions in this file should generally avoid using functions of this package. The function `find_classification_service` uses `search_keys` and `search_classifications`. This recursion works since the `search_keys` and `search_classifications`s set the argument `classification_service` and thus themselves do not rely on function `find_classification_service`. 
 
 ### Browsing API
+
+in file functions_for_api_search.R
 
 File `functions_for_api_search.R` provides the tools for searching and browsing available classifications and classification keys in the API. Functions in this file rely on functions in file `functions_for_api_access.R`. There are two functions: `search_keys` and `search_classifications` corresponding to the two supported classification services correspondenceTables and classifications, respectively.
 
@@ -37,3 +41,24 @@ File `functions_for_api_search.R` provides the tools for searching and browsing 
 The idea of handling regional information that the package imposes is that the region codes are first standardized as the prefixed codes. The function `set_region_codes` is the workhorse. Standardized region codes can then be recoded to region names.
 
 If the data has region codes, the workflow in standardizing both region names and codes in data would be to first set the region codes using `set_region_codes`, then use `codes_to_names` to set the region names.
+
+
+### Testing if region variables
+
+in file functions_for_testing_region_classifications.R
+
+Returning logicals.
+
+### Detecting region variables
+
+in file functions_for_detecting_region_variables.R
+
+These functions are based on functions that test if region variables
+
+### Checking region variables
+
+in file functions_for_checking_region_classifications.R
+
+These are functions that check if everything is standardized and fine in data. They report for possible anomalies.
+
+

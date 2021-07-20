@@ -9,7 +9,7 @@ search_classifications(..., as_localId = FALSE)
 \arguments{
 \item{...}{character, search words.}
 
-\item{as_localId}{logical, whether returns the localID of the found table. Defaults to FALSE.}
+\item{as_localId}{logical, whether returns the localID of the found table. Defaults to \code{FALSE}.}
 }
 \value{
 
