@@ -35,7 +35,7 @@ names_to_codes_fct(
 
 \item{year}{integer, the year of the applied classification key.}
 
-\item{lang, }{\code{fi}, \code{sv} or \code{en}. Input language. Defaults to \code{fi}.}
+\item{lang}{\code{fi}, \code{sv} or \code{en}. Input language. Defaults to \code{fi}.}
 
 \item{offline}{logical, whether works offline with package data. Defaults to \code{TRUE}.}
 
@@ -49,13 +49,9 @@ Change region names to region codes
 }
 \section{Functions}{
 \itemize{
-\item \code{names_to_codes_vct}: Change region names to region codes
+\item \code{names_to_codes_vct}: Change region names to region codes. For internal use.
 
-For internal use.
-
-\item \code{names_to_codes_fct}: #' Recode name to codes in factors
-
-For internal use.
+\item \code{names_to_codes_fct}: Recode name to codes in factors. For internal use.
 }}
 
 \examples{

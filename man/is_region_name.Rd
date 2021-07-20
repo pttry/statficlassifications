@@ -19,17 +19,17 @@ is_region_name(
 
 \item{region_level}{character, optional region level of the input region codes}
 
-\item{year}{double}
+\item{year}{double, year of region classification searched}
 
 \item{offline}{logical, whether works offline with package data. Defaults to \code{TRUE}.}
 
 \item{allow_nonstandard_names}{logical, whether to accept a broader set of names as
 region names.}
 
-\item{case_sensitive, }{logical, whether recognition is case sensitive, defaults
+\item{case_sensitive}{logical, whether recognition is case sensitive, defaults
 to \code{FALSE}}
 
-\item{lang, }{\code{fi}, \code{sv} or \code{en}. Language of the input name.
+\item{lang}{\code{fi}, \code{sv} or \code{en}. Language of the input name.
 Defaults to \code{fi}.}
 }
 \value{

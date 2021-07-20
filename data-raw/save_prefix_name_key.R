@@ -6,6 +6,7 @@ key <- c("SSS" = "KOKO MAA",
          "MK" = "maakunta",
          "SA" = "suuralue",
          "ELY" = "ely",
+         "MA" = "manner_suomi_ahvenanmaa",
          "TK" = "kuntaryhmitys")
 
 prefix_name_key<- data.frame(prefix = names(key), name = key)

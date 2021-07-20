@@ -20,7 +20,7 @@ is_region_code_without_prefix(
 \arguments{
 \item{x}{vector, potential region code}
 
-\item{region_level, }{character, optional region level of the input region codes}
+\item{region_level}{character, optional region level of the input region codes}
 
 \item{year}{double, year of region classification searched}
 

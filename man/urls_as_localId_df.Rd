@@ -7,7 +7,7 @@
 urls_as_localId_df(urls)
 }
 \arguments{
-\item{urls, }{a list of characters, urls of localIds..}
+\item{urls}{a list of characters, urls of localIds..}
 }
 \value{
 data.frame containing the relevant information of each localId correponding to the input urls.

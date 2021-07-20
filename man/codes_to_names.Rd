@@ -13,7 +13,7 @@ codes_to_names(
   year = NULL,
   lang = "fi",
   offline = TRUE,
-  region_codes_check = TRUE
+  set_region_codes = FALSE
 )
 
 codes_to_names_vct(x, year = NULL, lang = "fi", offline = TRUE)
@@ -35,27 +35,23 @@ Defaults to \code{"fi"}.}
 
 \item{offline}{logical, whether works offline with package data. Defaults to \code{TRUE}.}
 
-\item{region_codes_check}{logical, whether tries to set standard region codes.
-Defaults to \code{TRUE}.}
+\item{set_region_codes}{logical, whether tries to set standard region codes.
+Defaults to \code{FALSE}.}
 }
 \value{
 data.frame
 }
 \description{
 Works with standardized region codes. A good practice is to first standardize
-your region codes using \code{set_region_codes}-function. This \code{codes_to_names},
-however checks if the region codes are standardized and applies \code{set_region_codes}
+your region codes using \code{set_region_codes}-function. \code{codes_to_names},
+however can check if the region codes are standardized and applies \code{set_region_codes}
 if they are not.
 }
 \section{Functions}{
 \itemize{
-\item \code{codes_to_names_vct}: Change region codes to region names
+\item \code{codes_to_names_vct}: Change region codes to region names. For internal use
 
-For internal use
-
-\item \code{codes_to_names_fct}: Change region codes to region names
-
-For internal use.
+\item \code{codes_to_names_fct}: Change region codes to region names. For internal use.
 }}
 
 \examples{

@@ -14,12 +14,12 @@ access_API(
 \arguments{
 \item{localId}{character, local ID of the correspondence table or classification}
 
-\item{content, }{character, \code{"data"} or \code{"url"} determines the content of query}
+\item{content}{character, \code{"data"} or \code{"url"} determines the content of query}
 
 \item{classification_service}{character, \code{"correspondenceTable"} or
 \code{"classifications"}. Determines the classification service used.}
 
-\item{lang, }{\code{"fi"}, \code{"en"}, or \code{"sv"}, desired language.
+\item{lang}{\code{"fi"}, \code{"en"}, or \code{"sv"}, desired language.
 Defaults to \code{"fi"}.}
 }
 \value{

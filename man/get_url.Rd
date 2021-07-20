@@ -7,7 +7,7 @@
 get_url(localId = NULL, classification_service = NULL)
 }
 \arguments{
-\item{localId, }{character, localId of the required table.}
+\item{localId}{character, localId of the required table.}
 
 \item{classification_service}{character, \code{"correspondenceTable"} or
 \code{"classifications"}. Determines the classification service used.}

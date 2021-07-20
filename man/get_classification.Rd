@@ -14,13 +14,13 @@ get_classification(
 \arguments{
 \item{localId}{character, localId of the required correspondence table}
 
-\item{lang, }{\code{"fi"}, \code{"en"}, or \code{"sv"}, desired language.
+\item{lang}{\code{"fi"}, \code{"en"}, or \code{"sv"}, desired language.
 Defaults to \code{"fi"}.}
 
 \item{print_series_name}{whether prints the long name of the classification series.
 Defaults to \code{TRUE}.}
 
-\item{as_named_vector, }{logical, whether to return the object as a named vector rather
+\item{as_named_vector}{logical, whether to return the object as a named vector rather
 than data.frame. Defaults to \code{FALSE}.}
 }
 \value{

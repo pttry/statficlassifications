@@ -8,10 +8,10 @@
 #' see <https://www.stat.fi/en/luokitukset/info/>.
 #'
 #' @param localId character, local ID of the correspondence table or classification
-#' @param content, character, \code{"data"} or \code{"url"} determines the content of query
+#' @param content  character, \code{"data"} or \code{"url"} determines the content of query
 #' @param classification_service character, \code{"correspondenceTable"} or
 #'    \code{"classifications"}. Determines the classification service used.
-#' @param lang, \code{"fi"}, \code{"en"}, or \code{"sv"}, desired language.
+#' @param lang  \code{"fi"}, \code{"en"}, or \code{"sv"}, desired language.
 #'    Defaults to \code{"fi"}.
 #'
 #' @return data.frame either the correspondence table or its url depending on argument \code{content}.
@@ -87,7 +87,7 @@ access_API <- function(localId = NULL,
 #'
 #' A wrapper for \code{access_API} function to get url.
 #'
-#' @param localId, character, localId of the required table.
+#' @param localId character, localId of the required table.
 #' @param classification_service character, \code{"correspondenceTable"} or
 #'    \code{"classifications"}. Determines the classification service used.
 #'
@@ -120,10 +120,10 @@ get_url <- function(localId = NULL, classification_service = NULL) {
 #'
 #' A wrapper for \code{access_API} to get classification keys.
 #'
-#' @param localId, character, local ID of the required correspondence table
-#' @param lang, \code{"fi"}, \code{"en"}, or \code{"sv"}, desired language.
+#' @param localId character, local ID of the required correspondence table
+#' @param lang \code{"fi"}, \code{"en"}, or \code{"sv"}, desired language.
 #'    Defaults to \code{"fi"}.
-#' @param print_key_name, whether prints the long name of the correspondence table.
+#' @param print_key_name whether prints the long name of the correspondence table.
 #'    Defaults to \code{TRUE}.
 #'
 #' @return data.frame, the key of the provided localId.
@@ -164,11 +164,11 @@ get_key <- function(localId, lang = "fi", print_key_name = TRUE) {
 #' A wrapper for \code{access_API} to get classifications.
 #'
 #' @param localId character, localId of the required correspondence table
-#' @param lang, \code{"fi"}, \code{"en"}, or \code{"sv"}, desired language.
+#' @param lang \code{"fi"}, \code{"en"}, or \code{"sv"}, desired language.
 #'    Defaults to \code{"fi"}.
 #' @param print_series_name  whether prints the long name of the classification series.
 #'    Defaults to \code{TRUE}.
-#' @param as_named_vector, logical, whether to return the object as a named vector rather
+#' @param as_named_vector logical, whether to return the object as a named vector rather
 #'    than data.frame. Defaults to \code{FALSE}.
 #'
 #' @return a data.frame, a classification series
@@ -212,7 +212,7 @@ get_classification <- function(localId,
 
 #' Get the year of the latest correspondence table
 #'
-#' @param offline, logical, whether works offline with package data. Defaults to TRUE.
+#' @param offline logical, whether works offline with package data. Defaults to TRUE.
 #'
 #' @return double, the year of the newest correspondence table
 #' @export
@@ -251,7 +251,7 @@ get_latest_year <- function(offline = TRUE) {
 #'
 #' Used when searching localIds among endpoints. For internal use.
 #'
-#' @param urls, a list of characters, urls of localIds..
+#' @param urls a list of characters, urls of localIds..
 #'
 #' @return data.frame containing the relevant information of each localId correponding to the input urls.
 #' @import dplyr
@@ -333,8 +333,8 @@ find_classification_service <- function(localId) {
 #' @param date character defaults to "0101" which the most correspondence tables have.
 #' @param date1 character
 #' @param date2 character
-#' @param nro1, character, defaults to "_1_".
-#' @param nro2, character, defaults to "_1_".
+#' @param nro1 character, defaults to "_1_".
+#' @param nro2 character, defaults to "_1_".
 #' @param input_vector named vector
 #'
 #' @return character

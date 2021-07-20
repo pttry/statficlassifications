@@ -35,9 +35,9 @@ create_localId_name(
 
 \item{date2}{character}
 
-\item{nro1, }{character, defaults to "\emph{1}".}
+\item{nro1}{character, defaults to "\emph{1}".}
 
-\item{nro2, }{character, defaults to "\emph{1}".}
+\item{nro2}{character, defaults to "\emph{1}".}
 
 \item{input_vector}{named vector}
 }

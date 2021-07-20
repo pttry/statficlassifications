@@ -10,8 +10,8 @@
 #' Change region codes to region names
 #'
 #' Works with standardized region codes. A good practice is to first standardize
-#' your region codes using `set_region_codes`-function. This `codes_to_names`,
-#' however checks if the region codes are standardized and applies `set_region_codes`
+#' your region codes using `set_region_codes`-function. `codes_to_names`,
+#' however can check if the region codes are standardized and applies `set_region_codes`
 #' if they are not.
 #'
 #' @param x a character (vector) of region codes
@@ -22,8 +22,8 @@
 #' @param lang \code{"fi"}, \code{"sv"}, \code{"en"}. Language of output names.
 #'    Defaults to \code{"fi"}.
 #' @param offline logical, whether works offline with package data. Defaults to \code{TRUE}.
-#' @param region_codes_check logical, whether tries to set standard region codes.
-#'    Defaults to \code{TRUE}.
+#' @param set_region_codes logical, whether tries to set standard region codes.
+#'    Defaults to \code{FALSE}.
 #'
 #' @return data.frame
 #' @export
@@ -42,11 +42,11 @@ codes_to_names <- function(x, region_level = NULL,
                            year = NULL,
                            lang = "fi",
                            offline = TRUE,
-                           region_codes_check = TRUE) {
+                           set_region_codes = FALSE) {
 
   # If required, check if the the input contains region codes that are not
   # in the standardized form
-  if(region_codes_check) {
+  if(set_region_codes) {
    if(any(!is_region_code_with_prefix(x))) {
      message("Tried to add prefixes to your input codes.")
      x <- set_region_codes(x, region_level = region_level,
@@ -68,13 +68,8 @@ codes_to_names <- function(x, region_level = NULL,
    x
 }
 
-#´
-#
-#' @describeIn codes_to_names
-#'
-#' Change region codes to region names
-#'
-#' For internal use
+
+#' @describeIn codes_to_names Change region codes to region names. For internal use
 #'
 codes_to_names_vct <- function(x, year = NULL, lang = "fi", offline = TRUE) {
 
@@ -99,7 +94,7 @@ codes_to_names_vct <- function(x, year = NULL, lang = "fi", offline = TRUE) {
 
   # Give a warning if some given codes could not be recoded to name and is given NA
   if(any(is.na(output))) {
-    warning(paste("Code(s)", paste(x[is.na(output)], collapse = ", "),
+    message(paste("Code(s)", paste(x[is.na(output)], collapse = ", "),
                   "not recognized as a region code(s) and given NA."))
   }
 
@@ -111,11 +106,7 @@ codes_to_names_vct <- function(x, year = NULL, lang = "fi", offline = TRUE) {
 
 }
 
-#' @describeIn codes_to_names
-#'
-#' Change region codes to region names
-#'
-#' For internal use.
+#' @describeIn codes_to_names Change region codes to region names. For internal use.
 #'
 codes_to_names_fct <- function(x, year = NULL, lang = "fi", offline = TRUE) {
 
@@ -130,7 +121,7 @@ x
 #'
 #' @param x character vector of factor of region codes.
 #' @param year integer, the year of the applied classification key.
-#' @param lang, \code{fi}, \code{sv} or \code{en}. Input language. Defaults to \code{fi}.
+#' @param lang \code{fi}, \code{sv} or \code{en}. Input language. Defaults to \code{fi}.
 #' @param offline logical, whether works offline with package data. Defaults to \code{TRUE}.
 #' @param region_level character, region level of input codes, optional.
 #'
@@ -160,13 +151,7 @@ names_to_codes <- function(x, year = NULL, lang = "fi", offline = TRUE, region_l
   x
 }
 
-
-
-#' @describeIn names_to_codes
-#'
-#' Change region names to region codes
-#'
-#' For internal use.
+#' @describeIn names_to_codes Change region names to region codes. For internal use.
 #'
 names_to_codes_vct <- function(x,
                                year = NULL,
@@ -195,7 +180,7 @@ names_to_codes_vct <- function(x,
 
   # Give a warning if some given names could not be recoded to codes and is given NA
   if(any(is.na(output))) {
-    warning(paste("Name(s)", paste(x[is.na(output)], collapse = ", "),
+    message(paste("Name(s)", paste(x[is.na(output)], collapse = ", "),
                   "not recognized as a region name(s) in language",
                   lang, "and is given NA."))
   }
@@ -207,13 +192,7 @@ names_to_codes_vct <- function(x,
   output
 }
 
-
-
-#' @describeIn names_to_codes
-#'
-#' #' Recode name to codes in factors
-#'
-#' For internal use.
+#' @describeIn names_to_codes Recode name to codes in factors. For internal use.
 #'
 names_to_codes_fct <- function(x, year = NULL, lang = "fi", offline = TRUE, region_level = NULL) {
 

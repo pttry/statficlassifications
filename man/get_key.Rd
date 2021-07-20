@@ -7,12 +7,12 @@
 get_key(localId, lang = "fi", print_key_name = TRUE)
 }
 \arguments{
-\item{localId, }{character, local ID of the required correspondence table}
+\item{localId}{character, local ID of the required correspondence table}
 
-\item{lang, }{\code{"fi"}, \code{"en"}, or \code{"sv"}, desired language.
+\item{lang}{\code{"fi"}, \code{"en"}, or \code{"sv"}, desired language.
 Defaults to \code{"fi"}.}
 
-\item{print_key_name, }{whether prints the long name of the correspondence table.
+\item{print_key_name}{whether prints the long name of the correspondence table.
 Defaults to \code{TRUE}.}
 }
 \value{

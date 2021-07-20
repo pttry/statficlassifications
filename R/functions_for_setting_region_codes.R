@@ -1,5 +1,8 @@
 #' Standardize region codes
 #'
+#' TODO: R2D2 IS SET TO SALO CURRENTLY. I.E. USE NUMBERS IN STRINGS MAYBE
+#' ONLY IF THERE IS ONLY NUMBERS IN STRINGS
+#'
 #' To avoid non-unique region codes, use the prefixed region codes.
 #' This function "standardizes" region codes in this format.
 #' Region codes already in this format are left as they are.
@@ -49,7 +52,7 @@ set_region_codes <- function(x,
                              offline = TRUE,
                              use_char_length_info = NULL) {
 
-  args <- list(x, region_level = region_level,
+  args <- list(x, region_level = tolower(region_level),
                year = year,
                offline = offline,
                use_char_length_info = use_char_length_info)
@@ -64,13 +67,7 @@ set_region_codes <- function(x,
   x
 }
 
-#' @describeIn set_region_codes
-#'
-#' Standardize region codes with prefixes
-#'
-#' For internal use
-#'
-#' @export
+#' @describeIn set_region_codes Standardize region codes with prefixes. For internal use
 #'
 set_region_codes_vct <- function(x,
                                  region_level = NULL,
@@ -85,12 +82,12 @@ set_region_codes_vct <- function(x,
   x_names <- names(x)
 
   # Match the not-set region codes to region codes in classifications.
+  suppressMessages(
   new_codes <- match_region_codes(x, offline = offline,
                                   year = year,
                                   region_level = region_level,
-                                  use_char_length_info = use_char_length_info,
-                                  suppress_message = TRUE)
-
+                                  use_char_length_info = use_char_length_info)
+  )
   # Join the new codes to the old codes by naming.
   names(new_codes) <- x
 
@@ -131,13 +128,7 @@ set_region_codes_vct <- function(x,
 }
 
 
-#' @describeIn set_region_codes
-#'
-#' #' Standardize region codes with prefixes
-#'
-#' For internal use
-#'
-#' @export
+#' @describeIn set_region_codes Standardize region codes with prefixes. For internal use
 #'
 set_region_codes_fct <- function(x,
                                  region_level = NULL,
@@ -149,39 +140,11 @@ set_region_codes_fct <- function(x,
                                     year = year,
                                     offline = offline,
                                     use_char_length_info = use_char_length_info)
+
+  # Return
   x
 
 }
-
-
-#' Change numeric region code to character code without prefix
-#'
-#' @param x numeric, numeric region code
-#' @param region_level_prefix character prefix, "KU", "SK", "MK", or "SA"
-#'
-#' @return
-#' @export
-#'
-#' @examples
-#'
-#'   numeric_code_to_character(4, "KU")
-#'   numeric_code_to_character(11, "MK")
-#'
-numeric_code_to_character <- function(x, region_level_prefix) {
-  if(region_level_prefix %in% c("KU", "SK")) {
-    char_length <- 3
-  } else if(region_level_prefix %in% c("MK","ELY", "SA")) {
-    char_length <- 2
-  } else (stop("Unkown region code prefix"))
-  stringr::str_sub(paste0("000", as.character(x)), -char_length,-1)
-}
-
-
-
-# create_region_codes <- function(x, region_level) {
-#   x <- numeric_code_to_character(x, region_level_prefix = name_to_prefix(region_level))
-#   paste0(name_to_prefix(region_level), x)
-# }
 
 
 #' Match to potential region codes
@@ -201,16 +164,14 @@ numeric_code_to_character <- function(x, region_level_prefix) {
 #' By setting \code{region_level} you can restrict the domain of potential matches
 #' to specific region levels.
 #'
-#' @param x, input code
-#' @param year, double, year of classification
+#' @param x input code
+#' @param year double, year of classification
 #' @param region_level character (vector) region level of the input codes
 #' @param offline logical, whether works offline with package data. Defaults to TRUE.
-#' @param suppress_message logical
 #' @param use_char_length_info TRUE or named vector, whether to use code character length
 #'    information in determining their region level. Defaults to NULL.
 #'
 #' @return
-#' @export
 #'
 #' @examples
 #'
@@ -219,11 +180,9 @@ numeric_code_to_character <- function(x, region_level_prefix) {
 #'   match_region_codes("005", region_level = "kunta")
 #'   match_region_codes("05", use_char_length_info = TRUE)
 #'
-#'
 match_region_codes <- function(x, year = NULL,
                                region_level = NULL,
                                offline = TRUE,
-                               suppress_message = FALSE,
                                use_char_length_info = NULL) {
 
   if(is.null(year)) {
@@ -240,22 +199,14 @@ match_region_codes <- function(x, year = NULL,
   lapply(x, match_region_codes_internal,
          key = key,
          region_level = region_level,
-         use_char_length_info = use_char_length_info,
-         suppress_message = TRUE)
+         use_char_length_info = use_char_length_info)
 
 }
 
-#'@describeIn match_region_codes
+#'@describeIn match_region_codes Match single region code. For internal use.
 #'
-#' Match single region code
-#'
-#' For internal use.
-#'
-#'@export
-
 match_region_codes_internal <- function(x, key,
                                         region_level = NULL,
-                                        suppress_message = FALSE,
                                         use_char_length_info = NULL) {
 
   if(length(x) != 1) {stop("This function is for one element inputs.")}
@@ -279,10 +230,10 @@ match_region_codes_internal <- function(x, key,
     for(region in names(char_length_info)) {
       if(nchar(x) == char_length_info[region]) {
         region_level <- region
-        if(!suppress_message) {message(paste("Code(s) of character length",
+        message(paste("Code(s) of character length",
                                              char_length_info[region],
                                              "interpreted as",
-                                             region, "code."))}
+                                             region, "code."))
       }
     }
   }
@@ -291,12 +242,12 @@ match_region_codes_internal <- function(x, key,
   if(!is.null(region_level)) {key <- key[key$prefix %in% name_to_prefix(region_level),]}
 
   if(x == "") {
-    if(!suppress_message) {message("No numerics in input, no matches found.")}
+    message("No numerics in input, no matches found.")
     return(character(0))
   }
 
   if(!any(as.double(x) == key$number, na.rm = TRUE)) {
-    if(!suppress_message) {message("No matches found!")}
+    message("No matches found!")
     return(character(0))
   }
 

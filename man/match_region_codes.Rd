@@ -10,7 +10,6 @@ match_region_codes(
   year = NULL,
   region_level = NULL,
   offline = TRUE,
-  suppress_message = FALSE,
   use_char_length_info = NULL
 )
 
@@ -18,20 +17,17 @@ match_region_codes_internal(
   x,
   key,
   region_level = NULL,
-  suppress_message = FALSE,
   use_char_length_info = NULL
 )
 }
 \arguments{
-\item{x, }{input code}
+\item{x}{input code}
 
-\item{year, }{double, year of classification}
+\item{year}{double, year of classification}
 
 \item{region_level}{character (vector) region level of the input codes}
 
 \item{offline}{logical, whether works offline with package data. Defaults to TRUE.}
-
-\item{suppress_message}{logical}
 
 \item{use_char_length_info}{TRUE or named vector, whether to use code character length
 information in determining their region level. Defaults to NULL.}
@@ -58,9 +54,7 @@ to specific region levels.
 }
 \section{Functions}{
 \itemize{
-\item \code{match_region_codes_internal}: Match single region code
-
-For internal use.
+\item \code{match_region_codes_internal}: Match single region code. For internal use.
 }}
 
 \examples{
@@ -69,6 +63,5 @@ For internal use.
   match_region_codes("005")
   match_region_codes("005", region_level = "kunta")
   match_region_codes("05", use_char_length_info = TRUE)
-
 
 }

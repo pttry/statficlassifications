@@ -46,11 +46,14 @@ information in determining their region level. Defaults to \code{NULL}.}
 
 }
 \description{
+TODO: R2D2 IS SET TO SALO CURRENTLY. I.E. USE NUMBERS IN STRINGS MAYBE
+ONLY IF THERE IS ONLY NUMBERS IN STRINGS
+}
+\details{
 To avoid non-unique region codes, use the prefixed region codes.
 This function "standardizes" region codes in this format.
 Region codes already in this format are left as they are.
-}
-\details{
+
 The function is strict in not making any assumptions in cases of
 ambiguous region codes. Some plain numbers may map to multiple
 region codes and in these cases the user can restrict the domain
@@ -71,13 +74,9 @@ potential region codes occurs in \code{match_region_codes_interal}- and
 }
 \section{Functions}{
 \itemize{
-\item \code{set_region_codes_vct}: Standardize region codes with prefixes
+\item \code{set_region_codes_vct}: Standardize region codes with prefixes. For internal use
 
-For internal use
-
-\item \code{set_region_codes_fct}: #' Standardize region codes with prefixes
-
-For internal use
+\item \code{set_region_codes_fct}: Standardize region codes with prefixes. For internal use
 }}
 
 \examples{

@@ -13,7 +13,7 @@
 #'
 #'
 #' @param x vector, potential region code
-#' @param region_level, character, optional region level of the input region codes
+#' @param region_level character, optional region level of the input region codes
 #' @param year double, year of region classification searched
 #' @param offline logical, whether works offline with package data. Defaults to TRUE.
 #'
@@ -29,13 +29,13 @@
 #'   is_region_code_without_prefix(c("KU005", "005"), region_level = "maakunta")
 #'
 is_region_code <- function(x, region_level = NULL, year = NULL, offline = TRUE) {
+
   is_region_code_with_prefix(x, region_level = region_level, year = year, offline = offline) |
     is_region_code_without_prefix(x, region_level = region_level, year = year, offline = offline)
+
 }
 
-#' @describeIn is_region_code
-#'
-#' Check if input is region code with prefix.
+#' @describeIn is_region_code Check if input is region code with prefix.
 #'
 #' @export
 #'
@@ -50,9 +50,7 @@ is_region_code_with_prefix <- function(x, region_level = NULL, year = NULL, offl
   as.vector(x) %in% codes
 }
 
-#' @describeIn is_region_code
-#'
-#' Check if input is region code without prefix.
+#' @describeIn is_region_code Check if input is region code without prefix.
 #'
 #' @export
 #'
@@ -79,13 +77,13 @@ is_region_code_without_prefix <- function(x, region_level = NULL, year = NULL, o
 #'
 #' @param x character, a vector of potential region names
 #' @param region_level character, optional region level of the input region codes
-#' @param year double
+#' @param year double, year of region classification searched
 #' @param offline logical, whether works offline with package data. Defaults to \code{TRUE}.
 #' @param allow_nonstandard_names logical, whether to accept a broader set of names as
 #'    region names.
-#' @param case_sensitive, logical, whether recognition is case sensitive, defaults
+#' @param case_sensitive logical, whether recognition is case sensitive, defaults
 #'    to \code{FALSE}
-#' @param lang, \code{fi}, \code{sv} or \code{en}. Language of the input name.
+#' @param lang \code{fi}, \code{sv} or \code{en}. Language of the input name.
 #'    Defaults to \code{fi}.
 #'
 #' @return logical
