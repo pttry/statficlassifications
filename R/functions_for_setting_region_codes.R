@@ -52,7 +52,7 @@ set_region_codes <- function(x,
                              offline = TRUE,
                              use_char_length_info = NULL) {
 
-  args <- list(x, region_level = tolower(region_level),
+  args <- list(x, region_level = region_level,
                year = year,
                offline = offline,
                use_char_length_info = use_char_length_info)
