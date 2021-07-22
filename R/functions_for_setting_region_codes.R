@@ -46,6 +46,13 @@
 #'   f <- factor(c("005", "020", "047", "MK01", "MK02", "MK04"))
 #'   set_region_codes(f, region_level = c("kunta"))
 #'
+#'   # If input is not recognized as region code, tries to reduce it to double
+#'   # and infer region from this number. This is how following is possible:
+#'   set_region_codes("alue045")
+#'
+#'   # But it means also that this happens
+#'   set_region_codes("lsdf4fsdffs5sfs")
+#'
 set_region_codes <- function(x,
                              region_level = NULL,
                              year = NULL,
@@ -94,22 +101,24 @@ set_region_codes_vct <- function(x,
   # Find non-unique matches and return an error if there are any.
   non_uniques <- sapply(new_codes, length) > 1
   if(any(non_uniques)) {
-    stop(paste("Code(s)",
+    message(paste("Code(s)",
                paste(names(new_codes)[non_uniques], collapse = ", "),
-               "are ambiguous. You can restrict the ambiguity by giving regions to region_level argument or try use character length information."))
+               "are ambiguous and left as they were. You can restrict the ambiguity by giving regions to region_level argument or try use character length information."))
   }
 
   # Find region codes for which matches could not be found.
-  not_set <- sapply(new_codes, length) == 0
+  not_recognized <- sapply(new_codes, length) == 0
 
   # Return information on non-matched region codes.
-  if(any(not_set)) {
+  if(any(not_recognized)) {
     message(paste("Code(s)",
-                  paste(x[not_set], collapse = ", "),
+                  paste(x[not_recognized], collapse = ", "),
                   "not recognized as",
                   paste(region_level, collapse = ", "),
                   "region code(s) and are left as they were."))
   }
+
+  not_set <- not_recognized | non_uniques
 
   # Join new names to the input vector.
   new_codes[not_set] <- NA
@@ -122,6 +131,11 @@ set_region_codes_vct <- function(x,
 
   # Return potential names
   names(output) <- x_names
+
+  if(!all(is_region_code_with_prefix(output))) {
+    message(paste("Not all input region codes succesfully set! Not set:",
+                  paste(x[not_set], collapse = ", ")))
+  }
 
   # Return
   output
@@ -173,12 +187,6 @@ set_region_codes_fct <- function(x,
 #'
 #' @return
 #'
-#' @examples
-#'
-#'   match_region_codes(21)
-#'   match_region_codes("005")
-#'   match_region_codes("005", region_level = "kunta")
-#'   match_region_codes("05", use_char_length_info = TRUE)
 #'
 match_region_codes <- function(x, year = NULL,
                                region_level = NULL,
@@ -212,9 +220,7 @@ match_region_codes_internal <- function(x, key,
   if(length(x) != 1) {stop("This function is for one element inputs.")}
 
   # If input is already a valid region code, return
-    if(is_region_code_with_prefix(x)) {
-      return(x)
-    }
+    if(is_region_code_with_prefix(x)) {return(x)}
 
   # "000" as a special case is matched to "SSS".
     if(x == "000") {return("SSS")}

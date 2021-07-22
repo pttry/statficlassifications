@@ -57,11 +57,3 @@ to specific region levels.
 \item \code{match_region_codes_internal}: Match single region code. For internal use.
 }}
 
-\examples{
-
-  match_region_codes(21)
-  match_region_codes("005")
-  match_region_codes("005", region_level = "kunta")
-  match_region_codes("05", use_char_length_info = TRUE)
-
-}

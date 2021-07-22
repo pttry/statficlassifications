@@ -90,4 +90,11 @@ potential region codes occurs in \code{match_region_codes_interal}- and
   f <- factor(c("005", "020", "047", "MK01", "MK02", "MK04"))
   set_region_codes(f, region_level = c("kunta"))
 
+  # If input is not recognized as region code, tries to reduce it to double
+  # and infer region from this number. This is how following is possible:
+  set_region_codes("alue045")
+
+  # But it means also that this happens
+  set_region_codes("lsdf4fsdffs5sfs")
+
 }
