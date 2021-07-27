@@ -1,14 +1,38 @@
 # Functions for checking region classifications are divided into functions that
 # test whether input is a certain element of classification returning logicals
 # functions that check if input vector is ok. The checking functions return TRUE
-# if everything ok and messsages if not.
+# if everything is ok and FALSE if not. In case of FALSE, they also return a message
+# containing information where the problem is.
 
 # Testing of the region information of data should proceed by first checking
 # if the region codes and names are ok and then whether they correctly
 # correspond to each other.
 
+################# CHECK REGION CLASSIFICATIONS ###################
 
+#' Check region classifications
+#'
+#' @param region_names a vector of standard region names
+#' @param region_codes a vector of standard region codes
+#' @param year double or character, year of classification
+#' @param lang \code{fi}, \code{sv} or \code{en}. Language of the input name. Defaults to \code{fi}.
+#' @param offline logical, whether works offline with package data. Defaults to \code{TRUE}.
+#'
+#' @return
+#' @export
+#'
+#' @examples
+check_region_classification <- function(region_names, region_codes,
+                                        year = NULL,
+                                        lang = "fi",
+                                        offline = TRUE) {
 
+  if(
+    all(check_region_names(region_names, year = year, lang = lang, offline = offline),
+      check_region_codes(region_codes, year = year, offline = offline),
+      check_region_name_code_correspondence(region_names, region_codes, year = year, lang = lang, offline = offline))
+  ) {message("Region classification check: passed.")}
+}
 
 ################# CHECK REGION CODES ##################
 
@@ -52,10 +76,11 @@ check_region_codes_vct <- function(x, year = NULL, offline = TRUE) {
   if(all(logical)) {
     return(TRUE)
   } else {
-    return(paste0("Region code(s) ",
+    message(paste0("Region classification check: region code(s) ",
                   paste(x[!logical], collapse = ", "),
-                  " not recognized as region code(s)",
+                  " not recognized as standard region code(s)",
                   ifelse(!is.null(year), paste0("for year ", year, "."), ".")))
+    return(FALSE)
   }
 }
 
@@ -84,7 +109,7 @@ check_region_codes_fct <- function(x, year = NULL, offline = TRUE) {
 #' @param x character vector or factor.
 #' @param year double or character, year of classification.
 #' @param offline logical, whether works offline with package data. Defaults to TRUE.
-#' @param lang, \code{fi}, \code{sv} or \code{en}. Language of the input name. Defaults to \code{fi}.
+#' @param lang \code{fi}, \code{sv} or \code{en}. Language of the input name. Defaults to \code{fi}.
 #'
 #' @return logical
 #' @export
@@ -114,10 +139,11 @@ check_region_names_vct <- function(x, lang = "fi", year = NULL, offline = TRUE) 
   if(all(logical)) {
     return(TRUE)
   } else {
-    return(paste0("Region name(s) ",
+    message(paste0("Region classification check: region name(s) ",
                   paste(x[!logical], collapse = ", "),
-                  " not recognized as region name(s)",
+                  " not recognized as standard region name(s)",
                   ifelse(!is.null(year), paste0("for year ", year, "."), ".")))
+    return(FALSE)
   }
 }
 
@@ -146,33 +172,28 @@ check_region_names_fct <- function(x, lang = "fi", year = NULL, offline = TRUE) 
 #' @return logical
 #' @export
 #'
-check_region_var_name_code_correspondence <- function(data,
-                                                      region_name_var, region_code_var,
-                                                      offline = TRUE) {
+check_region_name_code_correspondence <- function(region_names, region_codes,
+                                                  year = NULL,
+                                                  lang = "fi",
+                                                  offline = TRUE) {
 
-  regions <- c("kunta", "seutukunta", "maakunta")
-
-  regionkey <- get_regionkey(offline = offline)
-  regionkey <- purrr::map(regions, ~tidyr::unite(regionkey, !!.x, paste(.x, c("name", "code"), sep = "_"))) %>%
-    purrr::flatten() %>%
-    as.data.frame() %>%
-    dplyr::select(regions)
-
-  data <- tidyr::unite(data, region_var, region_name_var, region_code_var)
-
-  logical <- logical(length(names(regionkey)))
-  names(logical) <- names(regionkey)
-  for(var in names(regionkey)) {
-    if(all(data$region_var %in% regionkey[[var]])) {
-      logical[var] <- TRUE
-    }
+  suppressMessages(
+  if(!(check_region_names(region_names, year = year, lang = lang, offline = offline) &
+       check_region_codes(region_codes, year = year, offline = offline))) {
+    return(FALSE)
   }
-  any(logical)
+  )
+
+  x <- as.character(region_names) ==
+       as.character(codes_to_names(region_codes, year = year, lang = lang, offline = offline))
+  if(all(x)) {
+    return(TRUE)
+  } else {
+    message(paste("Region classification check:", paste(unique(paste(region_codes[!x], region_names[!x], sep = "-")), collapse = ", "),
+                  "not recognized as correct region name-code pairs."))
+    return(FALSE)
+  }
+
 }
 
-check_region_var_name_code_correspondence <- function(region_names, region_codes) {
-
-  identical(as.character(region_names),
-            as.character(codes_to_names(region_codes)))
-}
 

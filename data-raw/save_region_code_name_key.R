@@ -11,7 +11,7 @@
 # Region code to name key
 # Mapping from codes to names
 
-regions <- c("kunta", "maakunta", "seutukunta", "suuralue", "ely")
+regions <- c("kunta", "maakunta", "seutukunta", "suuralue", "ely") # nuts
 master_key <- data.frame()
 
 sys_current_year <- as.double(substring(Sys.Date(), 1,4))

@@ -99,10 +99,10 @@ set_region_codes_vct <- function(x,
   names(new_codes) <- x
 
   # Find non-unique matches and return an error if there are any.
-  non_uniques <- sapply(new_codes, length) > 1
-  if(any(non_uniques)) {
+  not_unique <- sapply(new_codes, length) > 1
+  if(any(not_unique)) {
     message(paste("Code(s)",
-               paste(names(new_codes)[non_uniques], collapse = ", "),
+               paste(names(new_codes)[not_unique], collapse = ", "),
                "are ambiguous and left as they were. You can restrict the ambiguity by giving regions to region_level argument or try use character length information."))
   }
 
@@ -118,7 +118,7 @@ set_region_codes_vct <- function(x,
                   "region code(s) and are left as they were."))
   }
 
-  not_set <- not_recognized | non_uniques
+  not_set <- not_recognized | not_unique
 
   # Join new names to the input vector.
   new_codes[not_set] <- NA

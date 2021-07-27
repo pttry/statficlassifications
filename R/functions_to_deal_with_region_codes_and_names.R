@@ -86,7 +86,6 @@ codes_to_names_vct <- function(x, year = NULL, lang = "fi", offline = TRUE) {
   key <- get_regionclassification(region_levels, year = year,
                                   lang = lang, offline = offline)
 
-
   # Join names to codes
   names(key) <- c("alue_code", "alue_name")
   output <- dplyr::left_join(data.frame(alue_code = x), key,

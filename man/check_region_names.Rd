@@ -15,7 +15,7 @@ check_region_names_fct(x, lang = "fi", year = NULL, offline = TRUE)
 \arguments{
 \item{x}{character vector or factor.}
 
-\item{lang, }{\code{fi}, \code{sv} or \code{en}. Language of the input name. Defaults to \code{fi}.}
+\item{lang}{\code{fi}, \code{sv} or \code{en}. Language of the input name. Defaults to \code{fi}.}
 
 \item{year}{double or character, year of classification.}
 
