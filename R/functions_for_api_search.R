@@ -35,7 +35,7 @@ search_keys <- function(..., as_localId = FALSE) {
 
   # Interrupt if nothing found.
   if(dim(results)[1] == 0) {
-    return("No search results!")
+    return(message("No search results!"))
   }
 
   # Format output.
@@ -87,7 +87,7 @@ search_classifications <- function(..., as_localId = FALSE){
 
   # Interrupt of nothing found.
   if(dim(results)[1] == 0) {
-    return("No search results!")
+    return(message("No search results!"))
   }
 
   # Format output
