@@ -1,43 +1,42 @@
-#' Title
+#' Recode classifications using key
 #'
-#' @param x
-#' @param year
-#' @param key
-#' @param leave
+#' @param x vector of elements to be recoded
+#' @param key the key to use in recoding
+#' @param from source column in key for recoding
+#' @param to target column in key for recoding
 #'
-#' @return
+#' @return vector or data.frame
 #' @export
 #'
-#' @examples
-statfi_recode <- function(x, ..., year = NULL, key = NULL, leave = FALSE) {
 
-  searchwords <- unlist(list(...))
+statfi_recode <- function(x, key, from = NULL, to = NULL) {
 
-  if(is.null(key)) {
-    localId <- search_classifications(searchwords, year = year, as_localId = TRUE)
-    key <- get_classification(localId)
+  # Detecting from-column in key
+    if(is.null(from)) {
+      z <- sapply(names(key), function(name) {sum(x %in% key[[name]])})
+      from <- names(key)[max(z) == z]
+    }
+
+  # Check if unique from-column in key found
+    if(length(from) > 1) {stop("Source column in key not automatically detected. Use from-argument.")}
+
+  # Check if all input vector elements in key from-column
+    if(!all(x %in% key[[from]])) {message("Some of your inputs not in the key! Producing NAs.")}
+
+  # Set as to all that are not from
+    to <- names(key)[names(key) != from]
+
+  # Recode
+    output <- key[to][which(x == key[[from]]),]
+
+  # Check and warn if an element in input vector mapped to multiple element in key to-column
+    if(length(output) > length(x)) {
+      message("Mapping not unique!")
+    }
+
+  # Return
+    output
   }
-
-  logical <- sapply(names(key), function(var_name) {all(x %in% key[[var_name]])})
-
-  if(all(!logical)) {stop("Some of your inputs not in the key!")}
-
-  from <- names(key)[logical]
-  x_df <- data.frame(x)
-  names(x_df) <- from
-  output <- dplyr::left_join(x_df, key, by = from)
-
-  if(!leave) {
-    output <- output[,names(key)[!logical]]
-  }
-  if(length(output) > length(x)) {
-    warning("Mapping not unique!")
-  }
-
-  output
-}
-
-
 
 
 #' Recode regional variables

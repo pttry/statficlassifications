@@ -21,7 +21,6 @@
 #' @return
 #' @export
 #'
-#' @examples
 check_region_classification <- function(region_names, region_codes,
                                         year = NULL,
                                         lang = "fi",

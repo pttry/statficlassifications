@@ -2,16 +2,22 @@
 % Please edit documentation in R/functions_for_recoding_regions.R
 \name{statfi_recode}
 \alias{statfi_recode}
-\title{Title}
+\title{Recode classifications using key}
 \usage{
-statfi_recode(x, ..., year = NULL, key = NULL, leave = FALSE)
+statfi_recode(x, key, from = NULL, to = NULL)
 }
 \arguments{
-\item{leave}{}
+\item{x}{vector of elements to be recoded}
+
+\item{key}{the key to use in recoding}
+
+\item{from}{source column in key for recoding}
+
+\item{to}{target column in key for recoding}
 }
 \value{
-
+vector or data.frame
 }
 \description{
-Title
+Recode classifications using key
 }
