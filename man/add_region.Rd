@@ -9,22 +9,19 @@ add_region(data, ..., from = NULL, year = NULL, offline = TRUE)
 \arguments{
 \item{data}{data.frame}
 
+\item{...}{character(s), the region(s) to add.}
+
 \item{from}{character, variable in the data that is used to add regions to the data. Defaults
 to NULL, in which case function tries to guess the variable in the data.}
 
 \item{year, }{double, year of region classification}
 
 \item{offline, }{logical, whether works offline with package data. Defaults to TRUE.}
-
-\item{to}{character, the region to add.}
 }
 \value{
-
+data.frame
 }
 \description{
 Uses get_regionkey- and recode-functions to provide a fast and simple way to
 add regions to data. Very pipe-friendly.
-}
-\examples{
-
 }

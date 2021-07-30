@@ -83,8 +83,8 @@ detect_region_level <- function(x, year = NULL, offline = TRUE) {
 #' the number of regions vary yearly. Given a vector of region names or codes and region
 #' level determines the year of regional classification. Returns all matching years.
 #'
-#' @param x
-#' @param region_level
+#' @param x vector of regions
+#' @param region_level region level in x
 #'
 #' @return vector
 #' @export

@@ -7,7 +7,9 @@
 detect_region_year(x, region_level)
 }
 \arguments{
-\item{region_level}{}
+\item{x}{vector of regions}
+
+\item{region_level}{region level in x}
 }
 \value{
 vector
