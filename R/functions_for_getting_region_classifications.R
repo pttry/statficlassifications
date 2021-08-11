@@ -202,7 +202,7 @@ get_regionclassification <- function(...,
     key <- statficlassifications::region_code_to_name_key
     filter_regexp <- paste(name_to_prefix(regions), collapse = "|")
     key <- key[grepl(pattern = filter_regexp, x = key$alue_code),]
-    message("Without year-argument a general region classification including abolished municipalities got.")
+    #message("Without year-argument a general region classification including abolished municipalities got.")
 
   } else {
 
