@@ -93,7 +93,7 @@ codes_to_names_vct <- function(x, year = NULL, lang = "fi", offline = TRUE) {
 
   # Give a warning if some given codes could not be recoded to name and is given NA
   if(any(is.na(output))) {
-    message(paste("Code(s)", paste(x[is.na(output)], collapse = ", "),
+    message(paste("Code(s)", paste(unique(x[is.na(output)]), collapse = ", "),
                   "not recognized as a region code(s) and given NA."))
   }
 
