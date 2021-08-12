@@ -11,6 +11,8 @@
 # Region code to name key
 # Mapping from codes to names
 
+library(dplyr)
+
 regions <- c("kunta", "maakunta", "seutukunta", "suuralue", "ely") # nuts
 master_key <- data.frame()
 
@@ -106,6 +108,7 @@ nonstandard_key <- c("koko maa" = "SSS",
                      "etelä-karjalan maakunta" = "MK09",
                      "etelä-savon maakunta" = "MK10",
                      "pohjoissavon maakunta" = "MK11",
+                     "pohjois-savon maakunta" = "MK11",
                      "pohjois-karjalan maakunta" = "MK12",
                      "keski-suomen maakunta" = "MK13",
                      "etelä-pohjanmaan maakunta" = "MK14",
@@ -126,6 +129,7 @@ nonstandard_key <- c("koko maa" = "SSS",
                      "Etelä-Karjalan maakunta" = "MK09",
                      "Etelä-Savon maakunta" = "MK10",
                      "Pohjoissavon maakunta" = "MK11",
+                     "Pohjois-Savon maakunta" = "MK11",
                      "Pohjois-Karjalan maakunta" = "MK12",
                      "Keski-Suomen maakunta" = "MK13",
                      "Etelä-Pohjanmaan maakunta" = "MK14",
