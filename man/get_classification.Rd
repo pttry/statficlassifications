@@ -4,21 +4,13 @@
 \alias{get_classification}
 \title{Get classification series}
 \usage{
-get_classification(
-  localId,
-  lang = "fi",
-  print_series_name = TRUE,
-  as_named_vector = FALSE
-)
+get_classification(localId, lang = "fi", as_named_vector = FALSE)
 }
 \arguments{
 \item{localId}{character, localId of the required correspondence table}
 
 \item{lang}{\code{"fi"}, \code{"en"}, or \code{"sv"}, desired language.
 Defaults to \code{"fi"}.}
-
-\item{print_series_name}{whether prints the long name of the classification series.
-Defaults to \code{TRUE}.}
 
 \item{as_named_vector}{logical, whether to return the object as a named vector rather
 than data.frame. Defaults to \code{FALSE}.}

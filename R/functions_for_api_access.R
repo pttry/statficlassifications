@@ -123,8 +123,6 @@ get_url <- function(localId = NULL, classification_service = NULL) {
 #' @param localId character, local ID of the required correspondence table
 #' @param lang \code{"fi"}, \code{"en"}, or \code{"sv"}, desired language.
 #'    Defaults to \code{"fi"}.
-#' @param print_key_name whether prints the long name of the correspondence table.
-#'    Defaults to \code{TRUE}.
 #'
 #' @return data.frame, the key of the provided localId.
 #' @export
@@ -134,10 +132,10 @@ get_url <- function(localId = NULL, classification_service = NULL) {
 #'    localId <- "kunta_1_20200101%23seutukunta_1_20200101"
 #'    get_key(localId)
 #'
-get_key <- function(localId, lang = "fi", print_key_name = TRUE) {
+get_key <- function(localId, lang = "fi") {
 
   if(length(localId) > 1) {
-    return(lapply(localId, get_key, lang, print_key_name))
+    return(lapply(localId, get_key, lang))
   }
 
   # Access API.
@@ -153,9 +151,9 @@ get_key <- function(localId, lang = "fi", print_key_name = TRUE) {
                     target_code = key$targetItem$code,
                     target_name = unlist(lapply(key$targetItem$classificationItemNames, '[', "name")))
 
-  if(print_key_name) {message(text)}
 
   # Return.
+  message(text)
   key
 }
 
@@ -166,8 +164,6 @@ get_key <- function(localId, lang = "fi", print_key_name = TRUE) {
 #' @param localId character, localId of the required correspondence table
 #' @param lang \code{"fi"}, \code{"en"}, or \code{"sv"}, desired language.
 #'    Defaults to \code{"fi"}.
-#' @param print_series_name  whether prints the long name of the classification series.
-#'    Defaults to \code{TRUE}.
 #' @param as_named_vector logical, whether to return the object as a named vector rather
 #'    than data.frame. Defaults to \code{FALSE}.
 #'
@@ -181,31 +177,31 @@ get_key <- function(localId, lang = "fi", print_key_name = TRUE) {
 #'
 get_classification <- function(localId,
                                lang = "fi",
-                               print_series_name = TRUE,
                                as_named_vector = FALSE) {
 
   if(length(localId) > 1) {
-    return(lapply(localId, get_classification, lang, print_series_name, as_named_vector))
+    return(lapply(localId, get_classification, lang, as_named_vector))
   }
 
   # Access API.
   classif <- access_API(localId, content = "data", lang = lang,
                         classification_service = "classifications")
 
-  # Format
+  # Get metatext.
   text <- unlist(unique(classif$classification$classificationName))["name"]
+
   classif <- data.frame(code = classif$code,
                         name = unlist(lapply(classif$classificationItemNames, '[', "name")))
 
   # Format output
   output <- classif
-  if(print_series_name) {message(text)}
   if(as_named_vector) {
     output <- classif$name
     names(output) <- classif$code
   }
 
   # Return
+  message(text)
   output
 }
 

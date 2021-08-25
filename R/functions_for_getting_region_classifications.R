@@ -78,7 +78,7 @@ get_regionkey <- function(from = "kunta", ..., year = NULL, lang = "fi",
 
     # Create local ID and get key
     localId <- create_localId_name("kunta", target, year)
-    key <- get_key(localId, lang = lang, print_key_name = FALSE)
+    key <- suppressMessages(get_key(localId, lang = lang))
 
     # if(length(key) == 0) {
     #   missed_targets[target] <- TRUE
@@ -172,23 +172,18 @@ get_regionclassification <- function(...,
                                      year = NULL,
                                      offline = TRUE,
                                      as_named_vector = FALSE,
-                                     suppress_message = FALSE,
                                      only_names = FALSE,
                                      only_codes = FALSE,
                                      lang = "fi") {
 
   if(!is.null(year)) {
     offline <- FALSE
-    if(!suppress_message) {
     message("Overriding default option for offline when specific year is required.")
-    }
   }
 
   if(lang != "fi") {
     offline <- FALSE
-    if(!suppress_message) {
       message("Overriding default option for offline for language other than Finnish.")
-    }
   }
 
   regions <- unlist(list(...))
@@ -218,11 +213,9 @@ get_regionclassification <- function(...,
            }
 
            localId <- paste0(region, "_1_", year, "0101")
-           key_temp <- get_classification(localId, lang = lang, print_series_name = FALSE)
+           key_temp <- suppressMessages(get_classification(localId, lang = lang))
            if(length(key_temp) == 0) {
-             if(!suppress_message) {
                 message(paste0("No region name-code key found for ", region, " for year ", year))
-             }
            next
            }
            key_temp$code <- paste0(name_to_prefix(region), key_temp$code)

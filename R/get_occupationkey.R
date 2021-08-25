@@ -19,7 +19,7 @@ get_occupationkey <- function(code_level = NULL, year = 2010, lang = "fi",
                               as_named_vector = FALSE) {
 
   localId <- search_classifications("ammatti", year = year, as_localId = TRUE)
-  classif <- get_classification(localId, lang = lang, print_series_name = FALSE)
+  classif <- suppressMessages(get_classification(localId, lang = lang))
 
   if(!is.null(code_level)) {
     classif <- dplyr::filter(classif, nchar(code) == code_level)
