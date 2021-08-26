@@ -52,10 +52,18 @@ get_regionkey <- function(from = "kunta", ..., year = NULL, lang = "fi",
     message("Overriding default option for offline for language other than Finnish.")
   }
 
+  # Override offline = FALSE if desired target not in offline regionkey
+  if(!all(sapply(targets, function(x) {any(grepl(pattern = x, names(statficlassifications::regionkey)))}))) {
+    offline <- FALSE
+    message("Overriding default option for offline for target region not in offline regionkey.")
+  }
+
   # target_regions <- prefix_name_key$name[-(1:2)]
   region_code_prefixes <- name_to_prefix(targets, pass_unknown = TRUE)
   # missed_targets <- logical(length(target_regions))
   # names(missed_targets) <- target_regions
+
+
 
   if(offline) {
     regionkey <- statficlassifications::regionkey
