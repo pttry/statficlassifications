@@ -31,15 +31,15 @@
 
 get_regionkey <- function(...,
                           year = NULL,
-                          lang = "fi",
                           only_codes = FALSE,
                           only_names = FALSE,
+                          lang = "fi",
                           offline = TRUE) {
 
   ## Set up ##
 
   latest_year <- get_latest_year(offline = offline)
-  regions <- unlist(list(...))
+  regions <- unique(unlist(list(...)))
   if(is.null(regions)) {
     regions <- c("kunta", "seutukunta", "maakunta")
   } else {
@@ -169,18 +169,18 @@ get_regionkey <- function(...,
 #'
 get_regionclassification <- function(...,
                                      year = NULL,
-                                     offline = TRUE,
-                                     as_named_vector = FALSE,
                                      only_names = FALSE,
                                      only_codes = FALSE,
-                                     lang = "fi") {
+                                     as_named_vector = FALSE,
+                                     lang = "fi",
+                                     offline = TRUE) {
 
-  if(!is.null(year)) {
+  if(!is.null(year) & offline) {
     offline <- FALSE
     message("Overriding default option for offline when specific year is required.")
   }
 
-  if(lang != "fi") {
+  if(lang != "fi" & offline) {
     offline <- FALSE
       message("Overriding default option for offline for language other than Finnish.")
   }
@@ -188,15 +188,15 @@ get_regionclassification <- function(...,
   regions <- unlist(list(...))
 
   # If no specific region required, give the regions listed in the prefix_name_key
-  if(length(regions) == 0) { regions <- prefix_name_key$name}
+  if(is.null(regions)) { regions <- prefix_name_key$name }
   key <- data.frame()
 
   if(offline) {
 
+   # Without year-argument a general region classification including abolished municipalities got.
     key <- statficlassifications::region_code_to_name_key
     filter_regexp <- paste(name_to_prefix(regions), collapse = "|")
     key <- key[grepl(pattern = filter_regexp, x = key$alue_code),]
-    #message("Without year-argument a general region classification including abolished municipalities got.")
 
   } else {
 
@@ -234,7 +234,7 @@ get_regionclassification <- function(...,
       names(key) <- c("alue_code", "alue_name")
     }
 
-  # Tranform to named vector if required
+  # Transform to named vector if required
     if(as_named_vector & (only_names | only_codes)) {
       stop("There is no named vector with either only codes or names.")
     }

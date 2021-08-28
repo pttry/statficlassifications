@@ -54,7 +54,7 @@ statfi_recode <- function(x, key, from = NULL, to = NULL) {
 #'
 #'
 
-recode_region <- function(x, to = NULL, year = NULL, offline = TRUE) {
+recode_region <- function(x, to, year = NULL, offline = TRUE) {
 
   from <- detect_region_level(x)
   year_in_data <- detect_region_year(x, from)
@@ -69,7 +69,10 @@ recode_region <- function(x, to = NULL, year = NULL, offline = TRUE) {
                    ". A key corresponding to this year is used."))
   }
 
-  regionkey <- get_regionkey(year = year, offline = offline)
+  regionkey <- get_regionkey(gsub("_.*", "", from),
+                             gsub("_.*", "", to),
+                             year = year,
+                             offline = offline)
 
   if(all(is_region_code(x))) {
     from <- paste0(from, "_code")
@@ -102,6 +105,12 @@ recode_region <- function(x, to = NULL, year = NULL, offline = TRUE) {
 add_region <- function(data, ..., from = NULL, year = NULL, offline = TRUE) {
 
   to <- unlist(list(...))
+
+  if(any(!(grepl("code", to) | grepl("name", to)))) {
+    to <- c(to, paste(to[!(grepl("code", to) | grepl("name", to))], c("code", "name"), sep = "_"))
+    to <- to[grepl("code", to) | grepl("name", to)]
+  }
+
   region_var <- detect_region_var(data, year = year, offline = offline)
   region_var_name_lgl <- sapply(region_var, grepl, pattern = "name")
   region_var_code_lgl <- sapply(region_var, grepl, pattern = "code")
@@ -116,8 +125,6 @@ add_region <- function(data, ..., from = NULL, year = NULL, offline = TRUE) {
     stop("Standardize your region codes first.")
   }  }
 
-  from_key <- names(region_var)
-
   if(is.null(from)) {
     from <- region_var
     names(from) <- NULL
@@ -125,12 +132,7 @@ add_region <- function(data, ..., from = NULL, year = NULL, offline = TRUE) {
     stop("input to argument 'from' not in the data!")
   }
 
-  if(!all(to %in% c("kunta", "seutukunta", "maakunta", "suuralue"))) {
-    stop("Argument to has to be either 'kunta', 'seutukunta', 'maakunta' or 'suuralue'")
-  }
-  to <- paste(to, gsub(".*_", "", from_key), sep = "_")
-
-  new_var <- recode_region(data[[from]], year = year, to = to)
+  new_var <- recode_region(x = data[[from[1]]], to = to, year = year, offline = offline)
   new_names <- c(names(data), to)
   data <- cbind(data, data.frame(new_var))
   names(data) <- new_names
