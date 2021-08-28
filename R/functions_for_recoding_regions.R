@@ -1,5 +1,7 @@
 #' Recode classifications using key
 #'
+#' Given a key, recodes a vector
+#'
 #' @param x vector of elements to be recoded
 #' @param key the key to use in recoding
 #' @param from source column in key for recoding
@@ -9,7 +11,7 @@
 #' @export
 #'
 
-statfi_recode <- function(x, key, from = NULL, to = NULL) {
+statfi_recode <- function(x, to = NULL, key, from = NULL) {
 
   # Detecting from-column in key
     if(is.null(from)) {
@@ -23,7 +25,7 @@ statfi_recode <- function(x, key, from = NULL, to = NULL) {
   # Check if all input vector elements in key from-column
     if(!all(x %in% key[[from]])) {message("Some of your inputs not in the key! Producing NAs.")}
 
-  # If to not set, set as to all that are not from
+  # If parameter to not set, set as to all that are not from
     if(is.null(to)) {to <- names(key)[names(key) != from]}
 
   # Recode
@@ -42,7 +44,8 @@ statfi_recode <- function(x, key, from = NULL, to = NULL) {
 #' Recode regional variables
 #'
 #' Recodes regional variables by e.g. changing kunnat to seutukunnat or changing names to codes
-#' and vice versa. Uses the 'get_regionkey'-function.
+#' and vice versa. A wrapper for statfi_recode function that uses the 'get_regionkey'-function
+#' to produce the key.
 #'
 #' @param x data.frame, the input vector that contains the regional variable.
 #' @param to character, the desired target in the classification key

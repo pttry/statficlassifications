@@ -7,11 +7,11 @@
 get_regionclassification(
   ...,
   year = NULL,
-  offline = TRUE,
-  as_named_vector = FALSE,
   only_names = FALSE,
   only_codes = FALSE,
-  lang = "fi"
+  as_named_vector = FALSE,
+  lang = "fi",
+  offline = TRUE
 )
 }
 \arguments{
@@ -20,19 +20,19 @@ get_regionclassification(
 \item{year}{character/numeric, year of the required keys. As default returns a general
 classification containing also abolished municipalities.}
 
-\item{offline}{logical, whether uses the key in the package data. Defaults \code{TRUE}.}
-
-\item{as_named_vector}{logical, whether returns the key as a named vector rather than a
-data.frame. Defaults \code{FALSE}.}
-
 \item{only_names}{logical, whether to return only the names in the classification.
 Defaults to \code{FALSE}.}
 
 \item{only_codes}{logical, whether to return only the codes in the classification.
 Defaults to \code{FALSE}.}
 
+\item{as_named_vector}{logical, whether returns the key as a named vector rather than a
+data.frame. Defaults \code{FALSE}.}
+
 \item{lang}{\code{"fi"}, \code{"en"}, or \code{"sv"}, language of the classification required.
 Defaults to \code{"fi"}.}
+
+\item{offline}{logical, whether uses the key in the package data. Defaults \code{TRUE}.}
 
 \item{suppress_message}{logical, whether to suppress any messages the function might produce.}
 }

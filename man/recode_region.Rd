@@ -4,7 +4,7 @@
 \alias{recode_region}
 \title{Recode regional variables}
 \usage{
-recode_region(x, to = NULL, year = NULL, offline = TRUE)
+recode_region(x, to, year = NULL, offline = TRUE)
 }
 \arguments{
 \item{x}{data.frame, the input vector that contains the regional variable.}
@@ -20,5 +20,6 @@ data.frame
 }
 \description{
 Recodes regional variables by e.g. changing kunnat to seutukunnat or changing names to codes
-and vice versa. Uses the 'get_regionkey'-function.
+and vice versa. A wrapper for statfi_recode function that uses the 'get_regionkey'-function
+to produce the key.
 }

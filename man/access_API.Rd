@@ -37,7 +37,7 @@ see \url{https://www.stat.fi/en/luokitukset/info/}.
 \examples{
 
   localId <- "kunta_1_20200101\%23seutukunta_1_20200101"
-  access_API(localId, content = "data")
+  df <- access_API(localId, content = "data")
   access_API(localId, content = "url")
 
 }

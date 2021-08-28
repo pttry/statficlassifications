@@ -70,16 +70,16 @@ dplyr::left_join(data, get_regionkey(only_names = TRUE), by = "kunta_name") %>% 
 For a shortcut, use `add_region`:
 
 ```{r}
-# data %>% add_region("maakunta") %>% head()
+ data %>% add_region("maakunta") %>% head()
 ```
 
 
 It is also straightforward to compute, say, maakunta-level means give the municipal data. 
 
 ```{r}
-#data %>% add_region("maakunta") %>% 
- #        dplyr::group_by(maakunta_name) %>%
-  #       dplyr::summarize(maakunta_mean = mean(values)) %>% head()
+data %>% add_region("maakunta") %>% 
+        dplyr::group_by(maakunta_name) %>%
+       dplyr::summarize(maakunta_mean = mean(values)) %>% head()
 ```
 
 ### Region code prefixes

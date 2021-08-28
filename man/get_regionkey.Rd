@@ -5,30 +5,27 @@
 \title{Get region classification key}
 \usage{
 get_regionkey(
-  from = "kunta",
   ...,
   year = NULL,
-  lang = "fi",
   only_codes = FALSE,
   only_names = FALSE,
+  lang = "fi",
   offline = TRUE
 )
 }
 \arguments{
-\item{from}{character, the smallest region desired in the resulting classification key.}
-
-\item{...}{character(s), the regions to include in the key other than \code{from}.}
+\item{...}{character(s), the regions to include in the key.}
 
 \item{year}{character or numerical, the year of the desired classification key.}
-
-\item{lang}{\code{"fi"}, \code{"en"}, or \code{"sv"}, language of the key required.
-Defaults to \code{"fi"}.}
 
 \item{only_codes}{logical, whether the key should contain only the region codes.
 Defaults to \code{FALSE}.}
 
 \item{only_names}{logical, whether the key should contain only the region names.
 Defaults to \code{FALSE}.}
+
+\item{lang}{\code{"fi"}, \code{"en"}, or \code{"sv"}, language of the key required.
+Defaults to \code{"fi"}.}
 
 \item{offline}{logical, whether uses the key in the package data. Defaults \code{TRUE}.}
 }
@@ -45,6 +42,8 @@ The classification keys e.g. from seutukunta to maakunta or maakunta to suuralue
 available. Thus, the logic of the function is to first get all keys from kunta to all other regions,
 construct a table that contains all municipalities with their corresponding larger regions and
 then apply the selection implied by the arguments set by the user possible removing duplicates.
+\code{get_regionkey} can thus also construct keys that are not available in the Statistics
+Finland classification keys API.
 }
 \examples{
 

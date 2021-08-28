@@ -4,20 +4,20 @@
 \alias{statfi_recode}
 \title{Recode classifications using key}
 \usage{
-statfi_recode(x, key, from = NULL, to = NULL)
+statfi_recode(x, to = NULL, key, from = NULL)
 }
 \arguments{
 \item{x}{vector of elements to be recoded}
 
+\item{to}{target column in key for recoding}
+
 \item{key}{the key to use in recoding}
 
 \item{from}{source column in key for recoding}
-
-\item{to}{target column in key for recoding}
 }
 \value{
 vector or data.frame
 }
 \description{
-Recode classifications using key
+Given a key, recodes a vector
 }

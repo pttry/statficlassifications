@@ -20,7 +20,7 @@
 #' @examples
 #'
 #'   localId <- "kunta_1_20200101%23seutukunta_1_20200101"
-#'   access_API(localId, content = "data")
+#'   df <- access_API(localId, content = "data")
 #'   access_API(localId, content = "url")
 #'
 access_API <- function(localId = NULL,
@@ -76,10 +76,14 @@ access_API <- function(localId = NULL,
 
   # Access API.
     resp <- httr::GET(url, query = list(content = content, meta = "min", lang = lang))
+   # resp <- lapply(url, httr::GET, query = list(content = content, meta = "min", lang = lang))
     cont <- httr::content(resp, "text", encoding = "UTF-8")
+   # cont <- lapply(resp, httr::content, as = "text", encoding = "UTF-8")
+
 
   # Return.
     as.data.frame(jsonlite::fromJSON(cont))
+    # lapply(cont, jsonlite::fromJSON)
 }
 
 
@@ -135,7 +139,7 @@ get_url <- function(localId = NULL, classification_service = NULL) {
 get_key <- function(localId, lang = "fi") {
 
   if(length(localId) > 1) {
-    return(lapply(localId, get_key, lang))
+    return(lapply(localId, get_key, lang ))
   }
 
   # Access API.
