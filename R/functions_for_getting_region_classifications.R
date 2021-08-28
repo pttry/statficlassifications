@@ -8,9 +8,10 @@
 #' available. Thus, the logic of the function is to first get all keys from kunta to all other regions,
 #' construct a table that contains all municipalities with their corresponding larger regions and
 #' then apply the selection implied by the arguments set by the user possible removing duplicates.
+#' \code{get_regionkey} can thus also construct keys that are not available in the Statistics
+#' Finland classification keys API.
 #'
-#' @param from character, the smallest region desired in the resulting classification key.
-#' @param ... character(s), the regions to include in the key other than \code{from}.
+#' @param ... character(s), the regions to include in the key.
 #' @param year character or numerical, the year of the desired classification key.
 #' @param lang \code{"fi"}, \code{"en"}, or \code{"sv"}, language of the key required.
 #'    Defaults to \code{"fi"}.
@@ -28,16 +29,21 @@
 #' get_regionkey("kunta", "seutukunta", only_codes = TRUE)
 #'
 
-get_regionkey <- function(from = "kunta", ..., year = NULL, lang = "fi",
-                          only_codes = FALSE, only_names = FALSE, offline = TRUE) {
+get_regionkey <- function(...,
+                          year = NULL,
+                          lang = "fi",
+                          only_codes = FALSE,
+                          only_names = FALSE,
+                          offline = TRUE) {
+
+  ## Set up ##
 
   latest_year <- get_latest_year(offline = offline)
-  source <- tolower(from)
-  targets <- unlist(list(...))
-  if(is.null(targets)) {
-    targets <- c("seutukunta", "maakunta")
+  regions <- unlist(list(...))
+  if(is.null(regions)) {
+    regions <- c("kunta", "seutukunta", "maakunta")
   } else {
-    targets <- tolower(targets)
+    regions <- tolower(regions)
   }
 
   if(is.null(year)) {
@@ -47,91 +53,73 @@ get_regionkey <- function(from = "kunta", ..., year = NULL, lang = "fi",
     message("Overriding default option for offline regionkey for years other than the latest year.")
   }
 
-  if(lang != "fi") {
+  if(lang != "fi" & offline) {
     offline <- FALSE
     message("Overriding default option for offline for language other than Finnish.")
   }
 
   # Override offline = FALSE if desired target not in offline regionkey
-  if(!all(sapply(targets, function(x) {any(grepl(pattern = x, names(statficlassifications::regionkey)))}))) {
+  if(!all(sapply(regions, function(x) {any(grepl(pattern = x, names(statficlassifications::regionkey)))})) & offline) {
     offline <- FALSE
     message("Overriding default option for offline for target region not in offline regionkey.")
   }
 
-  # target_regions <- prefix_name_key$name[-(1:2)]
-  region_code_prefixes <- name_to_prefix(targets, pass_unknown = TRUE)
-  # missed_targets <- logical(length(target_regions))
-  # names(missed_targets) <- target_regions
-
-
+  ## Get key ##
 
   if(offline) {
     regionkey <- statficlassifications::regionkey
 
-    if(!any(paste0(targets, "_code") %in% names(regionkey))){
-      stop("Not all classifications: ", targets, " in offline classification. Try set offline = FALSE")
-    }
-
-    regionkey <- dplyr::select(regionkey, c(paste(c(source, targets), "name", sep = "_"),
-                                          paste(c(source, targets), "code", sep = "_")))
-
   } else {
 
+   # Build a complete region key
 
-  # Build a complete region key
+    regionkey <- NULL
 
-  regionkey <- NULL
+    for(region in regions[regions != "kunta"]) {
 
-  for(target in targets) {
+      # All keys are constructed using municipalities (kunta). Keys only between
+      # larger regions may not be available, but keys between municipalities and
+      # other regions are always available. Municipalities are thus used to
+      # bind also larger regions together for which there might not be a specific
+      # key.
 
-    # Create local ID and get key
-    localId <- create_localId_name("kunta", target, year)
-    key <- suppressMessages(get_key(localId, lang = lang))
+      # Create local ID and get key
+        localId <- create_localId_name("kunta", region, year)
+        key <- suppressMessages(get_key(localId, lang = lang))
 
-    # if(length(key) == 0) {
-    #   missed_targets[target] <- TRUE
-    #   next
-    # }
+      # Return error if key not found
+       if(length(key) == 0) { stop(paste("No key for", region, "found")) }
 
-    # The codes in classification tables have only the numbers, not the region marker (e.g. MK, SK). Add
-    # these region markers.
+      # The codes in classification tables have only the numbers, not the region marker (e.g. MK, SK). Add
+      # these region markers.
 
-      key$source_code <- paste0("KU", key$source_code)
-      key$target_code <- paste0(region_code_prefixes[which(targets == target)], key$target_code)
+       key$source_code <- paste0(name_to_prefix("kunta"), key$source_code)
+       key$target_code <- paste0(name_to_prefix(region, pass_unknown = TRUE), key$target_code)
 
-    # set the variable names, codes get prefix '_code' and names get prefix '_name'. e.g. '(maa)kunta_name'
-    # and '(maa)kunta_code'.
+      # set the variable names, codes get prefix '_code' and names get prefix '_name'. e.g. '(maa)kunta_name'
+      # and '(maa)kunta_code'.
 
-    names(key) <- c("kunta_code", "kunta_name", paste(target, c("code", "name"), sep = "_"))
+       names(key) <- c("kunta_code", "kunta_name", paste(region, c("code", "name"), sep = "_"))
 
-    if(is.null(regionkey)) {
-      regionkey <- key
-    } else {
-      regionkey <- dplyr::left_join(regionkey, key, by = c("kunta_code", "kunta_name"))
+       if(is.null(regionkey)) {
+         regionkey <- key
+       } else {
+         regionkey <- dplyr::left_join(regionkey, key, by = c("kunta_code", "kunta_name"))
+       }
+
     }
 
   }
 
-  }
+  ## Format output and return ##
 
   # Apply potential user selection regarding regions
 
-    # if(is.null(targets)) {
-    #      targets <- target_regions[!missed_targets]
-    # } else if(any(!(targets %in% c("kunta", target_regions)))) {
-    #          return(message(paste0("This function only produces keys between ",
-    #                 paste(target_regions, collapse = ", "),
-    #                 " and kunta.")))
-    # } else if (any(targets %in% target_regions[missed_targets])) {
-    #          return(message(paste0("There is no key from ",
-    #                               source, " to ",
-    #                               paste(target_regions[missed_targets], collapse = ", "),
-    #                               " for year ", year)))
-    # }
-
-
+     regionkey <- dplyr::select(regionkey, c(paste(regions, "name", sep = "_"),
+                                             paste(regions, "code", sep = "_")))
 
   # Apply potential user selection regarding names and codes
+
     if(only_codes & only_names) {
       stop("Can't give you a key that has only codes but also only names!")
     }
@@ -140,13 +128,16 @@ get_regionkey <- function(from = "kunta", ..., year = NULL, lang = "fi",
 
   # Remove potential duplicate rows. Since regionkey is constructed using municipalities
   # no matter what the source argument is, using source argument other than municipality
-  # generated duplicate rows.
-    regionkey <- regionkey[!duplicated(regionkey),]
+  # generates duplicate rows.
+
+    regionkey <- dplyr::distinct(regionkey)
 
   # All columns to factors
+
     regionkey <- dplyr::mutate(regionkey, across(.fns = as.factor))
 
   # Return
+
     regionkey
 }
 
