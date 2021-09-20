@@ -265,13 +265,13 @@ urls_as_localId_df <- function(urls) {
                                  paste0("https://data.stat.fi/api/classifications/v2/correspondenceTables/")))
     nros <- as.data.frame(matrix(unlist(lapply(urls, stringr::str_extract_all, "_\\d+_")), ncol = 2, byrow = TRUE))
     names(nros) <- paste0("nro", 1:2)
-    results <- tidyr::separate(urls, url, c("source", "temp_var", "date2"), sep = "_\\d+_") %>%
-      tidyr::separate(temp_var, c("date1", "target"), sep = "#") %>%
+    results <- tidyr::separate(urls, url, c("source", "temp_var", "date2"), sep = "_\\d+_") |>
+      tidyr::separate(temp_var, c("date1", "target"), sep = "#") |>
       dplyr::mutate(year1 = substring(date1, 1,4),
                     date1 = substring(date1, 5,8),
                     year2 = substring(date2, 1,4),
                     date2 = substring(date2, 5,8))
-    output <- cbind(results, nros) %>%
+    output <- cbind(results, nros) |>
       dplyr::select(source, nro1, year1, date1, target, nro2, year2, date2)
 
   } else if(grepl("v2/classifications", urls)) {
@@ -280,10 +280,10 @@ urls_as_localId_df <- function(urls) {
                                  paste0("https://data.stat.fi/api/classifications/v2/classifications/")))
     nro <- as.data.frame(matrix(unlist(lapply(urls, stringr::str_extract_all, "_\\d+_")), ncol = 1, byrow = TRUE))
     names(nro) <- "nro"
-    results <- tidyr::separate(urls, url, c("series", "date1"), sep = "_\\d+_") %>%
+    results <- tidyr::separate(urls, url, c("series", "date1"), sep = "_\\d+_") |>
       dplyr::mutate(year = substring(date1, 1,4),
                     date = substring(date1, 5,8))
-    output <- cbind(results, nro) %>%
+    output <- cbind(results, nro) |>
       dplyr::select(series, nro, year, date)
   }
   output

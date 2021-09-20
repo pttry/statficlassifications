@@ -10,8 +10,8 @@
    # municipalities) also add (the trivial correspondeces of) the municipalities that were
    # never abolished.
 
-   df_key <- get_regionkey(from = "kunta", "seutukunta", offline = FALSE) %>%
-       dplyr::mutate(joiner = kunta_code, joinee = kunta_code) %>%
+   df_key <- get_regionkey(from = "kunta", "seutukunta", offline = FALSE) |>
+       dplyr::mutate(joiner = kunta_code, joinee = kunta_code) |>
        dplyr::select(joiner, joinee)
      current_muns <- df2$joinee
 

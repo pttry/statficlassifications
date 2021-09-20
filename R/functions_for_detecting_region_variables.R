@@ -16,9 +16,9 @@
 #' @examples
 #'
 #'    # Generate random municipal data with random name for the regions
-#'              data <- get_regionkey() %>%
-#'                      dplyr::select(kunta_name) %>%
-#'                      dplyr::rename_with(~paste(sample(letters, 4), collapse = "")) %>%
+#'              data <- get_regionkey() |>
+#'                      dplyr::select(kunta_name) |>
+#'                      dplyr::rename_with(~paste(sample(letters, 4), collapse = "")) |>
 #'                      dplyr::mutate(values = rnorm(dplyr::n()))
 #'
 #'              detect_region_var(data)
@@ -95,9 +95,8 @@ detect_region_level <- function(x, year = NULL, offline = TRUE) {
 #'
 detect_region_year <- function(x, region_level) {
 
-  statficlassifications::number_of_regions %>%
+  (statficlassifications::number_of_regions |>
     dplyr::filter(region_level == region_level,
-                  number_of_regions == length(unique(x))) %>%
-    `$`(year)
+                  number_of_regions == length(unique(x))))$year
 
 }

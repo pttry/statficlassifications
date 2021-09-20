@@ -57,29 +57,29 @@ head(kunta_maakunta_key)
 `statficlassifications` also gives you a selection of ways and functions that help you to standardize and manipulate the regional information in your data. For examples, generate random municipal data:
 
 ```{r}
-data <- get_regionkey() %>% dplyr::select(kunta_name) %>% dplyr::mutate(values = rnorm(dplyr::n()))
+data <- get_regionkey() |> dplyr::select(kunta_name) |> dplyr::mutate(values = rnorm(dplyr::n()))
 head(data)
 ```
 
 You can use regional classification tables to add regions to your data:
 
 ```{r}
-dplyr::left_join(data, get_regionkey(only_names = TRUE), by = "kunta_name") %>% head()
+dplyr::left_join(data, get_regionkey(only_names = TRUE), by = "kunta_name") |> head()
 ```
 
 For a shortcut, use `add_region`:
 
 ```{r}
- data %>% add_region("maakunta") %>% head()
+ data |> add_region("maakunta") |> head()
 ```
 
 
 It is also straightforward to compute, say, maakunta-level means give the municipal data. 
 
 ```{r}
-data %>% add_region("maakunta") %>% 
-        dplyr::group_by(maakunta_name) %>%
-       dplyr::summarize(maakunta_mean = mean(values)) %>% head()
+data |> add_region("maakunta") |> 
+        dplyr::group_by(maakunta_name) |>
+       dplyr::summarize(maakunta_mean = mean(values)) |> head()
 ```
 
 ### Region code prefixes

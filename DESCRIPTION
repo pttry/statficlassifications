@@ -23,8 +23,7 @@ Imports:
     tidyr,
     purrr,
     plyr,
-    readxl,
-    magrittr
+    readxl
 Depends: 
     R (>= 2.10)
 Suggests: 

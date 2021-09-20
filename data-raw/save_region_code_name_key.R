@@ -35,14 +35,14 @@ duplicates <- dplyr::filter(key, alue_code %in% key[duplicated(key$alue_code),]$
 key <- dplyr::filter(key, !(alue_code %in% key[duplicated(key$alue_code),]$alue_code))
 
 # Find the latest name for each duplicated code and mark it with TRUE
-temp_df<-duplicates %>%
-  group_by(alue_code) %>%
-  summarize(year = max(year)) %>%
+temp_df<-duplicates |>
+  group_by(alue_code) |>
+  summarize(year = max(year)) |>
   mutate(leave = TRUE)
 
 # Add the marks of latest name to the duplicates and leave those of the latest year
-duplicates <- left_join(duplicates, temp_df, by = c("alue_code", "year")) %>%
-  filter(leave == TRUE) %>%
+duplicates <- left_join(duplicates, temp_df, by = c("alue_code", "year")) |>
+  filter(leave == TRUE) |>
   select(-year, -leave)
 
 # Combine with the other codes
@@ -74,22 +74,22 @@ key <- dplyr::filter(key, !(alue_name %in% key[duplicated(key$alue_name),]$alue_
 key <- dplyr::select(key, -year)
 
 # Find the latest name for each duplicated code and mark it with TRUE
-temp_df<-duplicates %>%
-  group_by(alue_name) %>%
+temp_df<-duplicates |>
+  group_by(alue_name) |>
   mutate(do_smth = length(unique(sapply(unique(alue_code), gsub, pattern = "[^a-zA-Z]", replacement = ""))) == 1)
 
-to_key <- filter(temp_df, !do_smth) %>% select(-year, -do_smth)
+to_key <- filter(temp_df, !do_smth) |> select(-year, -do_smth)
 key <- rbind(key, to_key)
 
-temp_df <- temp_df %>%
-  filter(do_smth) %>%
-  group_by(alue_name) %>%
-  summarize(year = max(year)) %>%
+temp_df <- temp_df |>
+  filter(do_smth) |>
+  group_by(alue_name) |>
+  summarize(year = max(year)) |>
   mutate(leave = TRUE)
 
 # Add the marks of latest name to the duplicates and leave those of the latest year
-duplicates <- left_join(duplicates, temp_df, by = c("alue_name", "year")) %>%
-  filter(leave == TRUE) %>%
+duplicates <- left_join(duplicates, temp_df, by = c("alue_name", "year")) |>
+  filter(leave == TRUE) |>
   select(-year, -leave)
 
 key <- rbind(key, duplicates)

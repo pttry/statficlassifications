@@ -24,9 +24,9 @@ and the corresponding variable name in get_regionkey()
 \examples{
 
    # Generate random municipal data with random name for the regions
-             data <- get_regionkey() \%>\%
-                     dplyr::select(kunta_name) \%>\%
-                     dplyr::rename_with(~paste(sample(letters, 4), collapse = "")) \%>\%
+             data <- get_regionkey() |>
+                     dplyr::select(kunta_name) |>
+                     dplyr::rename_with(~paste(sample(letters, 4), collapse = "")) |>
                      dplyr::mutate(values = rnorm(dplyr::n()))
 
              detect_region_var(data)
