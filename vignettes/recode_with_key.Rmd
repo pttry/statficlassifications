@@ -1,0 +1,81 @@
+---
+title: "recode_with_key"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{recode_with_key}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(statficlassifications)
+```
+
+Recode categorical variables using a key. 
+
+```{r}
+var1 <- c("a", "b", "a", "c", "b", "b")
+
+key <- data.frame(var1 = letters[1:4],
+                  var2 = c("first letter",
+                           "second letter",
+                           "third letter",
+                           "fourth letter"),
+                  var3 = 1:4)
+```
+
+By default, the variable in key corresponding to the variable to be recoded is found by name:
+
+```{r}
+key_recode(var1, key, to = "var2")
+```
+The corresponding variable can however, be found using the values of variables as well:
+
+```{r}
+v <- var1
+key_recode(v, key, to = "var2", by = "values")
+```
+data.frames can be recoded as well:
+
+```{r}
+df <- data.frame(var1 = var1,
+                 y = 1:6)
+key_recode(df, key, to = "var2")
+```
+
+
+
+Without 'to'-argument, recoding happens to all variable other than 'from'-variable in the key.
+
+```{r}
+key_recode(var1, key)
+```
+
+Keys can be named vectors as well:
+
+```{r}
+key <- c("a" = "first letter",
+         "b" = "second letter",
+         "c" = "third letter",
+         "d" = "fourth letter")
+```
+
+```{r}
+key_recode(v, key)
+```
+Note that with named vectors the function knows which way you are recoding:
+
+```{r}
+v <- key_recode(v, key)
+v
+v <- key_recode(v, key)
+v
+```
+
