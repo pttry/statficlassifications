@@ -4,12 +4,14 @@
 \alias{recode_region}
 \title{Recode regional variables}
 \usage{
-recode_region(x, to, year = NULL, offline = TRUE)
+recode_region(x, to, from = NULL, year = NULL, offline = TRUE)
 }
 \arguments{
 \item{x}{data.frame, the input vector that contains the regional variable.}
 
 \item{to}{character, the desired target in the classification key}
+
+\item{from}{character, the original classification key}
 
 \item{year}{character or numeric, the year of the}
 

@@ -39,7 +39,9 @@ Defaults to \code{FALSE}}
 vector or data.frame
 }
 \description{
-Given a key, recodes a vector
+Given a key, recodes input. In most of the cases is able to recode an input
+given just a key. That is, the arguments are are the object to be recoded and
+a key.
 }
 \details{
 Keys can be data.frames, named vectors or lists of named vectors.

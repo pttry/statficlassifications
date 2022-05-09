@@ -56,11 +56,11 @@ Change region names to region codes
 
 \examples{
 
-  v <- c("KOKO MAA", "Humppila", "Ã…lands skÃ¤rgÃ¥rd", "Satakunta")
+  v <- c("KOKO MAA", "Humppila", "Ålands skärgård", "Satakunta")
   names_to_codes(v)
   names_to_codes("Kajaani", region_level = "seutukunta")
   names_to_codes(c("KOKO MAA", "Kajaani"), region_level = "seutukunta")
-  f <- factor(c("KOKO MAA", "Humppila","Ã…lands skÃ¤rgÃ¥rd", "Satakunta"))
+  f <- factor(c("KOKO MAA", "Humppila","Ålands skärgård", "Satakunta"))
   names_to_codes(f)
 
 }

@@ -4,7 +4,7 @@
 \alias{match_col}
 \title{Match columns to list elements}
 \usage{
-match_col(x, df, x_name = deparse(substitute(x)), by = "names")
+match_col(x, y, x_name = deparse(substitute(x)), by = "names")
 }
 \arguments{
 \item{x}{vector, factor or data.frame}
