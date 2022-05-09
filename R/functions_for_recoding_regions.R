@@ -6,6 +6,7 @@
 #'
 #' @param x data.frame, the input vector that contains the regional variable.
 #' @param to character, the desired target in the classification key
+#' @param from character, the original classification key
 #' @param year character or numeric, the year of the
 #' @param offline, logical, whether works offline with package data. Defaults to TRUE.
 #'
@@ -14,9 +15,15 @@
 #'
 #'
 
-recode_region <- function(x, to, year = NULL, offline = TRUE) {
+recode_region <- function(x, to, from = NULL, year = NULL, offline = TRUE) {
 
-  from <- detect_region_level(x)
+  if (is.null(from)){
+    from <- detect_region_level(x)
+    if (length(from) > 1){
+      message("Detected level could be one of following: ", from, ". The first one is used")
+      from <- from[1]
+    }
+  }
   year_in_data <- detect_region_year(x, from)
 
   if(is.null(year)) {
