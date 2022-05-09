@@ -1,6 +1,8 @@
 #' Recode classifications using key
 #'
-#' Given a key, recodes a vector
+#' Given a key, recodes input. In most of the cases is able to recode an input
+#' given just a key. That is, the arguments are are the object to be recoded and
+#' a key.
 #'
 #' Keys can be data.frames, named vectors or lists of named vectors.
 #'
@@ -283,35 +285,42 @@ prepare_key.default <- function(x = NULL, key,
 #'
 #' prepare_key.data.frame(df, key)
 #'
-prepare_key.data.frame <- function(x = NULL, key,
+prepare_key.data.frame <- function(x, key,
                                    from = NULL, to = NULL,
                                    x_name = deparse(substitute(x)),
                                    by = "names",
                                    add = FALSE) {
 
+  if(!is.null(from)) {
 
-  if(is.null(from)) {
-    col_matches <- match_col(x, key, x_name = x_name, by = by)
-    if(any(sapply(col_matches, \(x) {length(x) > 1}))) {
-      stop("From-column in key not automatically found.")
-    }
-    from <- unlist(col_matches)
-    if(length(from) > 1) {
-      stop("Column to be recoded not automatically found.")
-    }
-  } else {
-    if(!from %in% names(key)) stop(paste(from, "not in the key."))
-    if(from != x_name & by == "names") return(failure_return(x_name))
+    if(!from %in% names(key)) {
+           stop(paste(from, "not in the key."))}
+    if(from != x_name & by == "names") {
+           return(failure_return(x_name))}
     if(length(unlist(match_col(key[[from]], x, x_name = from, by = by))) > 1) {
-      stop("Column to be recoded not automatically found.")
-    }
+           stop("Column to be recoded not automatically found.")}
+
   }
 
-  if(length(from) == 0) return(failure_return(x_name))
+  if(is.null(from)) {
+
+    col_matches <- match_col(x, key, x_name = x_name, by = by)
+    from <- unlist(col_matches)
+
+    if(any(sapply(col_matches, \(x) {length(x) > 1}))) {
+           stop("From-column in key not automatically found.")}
+    if(length(from) == 0) {
+           return(failure_return(x_name))}
+    if(length(from) > 1) {
+           stop("Column to be recoded not automatically found.")}
+
+  }
+
+
   if(is.null(to)) to <- names(key)[names(key) != from]
 
   key <- key[,c(from, to)][!duplicated(key),]
-  if(length(to) == 0) to <- x_name
+  # if(length(to) == 0) to <- x_name
   if(add) to <- unique(c(from, to))
 
   list(key = key, from = from, to = to)
@@ -372,23 +381,25 @@ failure_return <- function(x_name) {
 #'
 #'
 #'
-match_col <- function(x, df, x_name = deparse(substitute(x)), by = "names") {
+match_col <- function(x, y, x_name = deparse(substitute(x)), by = "names") {
   UseMethod("match_col")
 }
 
 #' @describeIn Match columns to list elements
 #' @export
-match_col.default <- function(x, df, x_name = deparse(substitute(x)), by = "names") {
+match_col.default <- function(x, y, x_name = deparse(substitute(x)), by = "names") {
+
+
   if(by == "values") {
-    return(match_col_by_values(x, df, x_name))
+    return(match_col_by_values(x, y, x_name))
   } else if(by == "names") {
-    return(match_col_by_names(x, df, x_name))
+    return(match_col_by_names(x, y, x_name))
   } else if(by == "all_values") {
-    return(match_col_by_all_values(x, df, x_name))
+    return(match_col_by_all_values(x, y, x_name))
   } else if(by == "either") {
     return(lapply(mapply(c,
-                         match_col_by_values(x, df, x_name),
-                         match_col_by_names(x, df, x_name),
+                         match_col_by_values(x, y, x_name),
+                         match_col_by_names(x, y, x_name),
                          SIMPLIFY = FALSE),
                   unique))
   }
@@ -396,36 +407,39 @@ match_col.default <- function(x, df, x_name = deparse(substitute(x)), by = "name
 
 #' @describeIn Match columns to list elements
 #' @export
-match_col.factor <- function(x, df, x_name = deparse(substitute(x)), by = "names") {
-  match_col.default(levels(x), df = df, x_name = x_name, by)
+match_col.factor <- function(x, y, x_name = deparse(substitute(x)), by = "names") {
+  match_col.default(levels(x), y = y, x_name = x_name, by)
 }
 
 #' @describeIn Match columns to list elements
 #' @export
-match_col.data.frame <- function(x, df, x_name = deparse(substitute(x)), by = "names") {
+match_col.data.frame <- function(x, y, x_name = deparse(substitute(x)), by = "names") {
   x_names <- names(x)
-  unlist(lapply(x_names, \(name) {match_col(x[[name]], df = df, x_name = name, by)}), recursive = FALSE)
+  unlist(lapply(x_names, \(name) {match_col(x[[name]], y = y, x_name = name, by)}), recursive = FALSE)
 }
 
 
 #' @describeIn Match columns to list elements
 #' @export
-match_col_by_values <- function(x, df, x_name = deparse(substitute(x))) {
-  z <- sapply(names(df), function(name) {sum(unique(x) %in% c(df[[name]], names(df[[name]])))})
+match_col_by_values <- function(x, y, x_name = deparse(substitute(x))) {
+  if(!is.list(y)) y <- setNames(list(y), x_name)
+  z <- sapply(names(y), function(name) {sum(unique(x) %in% c(y[[name]], names(y[[name]])))})
   if(max(z) == 0) return(setNames(list(character()), x_name))
-  setNames(list(names(df)[z == max(z)]), x_name)
+  setNames(list(names(y)[z == max(z)]), x_name)
 }
 
 #' @describeIn Match columns to list elements
 #' @export
-match_col_by_all_values <- function(x, df, x_name = deparse(substitute(x))) {
-  z <- sapply(names(df), function(name) {all(unique(x) %in% c(df[[name]], names(df[[name]])))})
+match_col_by_all_values <- function(x, y, x_name = deparse(substitute(x))) {
+  if(!is.list(y)) y <- setNames(list(y), x_name)
+  z <- sapply(names(y), function(name) {all(unique(x) %in% c(y[[name]], names(y[[name]])))})
   if(all(!z)) return(setNames(list(character()), x_name))
-  setNames(list(names(df)[z]), x_name)
+  setNames(list(names(y)[z]), x_name)
 }
 
 #' @describeIn Match columns to list elements
 #' @export
-match_col_by_names <- function(x, df, x_name = deparse(substitute(x))) {
-  setNames(list(intersect(x_name, names(df))), x_name)
+match_col_by_names <- function(x, y, x_name = deparse(substitute(x))) {
+  if(!is.list(y)) y <- setNames(list(y), x_name)
+  setNames(list(intersect(x_name, names(y))), x_name)
 }

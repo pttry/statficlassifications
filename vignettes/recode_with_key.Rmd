@@ -18,7 +18,7 @@ knitr::opts_chunk$set(
 library(statficlassifications)
 ```
 
-Recode categorical variables using a key. 
+Recoding of categorical variables are often based on keys that map one classification of a categorical variable to an another classification of this same variable. \code{key_recode} recodes an input given a such a key. The key can be in the form of a named vector or a data.frame. The inputs can be vectors, factors of data.frames. 
 
 ```{r}
 var1 <- c("a", "b", "a", "c", "b", "b")
