@@ -37,7 +37,7 @@
 #'                                         "fourth letter"))
 #'
 #'   key_recode(v, key_data.frame, by = "values")
-#'   key_recode(key_recode(v, key_data.frame), key_data.frame)
+#'   key_recode(key_recode(v, key_data.frame, by = "values"), key_data.frame, by = "values")
 #'
 #'   key_named_vector <- c("a" = "first letter",
 #'                         "b" = "second letter",
@@ -56,7 +56,7 @@
 #'                                         "fourth letter"))
 #'
 #'   key_recode(f, key_data.frame, by = "values")
-#'   key_recode(key_recode(f, key_data.frame), key_data.frame)
+#'   key_recode(key_recode(f, key_data.frame, by = "values"), key_data.frame, by = "values")
 #'
 #'   key_named_vector <- c("a" = "first letter",
 #'                         "b" = "second letter",
@@ -70,6 +70,7 @@
 #'   df <- data.frame(var1 = v,
 #'                    y = rnorm(6))
 #'   key_recode(df, key_data.frame, by = "values")
+#'   key_recode(df, key_data.frame, from = "var1", to = "var2")
 #'   key_recode(key_recode(df, key_data.frame), key_data.frame)
 #'   key_recode(df, key_named_vector)
 #'   key_recode(key_recode(df, key_data.frame), key_named_vector)
@@ -285,7 +286,7 @@ prepare_key.default <- function(x = NULL, key,
 #'
 #' prepare_key.data.frame(df, key)
 #'
-prepare_key.data.frame <- function(x, key,
+prepare_key.data.frame <- function(x = NULL, key,
                                    from = NULL, to = NULL,
                                    x_name = deparse(substitute(x)),
                                    by = "names",
@@ -295,8 +296,8 @@ prepare_key.data.frame <- function(x, key,
 
     if(!from %in% names(key)) {
            stop(paste(from, "not in the key."))}
-    if(from != x_name & by == "names") {
-           return(failure_return(x_name))}
+    #if(from != x_name & by == "names") {
+     #      return(failure_return(x_name))}
     if(length(unlist(match_col(key[[from]], x, x_name = from, by = by))) > 1) {
            stop("Column to be recoded not automatically found.")}
 
