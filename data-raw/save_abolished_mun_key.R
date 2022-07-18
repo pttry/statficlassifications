@@ -9,11 +9,13 @@
    # For the ease of use, (so that a whole vector of municipalities can be matches to their current
    # municipalities) also add (the trivial correspondeces of) the municipalities that were
    # never abolished.
+library(statficlassifications)
+library(dplyr)
 
    df_key <- get_regionkey(from = "kunta", "seutukunta", offline = FALSE) |>
        dplyr::mutate(joiner = kunta_code, joinee = kunta_code) |>
        dplyr::select(joiner, joinee)
-     current_muns <- df2$joinee
+
 
   # Haetaan tiedosto lakkautetut kunnat aakkosjarjestyksessa osoitteesta https://www.stat.fi/fi/luokitukset/tupa/
       # url <-  "https://www.stat.fi/static/media/uploads/meta/luokitukset/lakkautetut_kunnat_aakkosjarj20_taul6.xlsx"
@@ -22,10 +24,12 @@
       # df <- readxl::read_excel(tmp)
 
 
-      url2 <-  "https://www.stat.fi/static/media/uploads/meta/luokitukset/lakkautetut_kunnat_vuoteen_2021_asti.xlsx"
+      url2 <-  "https://www.stat.fi/static/media/uploads/meta/luokitukset/lakkautetut_kunnat_vuoteen_2022_asti.xlsx"
       tmp2 = tempfile(fileext = ".xlsx")
       download.file(url = url2, destfile = tmp2, mode="wb")
       df2 <- readxl::read_excel(tmp2)
+
+
 
   # Poimitaan aineistosta lakkautettujen kuntien koodit ja niiden kuntien koodit, johon lakkautetut
   # kunnat ovat liittyneet
@@ -50,6 +54,7 @@
       df$joiner <- paste0("KU", df$joiner)
       df$joinee <- paste0("KU", df$joinee)
 
+      current_muns <- df2$joinee
 
   key <- data.frame()
 
