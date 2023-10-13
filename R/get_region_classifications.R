@@ -134,7 +134,7 @@ get_regionkey <- function(...,
 
   # All columns to factors
 
-    regionkey <- dplyr::mutate(regionkey, across(.fns = as.factor))
+    regionkey <- data.frame(lapply(regionkey, as.factor))
 
   # Return
 
