@@ -1,5 +1,5 @@
 ---
-title: "region_classifications"
+title: "Tools for Regional Classifications"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{vignette_region_classifications}

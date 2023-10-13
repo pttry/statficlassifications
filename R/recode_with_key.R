@@ -154,8 +154,7 @@ key_recode.factor <- function(x, key,
                               add = FALSE) {
 
   pkey <- prepare_key(x = levels(x), key = key, from = from, to = to, x_name = x_name, by = by, add = add)
-  levels(x) <- key_recode_internal(x = levels(x), pkey)
-  x
+  key_recode_internal(x = levels(x), pkey)
 }
 
 #' @describeIn Recode classifications using key

@@ -31,7 +31,7 @@ recode_region <- function(x, to, from = NULL, year = NULL, offline = TRUE) {
   }
 
   if(!(year %in% year_in_data)) {
-    message(paste0("The region classification in data seems to fit to year(s) ",
+    message(paste0("The region classification in data seems to fit year(s) ",
                    paste(year_in_data, collapse = ", "),
                    ". A key corresponding to this year is used."))
   }
