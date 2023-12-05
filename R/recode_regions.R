@@ -41,10 +41,12 @@ recode_region <- function(x, to, from = NULL, year = NULL, offline = TRUE) {
                              year = year,
                              offline = offline)
 
-  if(all(is_region_code(x))) {
-    from <- paste0(from, "_code")
-  } else if(all(is_region_name(x))) {
-    from <- paste0(from, "_name")
+  if (all(is_region_code(x))) {
+    from <- paste0(gsub("_code", "", from), "_code")
+  }
+  else if (all(is_region_name(x))) {
+    from <- paste0(gsub("_name", "", from), "_name")
+
   } else {
     stop("Input contains elements not region codes nor region names.")
   }

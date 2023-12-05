@@ -153,8 +153,10 @@ key_recode.factor <- function(x, key,
                               by = "names",
                               add = FALSE) {
 
-  pkey <- prepare_key(x = levels(x), key = key, from = from, to = to, x_name = x_name, by = by, add = add)
-  key_recode_internal(x = levels(x), pkey)
+  key_recode.default(as.character(x), key, from, to, x_name, by, add)
+
+ # pkey <- prepare_key(x = levels(x), key = key, from = from, to = to, x_name = x_name, by = by, add = add)
+ # key_recode_internal(x = x, pkey)
 }
 
 #' @describeIn Recode classifications using key
@@ -248,7 +250,7 @@ prepare_key.default <- function(x = NULL, key,
     key <- setNames(data.frame(names(key),key), paste(x_name, 1:2, sep = "."))
     by <- "values"
 
-    pkey <- prepare_key.data.frame(x = x, key = key, x_name = x_name, by = by, add = add)
+    pkey <- prepare_key.data.frame(x = x, key = key, from = from, to = to, x_name = x_name, by = by, add = add)
     if(length(pkey$key) == 0) return(failure_return(x_name))
 
     if(length(pkey$to) == 1) {
