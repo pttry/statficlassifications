@@ -30,7 +30,7 @@ information in determining their region level. Defaults to NULL.}
 
 \item{year}{integer, the year of the applied classification key.}
 
-\item{lang}{\code{"fi"}, \code{"sv"}, \code{"en"}. Language of output names.
+\item{lang}{\code{"fi"}, \code{"sv"} or \code{"en"}. Language of output names.
 Defaults to \code{"fi"}.}
 
 \item{offline}{logical, whether works offline with package data. Defaults to \code{TRUE}.}
@@ -43,8 +43,8 @@ data.frame
 }
 \description{
 Works with standardized region codes. A good practice is to first standardize
-your region codes using \code{set_region_codes}-function. \code{codes_to_names},
-however can check if the region codes are standardized and applies \code{set_region_codes}
+your region codes using \code{set_region_codes()}. \code{codes_to_names()},
+however can check if the region codes are standardized and applies \code{set_region_codes()}
 if they are not.
 }
 \section{Functions}{

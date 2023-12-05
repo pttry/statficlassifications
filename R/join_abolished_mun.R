@@ -5,8 +5,9 @@
 #' joined.
 #'
 #' @param x an object containing municipality codes, a vector, a factor or a data.frame.
+#' @param col
 #'
-#' @return
+#' @return vector, factor or data.frame, depending on input.
 #' @export
 #'
 #' @examples
@@ -34,9 +35,7 @@ join_abolished_mun <- function(x, col = NULL) {
   x
 }
 
-#' @describeIn join_abolished_mun
-#'
-#' Join abolished municipalities
+#' @describeIn Join abolished municipalities
 #'
 #' For internal use.
 #'
@@ -85,9 +84,7 @@ join_abolished_mun_vct <- function(x) {
 
 }
 
-#' @describeIn join_abolished_mun
-#'
-#' Join abolished municipalities
+#' @describeIn Join abolished municipalities
 #'
 #' For internal use.
 #'
@@ -98,9 +95,8 @@ join_abolished_mun_fct <- function(x) {
   x
 }
 
-#' @describeIn join_abolished_mun
+#' @describeIn Join abolished municipalities
 #'
-#' Join abolished municipalities
 #'
 #' For internal use
 #'

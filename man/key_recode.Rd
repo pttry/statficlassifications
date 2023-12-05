@@ -25,12 +25,14 @@ key_recode(
 
 \item{x_name}{name of the vector (variable) to be recoded.}
 
-\item{by}{\code{names}, \code{values} or \code{all_values}. Option
-\code{names} uses column names to join key to input. Option
-\code{values} looks for the most suitable from-column in the key
+\item{by}{\code{"names"}, \code{"values"} or \code{"all_values"}.
+\itemize{
+\item \code{"names"} uses column names to join key to input.
+\item \code{"values"} looks for the most suitable from-column in the key
 by comparing the values in columns. The from-column is chosen as
-the one that has most of the values of the input vector. Option
-\code{all_values} requires that all values are in the from-column.}
+the one that has most of the values of the input vector.
+\item \code{"all_values"} requires that all values are in the from-column.
+}}
 
 \item{add}{whether to add (or replace) the original vector to be recoded.
 Defaults to \code{FALSE}.}
@@ -39,15 +41,17 @@ Defaults to \code{FALSE}.}
 vector or data.frame
 }
 \description{
-Given a key, recodes input. In most of the cases is able to recode an input
+Given a key, recodes input.
+}
+\details{
+In most of the cases is able to recode an input
 given just a key. That is, given the information in input and in key is able
 to 1) determine which column in key corresponds to the input and thus from which
 column in key recoding is from and 2) in case of a data.frame input, which
 column in the data.frame is in the key and so which column in the data.frame
 can be recoded with the key. In these cases, the required arguments are just
 the object to be recoded and a key.
-}
-\details{
+
 Keys can be data.frames, named vectors or lists of named vectors. Inputs can
 be vectors, factors or data.frames.
 

@@ -1,6 +1,8 @@
 #' Recode with key
 #'
-#' Given a key, recodes input. In most of the cases is able to recode an input
+#' Given a key, recodes input.
+#'
+#' In most of the cases is able to recode an input
 #' given just a key. That is, given the information in input and in key is able
 #' to 1) determine which column in key corresponds to the input and thus from which
 #' column in key recoding is from and 2) in case of a data.frame input, which
@@ -25,14 +27,14 @@
 #' @param from source column in key for recoding.
 #' @param to target column in key for recoding.
 #' @param x_name name of the vector (variable) to be recoded.
-#' @param by \code{names}, \code{values} or \code{all_values}. Option
-#'    \code{names} uses column names to join key to input. Option
-#'    \code{values} looks for the most suitable from-column in the key
+#' @param by `"names"`, `"values"` or `"all_values"`.
+#'    * `"names"` uses column names to join key to input.
+#'    * `"values"` looks for the most suitable from-column in the key
 #'     by comparing the values in columns. The from-column is chosen as
-#'     the one that has most of the values of the input vector. Option
-#'     \code{all_values} requires that all values are in the from-column.
+#'     the one that has most of the values of the input vector.
+#'    * `"all_values"` requires that all values are in the from-column.
 #' @param add whether to add (or replace) the original vector to be recoded.
-#'     Defaults to \code{FALSE}.
+#'     Defaults to `FALSE`.
 #'
 #' @return vector or data.frame
 #' @export
@@ -136,10 +138,12 @@ key_recode.default <- function(x, key,
 }
 
 #' @describeIn Recode with key
+#'
+#' #' ISSUES: recoding levels of factors bring issues when the levels in input and
+#' key do not match.
+#'
 #' @export
 #'
-#' ISSUES: recoding levels of factors bring issues when the levels in input and
-#' key do not match.
 #'
 key_recode.factor <- function(x, key,
                               from = NULL, to = NULL,
@@ -171,6 +175,9 @@ key_recode.data.frame <- function(x, key,
 
 
 #' @describeIn Recode with key
+#'
+#' Here just for compatibility
+#'
 #' @export
 statfi_recode <- function(x, key, ...) {
   key_recode(x, key, ...)
@@ -231,7 +238,7 @@ key_recode_internal.factor <- function(x, pkey) {
 #' @param from source column in ky
 #' @param to target column in key
 #' @param x_name name of the source column to be decoded
-#' @param by \code{names}, \code{values} or \code{all_values}. Controls
+#' @param by `"names"`, `"values"` or `"all_values"`. Controls
 #'    how x is matched to from column in key
 #'
 #' @return list containing the prepared key, from-column name and to-column
@@ -398,7 +405,7 @@ failure_return <- function(x_name) {
 #' @param x vector, factor or data.frame.
 #' @param df data.frame where matcheds are found.
 #' @param x_name name of input (column) to tell which is the from column in key.
-#' @param by "`names`" or "`values`" whether to match columns by their names or
+#' @param by `"names"` or `"values"` whether to match columns by their names or
 #'    by the values they contain.
 #'
 #' @return list with an element for each column in x. Each element of this list

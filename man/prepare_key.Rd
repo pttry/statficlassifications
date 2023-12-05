@@ -25,7 +25,7 @@ prepare_key(
 
 \item{x_name}{name of the source column to be decoded}
 
-\item{by}{\code{names}, \code{values} or \code{all_values}. Controls
+\item{by}{\code{"names"}, \code{"values"} or \code{"all_values"}. Controls
 how x is matched to from column in key}
 }
 \value{

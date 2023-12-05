@@ -39,18 +39,18 @@ set_region_codes_fct(
 
 \item{offline}{logical, whether works offline with package data. Defaults to TRUE.}
 
-\item{use_char_length_info}{TRUE or named vector, whether to use code character length
+\item{use_char_length_info}{\code{TRUE} or named vector, whether to use code character length
 information in determining their region level. Defaults to \code{NULL}.}
 }
-\description{
-TODO: R2D2 IS SET TO SALO CURRENTLY. I.E. USE NUMBERS IN STRINGS MAYBE
-ONLY IF THERE IS ONLY NUMBERS IN STRINGS
+\value{
+same form as input
 }
-\details{
+\description{
 To avoid non-unique region codes, use the prefixed region codes.
 This function "standardizes" region codes in this format.
 Region codes already in this format are left as they are.
-
+}
+\details{
 The function is strict in not making any assumptions in cases of
 ambiguous region codes. Some plain numbers may map to multiple
 region codes and in these cases the user can restrict the domain
@@ -64,10 +64,10 @@ an argument.
 
 The function does not create region codes from scratch itself but, inputs
 are matched to the potential codes in the official classifications.
-These classifications are accessed using \code{get_regionclassification}-function.
+These classifications are accessed using \code{get_regionclassification()}.
 Thus, only real region codes can be set. The matching of inputs into
-potential region codes occurs in \code{match_region_codes_interal}- and
-\code{match_region_codes}-functions.
+potential region codes occurs in \code{match_region_codes_interal()} and
+\code{match_region_codes()}.
 }
 \section{Functions}{
 \itemize{
@@ -92,6 +92,6 @@ potential region codes occurs in \code{match_region_codes_interal}- and
   set_region_codes("alue045")
 
   # But it means also that this happens
-  set_region_codes("lsdf4fsdffs5sfs")
+  set_region_codes("R2D2")
 
 }

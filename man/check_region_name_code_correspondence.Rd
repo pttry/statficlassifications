@@ -13,7 +13,7 @@ check_region_name_code_correspondence(
 )
 }
 \arguments{
-\item{offline}{logical, whether works offline with package data. Defaults to TRUE.}
+\item{offline}{logical, whether works offline with package data. Defaults to \code{TRUE}.}
 
 \item{data}{data.frame}
 

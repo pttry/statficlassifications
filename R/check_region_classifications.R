@@ -1,24 +1,22 @@
-# Functions for checking region classifications are divided into functions that
-# test whether input is a certain element of classification returning logicals
-# functions that check if input vector is ok. The checking functions return TRUE
-# if everything is ok and FALSE if not. In case of FALSE, they also return a message
-# containing information where the problem is.
-
-# Testing of the region information of data should proceed by first checking
-# if the region codes and names are ok and then whether they correctly
-# correspond to each other.
-
-################# CHECK REGION CLASSIFICATIONS ###################
-
 #' Check region classifications
+#'
+#' Functions for checking region classifications are divided into functions that
+#' test whether input is a certain element of classification returning logicals
+#' functions that check if input vector is ok. The checking functions return TRUE
+#' if everything is ok and FALSE if not. In case of FALSE, they also return a message
+#' containing information where the problem is.
+#'
+#' Testing of the region information of data should proceed by first checking
+#' if the region codes and names are ok and then whether they correctly
+#' correspond to each other.
 #'
 #' @param region_names a vector of standard region names
 #' @param region_codes a vector of standard region codes
 #' @param year double or character, year of classification
-#' @param lang \code{fi}, \code{sv} or \code{en}. Language of the input name. Defaults to \code{fi}.
-#' @param offline logical, whether works offline with package data. Defaults to \code{TRUE}.
+#' @param lang `"fi"`, `"sv"` or `"en"`. Language of the input name. Defaults to `"fi"`.
+#' @param offline logical, whether works offline with package data. Defaults to `TRUE`.
 #'
-#' @return
+#' @return logical
 #' @export
 #'
 check_region_classification <- function(region_names, region_codes,
@@ -33,17 +31,15 @@ check_region_classification <- function(region_names, region_codes,
   ) {message("Region classification check: passed.")}
 }
 
-################# CHECK REGION CODES ##################
-
 #' Check region codes
 #'
 #' Checks whether all the elements in the given vector of potential region codes
-#' are standardized region codes. If they are returns \code{TRUE}, if they are
+#' are standardized region codes. If they are returns `TRUE`, if they are
 #' not, returns a message telling which elements are not recognized as region codes.
 #'
 #' @param x character vector or factor
 #' @param year double or character, year of classification
-#' @param offline logical, whether works offline with package data. Defaults to TRUE.
+#' @param offline logical, whether works offline with package data. Defaults to `TRUE`.
 #'
 #' @return vector of logicals
 #' @export
@@ -97,18 +93,16 @@ check_region_codes_fct <- function(x, year = NULL, offline = TRUE) {
 
 }
 
-################### CHECK REGION NAMES ####################
-
 #' Check region names
 #'
 #' For a vector or a factor of region names, find the names that are not recognized and
-#' if does not find such names returns \code{TRUE}. \code{check_region_names} uses
-#' \code{check_region_names_vct} for vectors and \code{check_region_names_fct} for factors.
+#' if does not find such names returns `TRUE`. `check_region_names()` uses
+#' `check_region_names_vct()` for vectors and `check_region_names_fct()` for factors.
 #'
 #' @param x character vector or factor.
 #' @param year double or character, year of classification.
 #' @param offline logical, whether works offline with package data. Defaults to TRUE.
-#' @param lang \code{fi}, \code{sv} or \code{en}. Language of the input name. Defaults to \code{fi}.
+#' @param lang `"fi"`, `"sv"` or `"en"`. Language of the input name. Defaults to `"fi"`.
 #'
 #' @return logical
 #' @export
@@ -126,7 +120,7 @@ check_region_names <- function(x, lang = "fi", year = NULL, offline = TRUE) {
   x
 }
 
-#' @describeIn check_region_names
+#' @describeIn Check region names
 #'
 #' Check region names of a vector
 #'
@@ -146,27 +140,22 @@ check_region_names_vct <- function(x, lang = "fi", year = NULL, offline = TRUE) 
   }
 }
 
-#' @describeIn check_region_names
+#' @describeIn Check region names
 #'
 #' Check region names of a factor
 #'
 #' For internal use.
 #'
-#'
 check_region_names_fct <- function(x, lang = "fi", year = NULL, offline = TRUE) {
   check_region_names_vct(levels(x), lang = lang, offline = offline, year = year)
 }
-
-
-
-################# CHECK REGION NAME CODE CORRESPONDENCE #################
 
 #' Check if region names and codes correspond as in regionkey.
 #'
 #' @param data data.frame
 #' @param region_name_var character the name of the regional name variable in the data
 #' @param region_code_var character the name of the regional code variable in the data
-#' @param offline logical, whether works offline with package data. Defaults to TRUE.
+#' @param offline logical, whether works offline with package data. Defaults to `TRUE`.
 #'
 #' @return logical
 #' @export

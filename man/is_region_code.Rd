@@ -2,20 +2,9 @@
 % Please edit documentation in R/test_region_classifications.R
 \name{is_region_code}
 \alias{is_region_code}
-\alias{is_region_code_with_prefix}
-\alias{is_region_code_without_prefix}
 \title{Check if character is prefixed region code}
 \usage{
 is_region_code(x, region_level = NULL, year = NULL, offline = TRUE)
-
-is_region_code_with_prefix(x, region_level = NULL, year = NULL, offline = TRUE)
-
-is_region_code_without_prefix(
-  x,
-  region_level = NULL,
-  year = NULL,
-  offline = TRUE
-)
 }
 \arguments{
 \item{x}{vector, potential region code}
@@ -24,7 +13,7 @@ is_region_code_without_prefix(
 
 \item{year}{double, year of region classification searched}
 
-\item{offline}{logical, whether works offline with package data. Defaults to TRUE.}
+\item{offline}{logical, whether works offline with package data. Defaults to \code{TRUE}.}
 }
 \value{
 logical
@@ -34,16 +23,11 @@ Given a vector of potential region codes, returns a vector of logicals indicatin
 which elements are region codes. Allows prefixed and non-prefixed region codes.
 }
 \details{
-Uses functions \code{is_region_code_with_prefix} and \code{is_region_code_without_prefix}.
+Uses \code{is_region_code_with_prefix()} and \code{is_region_code_without_prefix()}.
 These functions are required as such elsewhere.
+
+Region variable detection functions use the testing functions here.
 }
-\section{Functions}{
-\itemize{
-\item \code{is_region_code_with_prefix()}: Check if input is region code with prefix.
-
-\item \code{is_region_code_without_prefix()}: Check if input is region code without prefix.
-
-}}
 \examples{
 
   is_region_code(c("KU005", "005"))

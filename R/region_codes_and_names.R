@@ -2,16 +2,14 @@
 # functions that are exported: `codes_to_names` and `names_to_codes`.
 
 # This file also contains functions to recode between prefixes and region levels:
-# `prefix_to_name` and `name_to_prefix`.
+# `prefix_to_name()` and `name_to_prefix()`.
 
-
-############################# CODES TO NAMES #################################
 
 #' Change region codes to region names
 #'
 #' Works with standardized region codes. A good practice is to first standardize
-#' your region codes using `set_region_codes`-function. `codes_to_names`,
-#' however can check if the region codes are standardized and applies `set_region_codes`
+#' your region codes using `set_region_codes()`. `codes_to_names()`,
+#' however can check if the region codes are standardized and applies `set_region_codes()`
 #' if they are not.
 #'
 #' @param x a character (vector) of region codes
@@ -19,11 +17,11 @@
 #' @param use_char_length_info TRUE or named vector, whether to use code character length
 #'    information in determining their region level. Defaults to NULL.
 #' @param year integer, the year of the applied classification key.
-#' @param lang \code{"fi"}, \code{"sv"}, \code{"en"}. Language of output names.
-#'    Defaults to \code{"fi"}.
-#' @param offline logical, whether works offline with package data. Defaults to \code{TRUE}.
+#' @param lang `"fi"`, `"sv"` or `"en"`. Language of output names.
+#'    Defaults to `"fi"`.
+#' @param offline logical, whether works offline with package data. Defaults to `TRUE`.
 #' @param set_region_codes logical, whether tries to set standard region codes.
-#'    Defaults to \code{FALSE}.
+#'    Defaults to `FALSE`.
 #'
 #' @return data.frame
 #' @export
@@ -114,14 +112,12 @@ x
 
 }
 
-######################### NAMES TO CODES #############################
-
 #' Change region names to region codes
 #'
 #' @param x character vector of factor of region codes.
 #' @param year integer, the year of the applied classification key.
-#' @param lang \code{fi}, \code{sv} or \code{en}. Input language. Defaults to \code{fi}.
-#' @param offline logical, whether works offline with package data. Defaults to \code{TRUE}.
+#' @param lang `"fi"`, `"sv"` or `"en"`. Input language. Defaults to `"fi"`.
+#' @param offline logical, whether works offline with package data. Defaults to `TRUE`.
 #' @param region_level character, region level of input codes, optional.
 #'
 #' @return vector or factor
@@ -150,7 +146,7 @@ names_to_codes <- function(x, year = NULL, lang = "fi", offline = TRUE, region_l
   x
 }
 
-#' @describeIn names_to_codes Change region names to region codes. For internal use.
+#' @describeIn Change region names to region codes
 #'
 names_to_codes_vct <- function(x,
                                year = NULL,
@@ -191,7 +187,7 @@ names_to_codes_vct <- function(x,
   output
 }
 
-#' @describeIn names_to_codes Recode name to codes in factors. For internal use.
+#' @describeIn Change region names to region codes
 #'
 names_to_codes_fct <- function(x, year = NULL, lang = "fi", offline = TRUE, region_level = NULL) {
 
@@ -200,8 +196,6 @@ names_to_codes_fct <- function(x, year = NULL, lang = "fi", offline = TRUE, regi
   x
 
 }
-
-################# PREFIXES TO NAMES ###############################
 
 #' Change region prefixes to names
 #'
@@ -229,8 +223,6 @@ prefix_to_name <- function(prefix, pass_unknown = FALSE) {
   prefix_name_key$name[prefix_name_key$prefix %in% prefix]
 }
 
-
-##################### NAMES TO PREFIXES #############################
 
 #' Change region names to prefixes
 #'

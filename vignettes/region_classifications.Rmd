@@ -78,7 +78,7 @@ It is also straightforward to compute, say, maakunta-level means give the munici
 
 ```{r}
 data |> add_region("maakunta") |> 
-        dplyr::group_by(maakunta_name) |>
+        dplyr::group_by(maakunta) |>
        dplyr::summarize(maakunta_mean = mean(values)) |> head()
 ```
 

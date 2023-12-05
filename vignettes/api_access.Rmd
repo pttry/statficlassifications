@@ -23,7 +23,7 @@ There are two types of classification objects of interest: keys and classificati
 
 ### Searching for Keys
 
-To list all available classification keys (correspondence tables), use `search_keys` without arguments:
+To list all available classification keys (correspondence tables), use `search_keys()` without arguments:
 
 ```{r}
 head(search_keys())
@@ -38,7 +38,7 @@ search_keys("kunta", "suuralue", 2020)
 
 ### Getting Keys
 
-The open classifications API uniquely identifies each classification key by a local ID. Having found the suitable key, you can use `search_keys` with an argument `as_localId = TRUE` to print the localId of the key:
+The open classifications API uniquely identifies each classification key by a local ID. Having found the suitable key, you can use `search_keys()` with an argument `as_localId = TRUE` to print the localId of the key:
 
 ```{r}
 localId <- search_keys(source = "kunta", target = "suuralue", year = 2020, as_localId = TRUE)
@@ -54,7 +54,7 @@ head(key)
 
 ### Searching for Classifications
 
-To list all available classifications, use `search_classifications` without arguments:
+To list all available classifications, use `search_classifications()` without arguments:
 
 ```{r}
 head(search_classifications())

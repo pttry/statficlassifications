@@ -18,7 +18,7 @@ knitr::opts_chunk$set(
 <!-- badges: start -->
 <!-- badges: end -->
 
-The `statficlassifications`-package accesses the open classifications API of Statistics Finland at https://data.stat.fi/api/classifications/v2. `statficlassifications` contains tools for searching and importing classifications and classification conversion keys in an R-friendly format. The package also provides special tools for (re)classifying regions. 
+`statficlassifications` accesses the open classifications API of Statistics Finland at https://data.stat.fi/api/classifications/v2. `statficlassifications` contains tools for searching and importing classifications and classification conversion keys in an R-friendly format. The package also provides special tools for (re)classifying regions. 
 
 For further information about open classifications API of Statistics Finland, see https://www.stat.fi/en/luokitukset/info/.
 

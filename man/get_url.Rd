@@ -16,7 +16,7 @@ get_url(localId = NULL, classification_service = NULL)
 character, url of the provided localId.
 }
 \description{
-A wrapper for \code{access_API} function to get url.
+A wrapper for \code{access_API()} function to get url.
 }
 \examples{
 

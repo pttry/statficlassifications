@@ -29,14 +29,17 @@ region names.}
 \item{case_sensitive}{logical, whether recognition is case sensitive, defaults
 to \code{FALSE}}
 
-\item{lang}{\code{fi}, \code{sv} or \code{en}. Language of the input name.
-Defaults to \code{fi}.}
+\item{lang}{\code{"fi"}, \code{"sv"} or \code{"en"}. Language of the input name.
+Defaults to \code{"fi"}.}
 }
 \value{
 logical
 }
 \description{
 Note that by default, the function tests whether input is a name in standard form.
+}
+\details{
+Region variable detection functions use the testing functions here.
 }
 \examples{
 

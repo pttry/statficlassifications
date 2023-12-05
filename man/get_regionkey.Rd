@@ -24,7 +24,7 @@ Defaults to \code{FALSE}.}
 \item{only_names}{logical, whether the key should contain only the region names.
 Defaults to \code{FALSE}.}
 
-\item{lang}{\code{"fi"}, \code{"en"}, or \code{"sv"}, language of the key required.
+\item{lang}{\code{"fi"}, \code{"sv"} or \code{"en"}. Language of the key required.
 Defaults to \code{"fi"}.}
 
 \item{offline}{logical, whether uses the key in the package data. Defaults \code{TRUE}.}
@@ -33,16 +33,15 @@ Defaults to \code{"fi"}.}
 Region classification key as a data.frame.
 }
 \description{
-Imports region classification keys from Statistics Finland API. Use together with
-\code{dplyr::left_join} to add regions to data. A wrapper for the
-\code{get_key}-function that it calls under the hood.
+Imports region classification keys from Statistics Finland API. A wrapper for
+\code{get_key()} that it calls under the hood.
 }
 \details{
 The classification keys e.g. from seutukunta to maakunta or maakunta to suuralue are not very well
 available. Thus, the logic of the function is to first get all keys from kunta to all other regions,
 construct a table that contains all municipalities with their corresponding larger regions and
 then apply the selection implied by the arguments set by the user possible removing duplicates.
-\code{get_regionkey} can thus also construct keys that are not available in the Statistics
+\code{get_regionkey()} can thus also construct keys that are not available in the Statistics
 Finland classification keys API.
 }
 \examples{

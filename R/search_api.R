@@ -4,7 +4,7 @@
 #' the correspondenceTables classification service
 #'
 #' @param ... character, search words.
-#' @param as_localId logical, whether returns the localID of the found table. Defaults to \code{FALSE}.
+#' @param as_localId logical, whether returns the localID of the found table. Defaults to `FALSE`.
 #'
 #' @return character vector
 #'
@@ -27,32 +27,32 @@ search_keys <- function(..., as_localId = FALSE) {
 
   # Get a list of all correspondence table urls and create a data.frame that isolates the components
   # of the endpoints
-  results <- suppressMessages(urls_as_localId_df(get_url(classification_service = "correspondenceTables")))
+    results <- suppressMessages(urls_as_localId_df(get_url(classification_service = "correspondenceTables")))
 
   # Filter results by the searchterms
-  searchterms <- unlist(list(...))
-  results <-  results[sapply(1:dim(results)[1], function(i) { all(searchterms %in% c(results[i,])) }), ]
+    searchterms <- unlist(list(...))
+    results <-  results[sapply(1:dim(results)[1], function(i) { all(searchterms %in% c(results[i,])) }), ]
 
   # Interrupt if nothing found.
-  if(dim(results)[1] == 0) {
-    return(message("No search results!"))
-  }
+    if(dim(results)[1] == 0) {
+      return(message("No search results!"))
+    }
 
   # Format output.
-  output <- character(dim(results)[1])
-  if(as_localId) {
-    for(i in 1:dim(results)[1]) {
-      output[i] <- create_localId_name(input_vector = results[i,])
+    output <- character(dim(results)[1])
+    if(as_localId) {
+      for(i in 1:dim(results)[1]) {
+        output[i] <- create_localId_name(input_vector = results[i,])
+      }
+    } else {
+      for(i in 1:dim(results)[1]) {
+        output[i] <- paste(results[i, "source"],
+                           results[i, "year1"],
+                           "->",
+                           results[i, "target"],
+                           results[i, "year2"], sep = " ")
+      }
     }
-  } else {
-    for(i in 1:dim(results)[1]) {
-      output[i] <- paste(results[i, "source"],
-                         results[i, "year1"],
-                         "->",
-                         results[i, "target"],
-                         results[i, "year2"], sep = " ")
-    }
-  }
 
   # Return.
   unique(output)
@@ -65,9 +65,9 @@ search_keys <- function(..., as_localId = FALSE) {
 #' classification service
 #'
 #' @param ... character, search words.
-#' @param as_localId logical, whether returns the localID of the found table. Defaults to \code{FALSE}.
+#' @param as_localId logical, whether returns the localID of the found table. Defaults to `FALSE`.
 #'
-#' @return
+#' @return vector of classifications
 #' @export
 #'
 #' @examples

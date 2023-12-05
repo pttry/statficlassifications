@@ -27,10 +27,13 @@ match_region_codes_internal(
 
 \item{region_level}{character (vector) region level of the input codes}
 
-\item{offline}{logical, whether works offline with package data. Defaults to TRUE.}
+\item{offline}{logical, whether works offline with package data. Defaults to \code{TRUE}.}
 
 \item{use_char_length_info}{TRUE or named vector, whether to use code character length
-information in determining their region level. Defaults to NULL.}
+information in determining their region level. Defaults to \code{NULL}.}
+}
+\value{
+vector
 }
 \description{
 Given a region code in "nonstandard" format, matches all "standardized" region

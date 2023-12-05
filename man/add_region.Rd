@@ -14,9 +14,9 @@ add_region(data, ..., from = NULL, year = NULL, offline = TRUE)
 \item{from}{character, variable in the data that is used to add regions to the data. Defaults
 to NULL, in which case function tries to guess the variable in the data.}
 
-\item{year, }{double, year of region classification}
+\item{year, }{double, year of region classification.}
 
-\item{offline, }{logical, whether works offline with package data. Defaults to TRUE.}
+\item{offline, }{logical, whether works offline with package data. Defaults to \code{TRUE}.}
 }
 \value{
 data.frame

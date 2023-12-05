@@ -9,19 +9,19 @@ recode_region(x, to, from = NULL, year = NULL, offline = TRUE)
 \arguments{
 \item{x}{data.frame, the input vector that contains the regional variable.}
 
-\item{to}{character, the desired target in the classification key}
+\item{to}{character, the desired target in the classification key.}
 
-\item{from}{character, the original classification key}
+\item{from}{character, the original classification key.}
 
-\item{year}{character or numeric, the year of the}
+\item{year}{character or numeric, the year of the.}
 
-\item{offline, }{logical, whether works offline with package data. Defaults to TRUE.}
+\item{offline, }{logical, whether works offline with package data. Defaults to \code{TRUE}.}
 }
 \value{
 data.frame
 }
 \description{
-Recodes regional variables by e.g. changing kunnat to seutukunnat or changing names to codes
-and vice versa. A wrapper for statfi_recode function that uses the 'get_regionkey'-function
-to produce the key.
+Recodes regional variables by e.g. changing kunnat to seutukunnat or changing
+names to codes and vice versa. A wrapper for \code{key_recode()} that uses the
+\code{get_regionkey()} to produce the key.
 }

@@ -11,7 +11,7 @@ match_col(x, y, x_name = deparse(substitute(x)), by = "names")
 
 \item{x_name}{name of input (column) to tell which is the from column in key.}
 
-\item{by}{"\code{names}" or "\code{values}" whether to match columns by their names or
+\item{by}{\code{"names"} or \code{"values"} whether to match columns by their names or
 by the values they contain.}
 
 \item{df}{data.frame where matcheds are found.}

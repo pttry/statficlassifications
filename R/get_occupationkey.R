@@ -2,10 +2,10 @@
 #'
 #' @param code_level, disaggregation level
 #' @param year, year of the key
-#' @param lang, \code{fi}, \code{sv} or \code{en}. Language of the key.
-#'    Defaults to \code{fi}.
+#' @param lang, `"fi"`, `"sv"` or `"en"`. Language of the key.
+#'    Defaults to `"fi"`.
 #' @param as_named_vector, logical, whether to return a named vector rather than
-#'    a data.frame. Defaults to \code{FALSE}.
+#'    a data.frame. Defaults to `FALSE`.
 #'
 #' @return data.frame with occupation codes and names
 #' @export

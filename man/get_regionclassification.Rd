@@ -29,7 +29,7 @@ Defaults to \code{FALSE}.}
 \item{as_named_vector}{logical, whether returns the key as a named vector rather than a
 data.frame. Defaults \code{FALSE}.}
 
-\item{lang}{\code{"fi"}, \code{"en"}, or \code{"sv"}, language of the classification required.
+\item{lang}{\code{"fi"}, \code{"sv"} or \code{"en"}. Language of the classification required.
 Defaults to \code{"fi"}.}
 
 \item{offline}{logical, whether uses the key in the package data. Defaults \code{TRUE}.}

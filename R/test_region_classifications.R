@@ -1,21 +1,18 @@
-# Region variable detection functions use the testing functions here.
-
-
-##################### TEST IF REGION CODE ###########################
-
 #' Check if character is prefixed region code
 #'
 #' Given a vector of potential region codes, returns a vector of logicals indicating
 #' which elements are region codes. Allows prefixed and non-prefixed region codes.
 #'
-#' Uses functions `is_region_code_with_prefix` and `is_region_code_without_prefix`.
+#' Uses `is_region_code_with_prefix()` and `is_region_code_without_prefix()`.
 #' These functions are required as such elsewhere.
+#'
+#' Region variable detection functions use the testing functions here.
 #'
 #'
 #' @param x vector, potential region code
 #' @param region_level character, optional region level of the input region codes
 #' @param year double, year of region classification searched
-#' @param offline logical, whether works offline with package data. Defaults to TRUE.
+#' @param offline logical, whether works offline with package data. Defaults to `TRUE`.
 #'
 #' @return logical
 #' @export
@@ -35,8 +32,7 @@ is_region_code <- function(x, region_level = NULL, year = NULL, offline = TRUE) 
 
 }
 
-#' @describeIn is_region_code Check if input is region code with prefix.
-#'
+#' @describeIn Check if character is prefixed region code
 #' @export
 #'
 is_region_code_with_prefix <- function(x, region_level = NULL, year = NULL, offline = TRUE) {
@@ -50,8 +46,7 @@ is_region_code_with_prefix <- function(x, region_level = NULL, year = NULL, offl
   as.vector(x) %in% codes
 }
 
-#' @describeIn is_region_code Check if input is region code without prefix.
-#'
+#' @describeIn Check if character is prefixed region code
 #' @export
 #'
 is_region_code_without_prefix <- function(x, region_level = NULL, year = NULL, offline = TRUE) {
@@ -69,22 +64,22 @@ is_region_code_without_prefix <- function(x, region_level = NULL, year = NULL, o
 
 }
 
-######################### TEST IF REGION NAME ##############################
-
 #' Check if character is region name.
 #'
 #' Note that by default, the function tests whether input is a name in standard form.
 #'
+#' Region variable detection functions use the testing functions here.
+#'
 #' @param x character, a vector of potential region names
 #' @param region_level character, optional region level of the input region codes
 #' @param year double, year of region classification searched
-#' @param offline logical, whether works offline with package data. Defaults to \code{TRUE}.
+#' @param offline logical, whether works offline with package data. Defaults to `TRUE`.
 #' @param allow_nonstandard_names logical, whether to accept a broader set of names as
 #'    region names.
 #' @param case_sensitive logical, whether recognition is case sensitive, defaults
 #'    to \code{FALSE}
-#' @param lang \code{fi}, \code{sv} or \code{en}. Language of the input name.
-#'    Defaults to \code{fi}.
+#' @param lang `"fi"`, `"sv"` or `"en"`. Language of the input name.
+#'    Defaults to `"fi"`.
 #'
 #' @return logical
 #' @export

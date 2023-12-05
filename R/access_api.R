@@ -8,13 +8,13 @@
 #' see <https://www.stat.fi/en/luokitukset/info/>.
 #'
 #' @param localId character, local ID of the correspondence table or classification
-#' @param content  character, \code{"data"} or \code{"url"} determines the content of query
-#' @param classification_service character, \code{"correspondenceTable"} or
+#' @param content  character, `"data"` or `"url"` determines the content of query
+#' @param classification_service character, `"correspondenceTable"` or
 #'    \code{"classifications"}. Determines the classification service used.
-#' @param lang  \code{"fi"}, \code{"en"}, or \code{"sv"}, desired language.
-#'    Defaults to \code{"fi"}.
+#' @param lang  `"fi"`, `"en"`, or `"sv"`, desired language.
+#'    Defaults to `"fi"`.
 #'
-#' @return data.frame either the correspondence table or its url depending on argument \code{content}.
+#' @return data.frame either the correspondence table or its url depending on argument `content`.
 #' @export
 #'
 #' @examples
@@ -52,10 +52,10 @@ access_API <- function(localId = NULL,
     }
 
   # Change default content from data to url if no localId given.
-  if(is.null(localId)) {
-    content <- "url"
-    message("If localId not given, only urls accessed.")
-  }
+    if(is.null(localId)) {
+      content <- "url"
+      message("If localId not given, only urls accessed.")
+    }
 
   # If localId provided, prepend with "/" to build url to the endpoint. If localId
   # is not provided the function accesses all the endpoints in the given classification
@@ -89,11 +89,11 @@ access_API <- function(localId = NULL,
 
 #' Get urls
 #'
-#' A wrapper for \code{access_API} function to get url.
+#' A wrapper for `access_API()` function to get url.
 #'
 #' @param localId character, localId of the required table.
-#' @param classification_service character, \code{"correspondenceTable"} or
-#'    \code{"classifications"}. Determines the classification service used.
+#' @param classification_service character, `"correspondenceTable"` or
+#'    `"classifications"`. Determines the classification service used.
 #'
 #' @return character, url of the provided localId.
 #' @export
@@ -125,8 +125,8 @@ get_url <- function(localId = NULL, classification_service = NULL) {
 #' A wrapper for \code{access_API} to get classification keys.
 #'
 #' @param localId character, local ID of the required correspondence table
-#' @param lang \code{"fi"}, \code{"en"}, or \code{"sv"}, desired language.
-#'    Defaults to \code{"fi"}.
+#' @param lang `"fi"`, `"en"`, or `"sv"`, desired language.
+#'    Defaults to `"fi"`.
 #'
 #' @return data.frame, the key of the provided localId.
 #' @export
@@ -166,8 +166,8 @@ get_key <- function(localId, lang = "fi") {
 #' A wrapper for \code{access_API} to get classifications.
 #'
 #' @param localId character, localId of the required correspondence table
-#' @param lang \code{"fi"}, \code{"en"}, or \code{"sv"}, desired language.
-#'    Defaults to \code{"fi"}.
+#' @param lang `"fi"`, `"en"`, or `"sv"`, desired language.
+#'    Defaults to `"fi"`.
 #' @param as_named_vector logical, whether to return the object as a named vector rather
 #'    than data.frame. Defaults to \code{FALSE}.
 #'

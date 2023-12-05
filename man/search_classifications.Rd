@@ -11,6 +11,9 @@ search_classifications(..., as_localId = FALSE)
 
 \item{as_localId}{logical, whether returns the localID of the found table. Defaults to \code{FALSE}.}
 }
+\value{
+vector of classifications
+}
 \description{
 Searches and browses available classifications in the Classifications
 classification service

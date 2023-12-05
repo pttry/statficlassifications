@@ -1,8 +1,5 @@
 #' Standardize region codes
 #'
-#' TODO: R2D2 IS SET TO SALO CURRENTLY. I.E. USE NUMBERS IN STRINGS MAYBE
-#' ONLY IF THERE IS ONLY NUMBERS IN STRINGS
-#'
 #' To avoid non-unique region codes, use the prefixed region codes.
 #' This function "standardizes" region codes in this format.
 #' Region codes already in this format are left as they are.
@@ -20,19 +17,19 @@
 #'
 #' The function does not create region codes from scratch itself but, inputs
 #' are matched to the potential codes in the official classifications.
-#' These classifications are accessed using \code{get_regionclassification}-function.
+#' These classifications are accessed using `get_regionclassification()`.
 #' Thus, only real region codes can be set. The matching of inputs into
-#' potential region codes occurs in \code{match_region_codes_interal}- and
-#' \code{match_region_codes}-functions.
+#' potential region codes occurs in `match_region_codes_interal()` and
+#' `match_region_codes()`.
 #'
 #' @param x character vector of region codes
 #' @param region_level character, optional region level of the input region codes
 #' @param year double, optional year of the classification used
 #' @param offline logical, whether works offline with package data. Defaults to TRUE.
-#' @param use_char_length_info TRUE or named vector, whether to use code character length
-#'    information in determining their region level. Defaults to \code{NULL}.
+#' @param use_char_length_info `TRUE` or named vector, whether to use code character length
+#'    information in determining their region level. Defaults to `NULL`.
 #'
-#' @return
+#' @return same form as input
 #' @export
 #'
 #' @examples
@@ -51,7 +48,7 @@
 #'   set_region_codes("alue045")
 #'
 #'   # But it means also that this happens
-#'   set_region_codes("lsdf4fsdffs5sfs")
+#'   set_region_codes("R2D2")
 #'
 set_region_codes <- function(x,
                              region_level = NULL,
@@ -160,7 +157,6 @@ set_region_codes_fct <- function(x,
 
 }
 
-
 #' Match to potential region codes
 #'
 #' Given a region code in "nonstandard" format, matches all "standardized" region
@@ -171,21 +167,21 @@ set_region_codes_fct <- function(x,
 #' If given a region code in "standardized" format, returns the input as such. That is,
 #' region codes in standardized format have unique matches.
 #'
-#' By setting \code{year} you can restrict the domain of potential matches to region
-#' codes in use in specific year. When \code{year} is not set, latest classifications
+#' By setting `year` you can restrict the domain of potential matches to region
+#' codes in use in specific year. When `year` is not set, latest classifications
 #' are used.
 #'
-#' By setting \code{region_level} you can restrict the domain of potential matches
+#' By setting `region_level` you can restrict the domain of potential matches
 #' to specific region levels.
 #'
 #' @param x input code
 #' @param year double, year of classification
 #' @param region_level character (vector) region level of the input codes
-#' @param offline logical, whether works offline with package data. Defaults to TRUE.
+#' @param offline logical, whether works offline with package data. Defaults to `TRUE`.
 #' @param use_char_length_info TRUE or named vector, whether to use code character length
-#'    information in determining their region level. Defaults to NULL.
+#'    information in determining their region level. Defaults to `NULL`.
 #'
-#' @return
+#' @return vector
 #'
 #'
 match_region_codes <- function(x, year = NULL,

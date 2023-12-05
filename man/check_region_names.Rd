@@ -2,20 +2,14 @@
 % Please edit documentation in R/check_region_classifications.R
 \name{check_region_names}
 \alias{check_region_names}
-\alias{check_region_names_vct}
-\alias{check_region_names_fct}
 \title{Check region names}
 \usage{
 check_region_names(x, lang = "fi", year = NULL, offline = TRUE)
-
-check_region_names_vct(x, lang = "fi", year = NULL, offline = TRUE)
-
-check_region_names_fct(x, lang = "fi", year = NULL, offline = TRUE)
 }
 \arguments{
 \item{x}{character vector or factor.}
 
-\item{lang}{\code{fi}, \code{sv} or \code{en}. Language of the input name. Defaults to \code{fi}.}
+\item{lang}{\code{"fi"}, \code{"sv"} or \code{"en"}. Language of the input name. Defaults to \code{"fi"}.}
 
 \item{year}{double or character, year of classification.}
 
@@ -26,17 +20,6 @@ logical
 }
 \description{
 For a vector or a factor of region names, find the names that are not recognized and
-if does not find such names returns \code{TRUE}. \code{check_region_names} uses
-\code{check_region_names_vct} for vectors and \code{check_region_names_fct} for factors.
+if does not find such names returns \code{TRUE}. \code{check_region_names()} uses
+\code{check_region_names_vct()} for vectors and \code{check_region_names_fct()} for factors.
 }
-\section{Functions}{
-\itemize{
-\item \code{check_region_names_vct()}: Check region names of a vector
-
-For internal use.
-
-\item \code{check_region_names_fct()}: Check region names of a factor
-
-For internal use.
-
-}}

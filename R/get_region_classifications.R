@@ -1,25 +1,24 @@
 #' Get region classification key
 #'
-#' Imports region classification keys from Statistics Finland API. Use together with
-#' \code{dplyr::left_join} to add regions to data. A wrapper for the
-#' \code{get_key}-function that it calls under the hood.
+#' Imports region classification keys from Statistics Finland API. A wrapper for
+#' `get_key()` that it calls under the hood.
 #'
 #' The classification keys e.g. from seutukunta to maakunta or maakunta to suuralue are not very well
 #' available. Thus, the logic of the function is to first get all keys from kunta to all other regions,
 #' construct a table that contains all municipalities with their corresponding larger regions and
 #' then apply the selection implied by the arguments set by the user possible removing duplicates.
-#' \code{get_regionkey} can thus also construct keys that are not available in the Statistics
+#' `get_regionkey()` can thus also construct keys that are not available in the Statistics
 #' Finland classification keys API.
 #'
 #' @param ... character(s), the regions to include in the key.
 #' @param year character or numerical, the year of the desired classification key.
-#' @param lang \code{"fi"}, \code{"en"}, or \code{"sv"}, language of the key required.
-#'    Defaults to \code{"fi"}.
+#' @param lang `"fi"`, `"sv"` or `"en"`. Language of the key required.
+#'    Defaults to `"fi"`.
 #' @param only_codes logical, whether the key should contain only the region codes.
-#'    Defaults to \code{FALSE}.
+#'    Defaults to `FALSE`.
 #' @param only_names logical, whether the key should contain only the region names.
-#'    Defaults to \code{FALSE}.
-#' @param offline logical, whether uses the key in the package data. Defaults \code{TRUE}.
+#'    Defaults to `FALSE`.
+#' @param offline logical, whether uses the key in the package data. Defaults `TRUE`.
 #' @return Region classification key as a data.frame.
 #' @import dplyr
 #' @export
@@ -146,16 +145,16 @@ get_regionkey <- function(...,
 #' @param ... character(s), (vector), region(s) of required keys.
 #' @param year character/numeric, year of the required keys. As default returns a general
 #'    classification containing also abolished municipalities.
-#' @param lang \code{"fi"}, \code{"en"}, or \code{"sv"}, language of the classification required.
-#'    Defaults to \code{"fi"}.
+#' @param lang `"fi"`, `"sv"` or `"en"`. Language of the classification required.
+#'    Defaults to `"fi"`.
 #' @param as_named_vector logical, whether returns the key as a named vector rather than a
-#'    data.frame. Defaults \code{FALSE}.
+#'    data.frame. Defaults `FALSE`.
 #' @param suppress_message logical, whether to suppress any messages the function might produce.
 #' @param only_codes logical, whether to return only the codes in the classification.
-#'     Defaults to \code{FALSE}.
+#'     Defaults to `FALSE`.
 #' @param only_names logical, whether to return only the names in the classification.
-#'     Defaults to \code{FALSE}.
-#' @param offline logical, whether uses the key in the package data. Defaults \code{TRUE}.
+#'     Defaults to `FALSE`.
+#' @param offline logical, whether uses the key in the package data. Defaults `TRUE`.
 #'
 #'
 #' @return a data.frame or a named vector. A region code-name key.

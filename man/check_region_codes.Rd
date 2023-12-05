@@ -17,7 +17,7 @@ check_region_codes_fct(x, year = NULL, offline = TRUE)
 
 \item{year}{double or character, year of classification}
 
-\item{offline}{logical, whether works offline with package data. Defaults to TRUE.}
+\item{offline}{logical, whether works offline with package data. Defaults to \code{TRUE}.}
 }
 \value{
 vector of logicals

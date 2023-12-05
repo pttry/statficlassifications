@@ -19,10 +19,22 @@ check_region_classification(
 
 \item{year}{double or character, year of classification}
 
-\item{lang}{\code{fi}, \code{sv} or \code{en}. Language of the input name. Defaults to \code{fi}.}
+\item{lang}{\code{"fi"}, \code{"sv"} or \code{"en"}. Language of the input name. Defaults to \code{"fi"}.}
 
 \item{offline}{logical, whether works offline with package data. Defaults to \code{TRUE}.}
 }
+\value{
+logical
+}
 \description{
-Check region classifications
+Functions for checking region classifications are divided into functions that
+test whether input is a certain element of classification returning logicals
+functions that check if input vector is ok. The checking functions return TRUE
+if everything is ok and FALSE if not. In case of FALSE, they also return a message
+containing information where the problem is.
+}
+\details{
+Testing of the region information of data should proceed by first checking
+if the region codes and names are ok and then whether they correctly
+correspond to each other.
 }

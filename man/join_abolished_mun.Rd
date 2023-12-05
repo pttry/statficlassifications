@@ -2,42 +2,23 @@
 % Please edit documentation in R/join_abolished_mun.R
 \name{join_abolished_mun}
 \alias{join_abolished_mun}
-\alias{join_abolished_mun_vct}
-\alias{join_abolished_mun_fct}
-\alias{join_abolished_mun_df}
 \title{Join abolished municipalities}
 \usage{
 join_abolished_mun(x, col = NULL)
-
-join_abolished_mun_vct(x)
-
-join_abolished_mun_fct(x)
-
-join_abolished_mun_df(x, col)
 }
 \arguments{
 \item{x}{an object containing municipality codes, a vector, a factor or a data.frame.}
+
+\item{col}{}
+}
+\value{
+vector, factor or data.frame, depending on input.
 }
 \description{
 Takes a vector of municipality codes with KU-prefixes and transforms the codes of
 the abolished municipalities to the codes of the municipality to which they have
 joined.
 }
-\section{Functions}{
-\itemize{
-\item \code{join_abolished_mun_vct()}: Join abolished municipalities
-
-For internal use.
-
-\item \code{join_abolished_mun_fct()}: Join abolished municipalities
-
-For internal use.
-
-\item \code{join_abolished_mun_df()}: Join abolished municipalities
-
-For internal use
-
-}}
 \examples{
 
   v <- c("KU414", "KU609", "KU429", "KU272")
