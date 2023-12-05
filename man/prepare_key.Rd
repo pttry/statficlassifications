@@ -58,4 +58,19 @@ key <- data.frame(var1 = letters[1:4],
 
 prepare_key(key = key, from = "var1", to = "var3")
 
+
+   # Consider iris data
+   data("iris")
+
+   key <- data.frame(Species = c("setosa", "versicolor", "virginica"),
+                     common_name = c("bristle-pointed iris",
+                      "harlequin blueflag", "Virginia blueflag"))
+   prepare_key(iris, key, by = "names")
+
+   # Things are often not so happily that the column names in data and the
+   # key would match.
+
+   names(key)[1] <- "Genus"
+   prepare_key(iris, key, by = "values")
+
 }

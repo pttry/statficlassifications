@@ -2,7 +2,6 @@
 
 S3method(key_recode,data.frame)
 S3method(key_recode,default)
-S3method(key_recode,factor)
 S3method(key_recode_internal,default)
 S3method(key_recode_internal,factor)
 S3method(match_col,data.frame)

@@ -2,7 +2,7 @@
 % Please edit documentation in R/recode_with_key.R
 \name{key_recode}
 \alias{key_recode}
-\title{Recode classifications using key}
+\title{Recode with key}
 \usage{
 key_recode(
   x,
@@ -40,14 +40,25 @@ vector or data.frame
 }
 \description{
 Given a key, recodes input. In most of the cases is able to recode an input
-given just a key. That is, the arguments are are the object to be recoded and
-a key.
+given just a key. That is, given the information in input and in key is able
+to 1) determine which column in key corresponds to the input and thus from which
+column in key recoding is from and 2) in case of a data.frame input, which
+column in the data.frame is in the key and so which column in the data.frame
+can be recoded with the key. In these cases, the required arguments are just
+the object to be recoded and a key.
 }
 \details{
-Keys can be data.frames, named vectors or lists of named vectors.
+Keys can be data.frames, named vectors or lists of named vectors. Inputs can
+be vectors, factors or data.frames.
 
-ISSUES: works now by finding for each column a suitable variable in key. But
-sometimes we need to find the suitable column in the data.frame.
+First uses \code{prepare_key()} to transform the key into a list object that
+contains, in addition to the key, data on which column of the key, the
+from-column, is supposed to be recoded in to which column of the key, the
+to-column.
+
+In creating the new list object, \code{prepare_key()} uses \code{match_col()} to find
+the column in key that has the same classification as the input vector and
+potentially the column in input that can be recoded with the key.
 }
 \examples{
 
@@ -109,5 +120,20 @@ sometimes we need to find the suitable column in the data.frame.
    key$a <- NULL
    key_recode(x, key, by = "values")
    key_recode(x, key, by = "names")
+
+   # Consider iris data
+   data("iris")
+
+   key <- data.frame(Species = c("setosa", "versicolor", "virginica"),
+                     common_name = c("bristle-pointed iris",
+                      "harlequin blueflag", "Virginia blueflag"))
+   key_recode(iris, key, by = "names")
+
+   # Things are often not so happily that the column names in data and the
+   # key would match.
+
+   names(key)[1] <- "Genus"
+   key_recode(iris, key, by = "values")
+
 
 }

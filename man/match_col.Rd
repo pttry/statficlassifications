@@ -73,7 +73,8 @@ key <- data.frame(var1 = letters[1:4],
  # Now suppse there is a key that maps the Latin Species name to a common
  # name
  key <- data.frame(Species = c("setosa", "versicolor", "virginica"),
-                   common_name = c("bristle-pointed iris", "harlequin blueflag", "Virginia blueflag"))
+                   common_name = c("bristle-pointed iris",
+                            "harlequin blueflag", "Virginia blueflag"))
 
  # We find for each column in iris, a column in the key that has data on the
  # same variable as in the column. Here by names:
