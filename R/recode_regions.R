@@ -4,6 +4,8 @@
 #' names to codes and vice versa. A wrapper for `key_recode()` that uses the
 #'`get_regionkey()` to produce the key.
 #'
+#' TODO: if to not specified could just change codes to names and vice versa
+#'
 #' @param x data.frame, the input vector that contains the regional variable.
 #' @param to character, the desired target in the classification key.
 #' @param from character, the original classification key.

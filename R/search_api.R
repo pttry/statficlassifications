@@ -22,41 +22,38 @@
 #' # Search for keys from kunta to maakunta for year 2016
 #'    search_keys("kunta", "maakunta", 2016)
 #'
-#'
 search_keys <- function(..., as_localId = FALSE) {
 
   # Get a list of all correspondence table urls and create a data.frame that isolates the components
   # of the endpoints
     results <- suppressMessages(urls_as_localId_df(get_url(classification_service = "correspondenceTables")))
+    searchterms <- unlist(list(...))
 
   # Filter results by the searchterms
-    searchterms <- unlist(list(...))
-    results <-  results[sapply(1:dim(results)[1], function(i) { all(searchterms %in% c(results[i,])) }), ]
+    results <- filter_results(results, searchterms)
 
   # Interrupt if nothing found.
-    if(dim(results)[1] == 0) {
-      return(message("No search results!"))
-    }
+    if(dim(results)[1] == 0) return(message("No search results!"))
 
   # Format output.
-    output <- character(dim(results)[1])
     if(as_localId) {
-      for(i in 1:dim(results)[1]) {
-        output[i] <- create_localId_name(input_vector = results[i,])
-      }
+      output <- create_localId_name(source = results$source, target = results$target,
+                                    year1 = results$year1, year2 = results$year2,
+                                    date1 = results$date1, date2 = results$date2,
+                                    nro1 = results$nro1, nro2 = results$nro2)
     } else {
-      for(i in 1:dim(results)[1]) {
-        output[i] <- paste(results[i, "source"],
-                           results[i, "year1"],
+        output <- paste(results$source,
+                           results$year1,
                            "->",
-                           results[i, "target"],
-                           results[i, "year2"], sep = " ")
-      }
+                           results$target,
+                           results$year2, sep = " ")
     }
 
   # Return.
   unique(output)
 }
+
+
 
 
 #' Search for classifications
@@ -80,28 +77,40 @@ search_classifications <- function(..., as_localId = FALSE){
   # Get a list of all correspondence table urls and create a data.frame that isolates the components
   # of the endpoints
   results <- suppressMessages(urls_as_localId_df(get_url(classification_service = "classifications")))
+  searchterms <- unlist(list(...))
 
   # Filter results by the searchterms
-  searchterms <- unlist(list(...))
-  results <-  results[sapply(1:dim(results)[1], function(i) { all(searchterms %in% c(results[i,]))}), ]
+  results <- filter_results(results, searchterms)
 
-  # Interrupt of nothing found.
-  if(dim(results)[1] == 0) {
-    return(message("No search results!"))
-  }
+  # Interrupt if nothing found.
+  if(dim(results)[1] == 0) return(stop("No search results!"))
 
   # Format output
-  output <- character(dim(results)[1])
   if(as_localId) {
-    for(i in 1:dim(results)[1]) {
-      output[i] <- paste0(results$series[i], results$nro[i], results$year[i], results$date[i])
-    }
+      output <- paste0(results$series, results$nro, results$year, results$date)
   } else {
-    for(i in 1:dim(results)[1]) {
-      output[i] <- paste(results$series[i], results$year[i])
-    }
+      output <- paste(results$series, results$year)
   }
 
   # Return.
   unique(output)
+}
+
+
+
+#' Filter search results
+#'
+#' @param results
+#' @param searchterms
+#'
+#' @return
+#' @export
+#'
+#' @examples
+filter_results <- function(results, searchterms) {
+
+  # Filter results by the searchterms
+  if(length(searchterms) > 0) searchterms <- unlist(strsplit(searchterms, " "))
+  results[sapply(1:dim(results)[1], function(i) { all(searchterms %in% c(results[i,])) }), ]
+
 }

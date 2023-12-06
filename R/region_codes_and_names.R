@@ -7,6 +7,10 @@
 
 #' Change region codes to region names
 #'
+#' Why do these functions exist? Replace by recode_region? Also:
+#'
+#' key_recode(v, get_regionclassification(), by = "values")
+#'
 #' Works with standardized region codes. A good practice is to first standardize
 #' your region codes using `set_region_codes()`. `codes_to_names()`,
 #' however can check if the region codes are standardized and applies `set_region_codes()`

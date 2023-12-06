@@ -42,6 +42,11 @@ Defaults to \code{FALSE}.}
 data.frame
 }
 \description{
+Why do these functions exist? Replace by recode_region? Also:
+}
+\details{
+key_recode(v, get_regionclassification(), by = "values")
+
 Works with standardized region codes. A good practice is to first standardize
 your region codes using \code{set_region_codes()}. \code{codes_to_names()},
 however can check if the region codes are standardized and applies \code{set_region_codes()}

@@ -29,5 +29,4 @@ the correspondenceTables classification service
 # Search for keys from kunta to maakunta for year 2016
    search_keys("kunta", "maakunta", 2016)
 
-
 }

@@ -14,8 +14,7 @@ create_localId_name(
   date1 = date,
   date2 = date,
   nro1 = "_1_",
-  nro2 = "_1_",
-  input_vector = NULL
+  nro2 = "_1_"
 )
 }
 \arguments{
@@ -38,8 +37,6 @@ create_localId_name(
 \item{nro1}{character, defaults to "\emph{1}".}
 
 \item{nro2}{character, defaults to "\emph{1}".}
-
-\item{input_vector}{named vector}
 }
 \value{
 character

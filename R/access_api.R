@@ -60,9 +60,7 @@ access_API <- function(localId = NULL,
   # If localId provided, prepend with "/" to build url to the endpoint. If localId
   # is not provided the function accesses all the endpoints in the given classification
   # service. In this case, the url cannot end with '/'.
-    if(!is.null(localId)) {
-      localId <- paste0("/", localId)
-    }
+    if(!is.null(localId)) localId <- paste0("/", localId)
 
   # Create a vector that maps classification service name to url path.
     url_ends <- c("classifications" = "/classificationItems",
@@ -335,7 +333,6 @@ find_classification_service <- function(localId) {
 #' @param date2 character
 #' @param nro1 character, defaults to "_1_".
 #' @param nro2 character, defaults to "_1_".
-#' @param input_vector named vector
 #'
 #' @return character
 #' @export
@@ -348,19 +345,7 @@ find_classification_service <- function(localId) {
 create_localId_name <- function(source, target,
                                 year, year1 = year, year2 = year,
                                 date = "0101", date1 = date, date2 = date,
-                                nro1 = "_1_", nro2 = "_1_",
-                                input_vector = NULL) {
-
-  if(!is.null(input_vector)) {
-    source <- input_vector["source"]
-    target <- input_vector["target"]
-    date1 <- input_vector["date1"]
-    date2 <- input_vector["date2"]
-    year1 <- input_vector["year1"]
-    year2 <- input_vector["year2"]
-    nro1 <- input_vector["nro1"]
-    nro2 <- input_vector["nro2"]
-  }
+                                nro1 = "_1_", nro2 = "_1_") {
 
   paste0(source, nro1, as.character(year1), date1,"%23", target, nro2, as.character(year2), date2)
 

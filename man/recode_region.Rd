@@ -25,3 +25,6 @@ Recodes regional variables by e.g. changing kunnat to seutukunnat or changing
 names to codes and vice versa. A wrapper for \code{key_recode()} that uses the
 \code{get_regionkey()} to produce the key.
 }
+\details{
+TODO: if to not specified could just change codes to names and vice versa
+}
