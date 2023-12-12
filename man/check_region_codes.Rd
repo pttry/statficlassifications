@@ -2,15 +2,15 @@
 % Please edit documentation in R/check_region_classifications.R
 \name{check_region_codes}
 \alias{check_region_codes}
-\alias{check_region_codes_vct}
-\alias{check_region_codes_fct}
+\alias{check_region_codes.default}
+\alias{check_region_codes.factor}
 \title{Check region codes}
 \usage{
 check_region_codes(x, year = NULL, offline = TRUE)
 
-check_region_codes_vct(x, year = NULL, offline = TRUE)
+\method{check_region_codes}{default}(x, year = NULL, offline = TRUE)
 
-check_region_codes_fct(x, year = NULL, offline = TRUE)
+\method{check_region_codes}{factor}(x, year = NULL, offline = TRUE)
 }
 \arguments{
 \item{x}{character vector or factor}
@@ -27,14 +27,10 @@ Checks whether all the elements in the given vector of potential region codes
 are standardized region codes. If they are returns \code{TRUE}, if they are
 not, returns a message telling which elements are not recognized as region codes.
 }
-\section{Functions}{
+\section{Methods (by class)}{
 \itemize{
-\item \code{check_region_codes_vct()}: Check region codes of a vector
+\item \code{check_region_codes(default)}: 
 
-For internal use.
-
-\item \code{check_region_codes_fct()}: Check region codes of a vector
-
-For internal use.
+\item \code{check_region_codes(factor)}: 
 
 }}

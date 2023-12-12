@@ -7,7 +7,12 @@
 filter_results(results, searchterms)
 }
 \arguments{
-\item{searchterms}{}
+\item{results}{character vector, the search field}
+
+\item{searchterms}{character vector search terms}
+}
+\value{
+character vector of elements of input that match the search terms
 }
 \description{
 Filter search results

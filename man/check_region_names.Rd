@@ -20,6 +20,5 @@ logical
 }
 \description{
 For a vector or a factor of region names, find the names that are not recognized and
-if does not find such names returns \code{TRUE}. \code{check_region_names()} uses
-\code{check_region_names_vct()} for vectors and \code{check_region_names_fct()} for factors.
+if does not find such names returns \code{TRUE}.
 }

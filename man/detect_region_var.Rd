@@ -11,11 +11,11 @@ detect_region_var(data, year = NULL, offline = TRUE)
 
 \item{year, }{double, year of the used classification}
 
-\item{offline, }{logical, whether works offline with package data. Defaults to TRUE.}
+\item{offline, }{logical, whether works offline with package data. Defaults to \code{TRUE}.}
 }
 \value{
 character(2) Returns the region variable in the original data and the corresponding region
-variable in the get_regionkey()
+variable in the \code{get_regionkey()}
 }
 \description{
 Given data, looks for the variable that contains regions. Returns the name of this variable

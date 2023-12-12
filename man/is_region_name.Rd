@@ -2,7 +2,7 @@
 % Please edit documentation in R/test_region_classifications.R
 \name{is_region_name}
 \alias{is_region_name}
-\title{Check if character is region name.}
+\title{Check if string is region name}
 \usage{
 is_region_name(
   x,
@@ -15,11 +15,12 @@ is_region_name(
 )
 }
 \arguments{
-\item{x}{character, a vector of potential region names}
+\item{x}{character, a vector of potential region names.}
 
-\item{region_level}{character, optional region level of the input region codes}
+\item{region_level}{character, optional region level of the input region codes.
+Possible \code{region_level}s are \code{statficlassifications:::prefix_name_key$name}.}
 
-\item{year}{double, year of region classification searched}
+\item{year}{double, year of region classification searched.}
 
 \item{offline}{logical, whether works offline with package data. Defaults to \code{TRUE}.}
 
@@ -27,7 +28,7 @@ is_region_name(
 region names.}
 
 \item{case_sensitive}{logical, whether recognition is case sensitive, defaults
-to \code{FALSE}}
+to \code{FALSE}.}
 
 \item{lang}{\code{"fi"}, \code{"sv"} or \code{"en"}. Language of the input name.
 Defaults to \code{"fi"}.}
@@ -36,14 +37,16 @@ Defaults to \code{"fi"}.}
 logical
 }
 \description{
-Note that by default, the function tests whether input is a name in standard form.
+By default, the tests whether input is a name in standard form. Non-standard
+forms can be tested by setting \code{allow_nonstandard_names = TRUE}.
 }
 \details{
 Region variable detection functions use the testing functions here.
 }
 \examples{
 
- is_region_name(c("Kainuu", "Kainuun maakunta"))
- is_region_name(c("Kainuu", "Kainuun maakunta"), allow_nonstandard_names = TRUE)
+ is_region_name(c("Kainuu", "Kainuun maakunta", "Kajjjaani"))
+ is_region_name(c("Kainuu", "Kainuun maakunta", "Kajjjaani"), allow_nonstandard_names = TRUE)
+
 
 }

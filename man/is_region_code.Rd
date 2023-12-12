@@ -2,16 +2,17 @@
 % Please edit documentation in R/test_region_classifications.R
 \name{is_region_code}
 \alias{is_region_code}
-\title{Check if character is prefixed region code}
+\title{Check if string is region code}
 \usage{
 is_region_code(x, region_level = NULL, year = NULL, offline = TRUE)
 }
 \arguments{
-\item{x}{vector, potential region code}
+\item{x}{vector, a potential region code.}
 
-\item{region_level}{character, optional region level of the input region codes}
+\item{region_level}{character, optional region level of the input region codes.
+Possible \code{region_level}s are \code{statficlassifications:::prefix_name_key$name}.}
 
-\item{year}{double, year of region classification searched}
+\item{year}{double, year of region classification searched.}
 
 \item{offline}{logical, whether works offline with package data. Defaults to \code{TRUE}.}
 }
@@ -24,7 +25,7 @@ which elements are region codes. Allows prefixed and non-prefixed region codes.
 }
 \details{
 Uses \code{is_region_code_with_prefix()} and \code{is_region_code_without_prefix()}.
-These functions are required as such elsewhere.
+These functions are required as such also elsewhere.
 
 Region variable detection functions use the testing functions here.
 }

@@ -47,25 +47,15 @@ check_region_classification <- function(region_names, region_codes,
 #'
 check_region_codes <- function(x, year = NULL, offline = TRUE) {
 
-  if(is.vector(x)){
-    x <- check_region_codes_vct(x, offline = offline, year = year)
-  } else if(is.factor(x)) {
-    x <- check_region_codes_fct(x, offline = offline, year = year)
-  } else {
-    stop("Argument not a vector or factor.")
-  }
-  x
+  UseMethod("check_region_codes")
+
 }
 
 #' @describeIn check_region_codes
 #'
-#' Check region codes of a vector
-#'
-#' For internal use.
-#'
 #' @export
 #'
-check_region_codes_vct <- function(x, year = NULL, offline = TRUE) {
+check_region_codes.default <- function(x, year = NULL, offline = TRUE) {
 
   logical <- is_region_code_with_prefix(x, offline = offline, year = year)
   if(all(logical)) {
@@ -81,23 +71,18 @@ check_region_codes_vct <- function(x, year = NULL, offline = TRUE) {
 
 #' @describeIn check_region_codes
 #'
-#' Check region codes of a vector
-#'
-#' For internal use.
-#'
 #' @export
 #'
-check_region_codes_fct <- function(x, year = NULL, offline = TRUE) {
+check_region_codes.factor <- function(x, year = NULL, offline = TRUE) {
 
-  check_region_codes_vct(levels(x), offline = offline, year = year)
+  check_region_codes(levels(x), offline = offline, year = year)
 
 }
 
 #' Check region names
 #'
 #' For a vector or a factor of region names, find the names that are not recognized and
-#' if does not find such names returns `TRUE`. `check_region_names()` uses
-#' `check_region_names_vct()` for vectors and `check_region_names_fct()` for factors.
+#' if does not find such names returns `TRUE`.
 #'
 #' @param x character vector or factor.
 #' @param year double or character, year of classification.
@@ -110,23 +95,14 @@ check_region_codes_fct <- function(x, year = NULL, offline = TRUE) {
 #'
 check_region_names <- function(x, lang = "fi", year = NULL, offline = TRUE) {
 
-  if(is.vector(x)){
-    x <- check_region_names_vct(x, lang = lang, offline = offline, year = year)
-  } else if(is.factor(x)) {
-    x <- check_region_names_fct(x, lang = lang, offline = offline, year = year)
-  } else {
-    stop("Argument not a vector or factor.")
-  }
-  x
+  UseMethod("check_region_names")
 }
 
 #' @describeIn Check region names
 #'
-#' Check region names of a vector
+#' @export
 #'
-#' For internal use.
-#'
-check_region_names_vct <- function(x, lang = "fi", year = NULL, offline = TRUE) {
+check_region_names.default <- function(x, lang = "fi", year = NULL, offline = TRUE) {
 
   logical <- is_region_name(x, lang = lang, offline = offline, year = year)
   if(all(logical)) {
@@ -142,12 +118,10 @@ check_region_names_vct <- function(x, lang = "fi", year = NULL, offline = TRUE) 
 
 #' @describeIn Check region names
 #'
-#' Check region names of a factor
+#' @export
 #'
-#' For internal use.
-#'
-check_region_names_fct <- function(x, lang = "fi", year = NULL, offline = TRUE) {
-  check_region_names_vct(levels(x), lang = lang, offline = offline, year = year)
+check_region_names.factor <- function(x, lang = "fi", year = NULL, offline = TRUE) {
+  check_region_names(levels(x), lang = lang, offline = offline, year = year)
 }
 
 #' Check if region names and codes correspond as in regionkey.

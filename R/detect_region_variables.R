@@ -1,5 +1,3 @@
-
-
 #' Detect region variables in data
 #'
 #' Given data, looks for the variable that contains regions. Returns the name of this variable
@@ -7,10 +5,10 @@
 #'
 #' @param data data.frame
 #' @param year, double, year of the used classification
-#' @param offline, logical, whether works offline with package data. Defaults to TRUE.
+#' @param offline, logical, whether works offline with package data. Defaults to `TRUE`.
 #'
 #' @return character(2) Returns the region variable in the original data and the corresponding region
-#'    variable in the get_regionkey()
+#'    variable in the `get_regionkey()`
 #' @export
 #'
 #' @examples
@@ -79,9 +77,12 @@ detect_region_level <- function(x, year = NULL, offline = TRUE) {
 
 #' Detect year of region classification
 #'
-#' Detects year of classification from the number of unique regions using the idea that
-#' the number of regions vary yearly. Given a vector of region names or codes and region
-#' level determines the year of regional classification. Returns all matching years.
+#' Detects year of classification from the number of unique regions assuming the
+#' regularity that the number of regions weakly decreases in time. Given a vector of
+#' region names or codes and region level determines the year of regional
+#' classification. Returns all matching years. Works only for a vector that
+#' contains all possible values. Note that if the data does not contain all possible
+#' values the levels of a factor may.
 #'
 #' @param x vector of regions
 #' @param region_level region level in x
@@ -95,8 +96,7 @@ detect_region_level <- function(x, year = NULL, offline = TRUE) {
 #'
 detect_region_year <- function(x, region_level) {
 
-  (statficlassifications::number_of_regions |>
-    dplyr::filter(region_level == region_level,
-                  number_of_regions == length(unique(x))))$year
+  df <- statficlassifications::number_of_regions
+  df[df$region_level == region_level,][df$number_of_regions == length(unique(x)),]$year
 
 }

@@ -15,9 +15,12 @@ detect_region_year(x, region_level)
 vector
 }
 \description{
-Detects year of classification from the number of unique regions using the idea that
-the number of regions vary yearly. Given a vector of region names or codes and region
-level determines the year of regional classification. Returns all matching years.
+Detects year of classification from the number of unique regions assuming the
+regularity that the number of regions weakly decreases in time. Given a vector of
+region names or codes and region level determines the year of regional
+classification. Returns all matching years. Works only for a vector that
+contains all possible values. Note that if the data does not contain all possible
+values the levels of a factor may.
 }
 \examples{
    df <- get_regionclassification("kunta", year = 2010)

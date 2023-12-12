@@ -23,30 +23,18 @@
 #'
 join_abolished_mun <- function(x, col = NULL) {
 
-  if(is.vector(x)){
-    x <- join_abolished_mun_vct(x)
-  } else if(is.factor(x)) {
-    x <- join_abolished_mun_fct(x)
-  } else if(is.data.frame(x)) {
-    x <- join_abolished_mun_df(x, col)
-  } else {
-    stop("Argument not a vector, factor nor a data.frame.")
-  }
-  x
+  UseMethod("join_abolished_mun")
+
 }
 
 #' @describeIn Join abolished municipalities
 #'
-#' For internal use.
-#'
 #' @export
 #'
-join_abolished_mun_vct <- function(x) {
+join_abolished_mun.default <- function(x) {
 
   if(!any(grepl("KU", x))) {
-    stop("This function understands only prefixed municipality codes!")
-    #  x <- standardize_code_prefixes(x)
-    #  message("Region code prefixes added!")
+    stop("This function understands only prefixed municipality codes! Use set_region_codes() to standardize your codes")
   }
 
   # Save potential names
@@ -86,28 +74,18 @@ join_abolished_mun_vct <- function(x) {
 
 #' @describeIn Join abolished municipalities
 #'
-#' For internal use.
-#'
 #' @export
 #'
-join_abolished_mun_fct <- function(x) {
-  levels(x) <- join_abolished_mun_vct(levels(x))
+join_abolished_mun.factor <- function(x) {
+  levels(x) <- join_abolished_mun.default(levels(x))
   x
 }
 
 #' @describeIn Join abolished municipalities
 #'
-#'
-#' For internal use
-#'
 #' @export
 #'
-join_abolished_mun_df <- function(x, col) {
-
-  if(is.vector(x[[col]])) {
-    x[[col]] <- join_abolished_mun_vct(x[[col]])
-  } else if(is.factor(x[[col]])) {
-    x[[col]] <- join_abolished_mun_fct(x[[col]])
-  }
+join_abolished_mun.data.frame <- function(x, col) {
+  x[[col]] <- join_abolished_mun(x[[col]])
   x
 }

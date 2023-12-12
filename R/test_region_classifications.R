@@ -1,17 +1,19 @@
-#' Check if character is prefixed region code
+#' Check if string is region code
 #'
 #' Given a vector of potential region codes, returns a vector of logicals indicating
 #' which elements are region codes. Allows prefixed and non-prefixed region codes.
 #'
+#' @details
 #' Uses `is_region_code_with_prefix()` and `is_region_code_without_prefix()`.
-#' These functions are required as such elsewhere.
+#' These functions are required as such also elsewhere.
 #'
 #' Region variable detection functions use the testing functions here.
 #'
 #'
-#' @param x vector, potential region code
-#' @param region_level character, optional region level of the input region codes
-#' @param year double, year of region classification searched
+#' @param x vector, a potential region code.
+#' @param region_level character, optional region level of the input region codes.
+#'    Possible `region_level`s are `statficlassifications:::prefix_name_key$name`.
+#' @param year double, year of region classification searched.
 #' @param offline logical, whether works offline with package data. Defaults to `TRUE`.
 #'
 #' @return logical
@@ -32,7 +34,7 @@ is_region_code <- function(x, region_level = NULL, year = NULL, offline = TRUE) 
 
 }
 
-#' @describeIn Check if character is prefixed region code
+#' @describeIn Check if string is region code
 #' @export
 #'
 is_region_code_with_prefix <- function(x, region_level = NULL, year = NULL, offline = TRUE) {
@@ -46,7 +48,7 @@ is_region_code_with_prefix <- function(x, region_level = NULL, year = NULL, offl
   as.vector(x) %in% codes
 }
 
-#' @describeIn Check if character is prefixed region code
+#' @describeIn Check if string is region code
 #' @export
 #'
 is_region_code_without_prefix <- function(x, region_level = NULL, year = NULL, offline = TRUE) {
@@ -64,20 +66,22 @@ is_region_code_without_prefix <- function(x, region_level = NULL, year = NULL, o
 
 }
 
-#' Check if character is region name.
+#' Check if string is region name
 #'
-#' Note that by default, the function tests whether input is a name in standard form.
+#' By default, the tests whether input is a name in standard form. Non-standard
+#' forms can be tested by setting `allow_nonstandard_names = TRUE`.
 #'
 #' Region variable detection functions use the testing functions here.
 #'
-#' @param x character, a vector of potential region names
-#' @param region_level character, optional region level of the input region codes
-#' @param year double, year of region classification searched
+#' @param x character, a vector of potential region names.
+#' @param region_level character, optional region level of the input region codes.
+#'    Possible `region_level`s are `statficlassifications:::prefix_name_key$name`.
+#' @param year double, year of region classification searched.
 #' @param offline logical, whether works offline with package data. Defaults to `TRUE`.
 #' @param allow_nonstandard_names logical, whether to accept a broader set of names as
 #'    region names.
 #' @param case_sensitive logical, whether recognition is case sensitive, defaults
-#'    to \code{FALSE}
+#'    to `FALSE`.
 #' @param lang `"fi"`, `"sv"` or `"en"`. Language of the input name.
 #'    Defaults to `"fi"`.
 #'
@@ -86,8 +90,9 @@ is_region_code_without_prefix <- function(x, region_level = NULL, year = NULL, o
 #'
 #' @examples
 #'
-#'  is_region_name(c("Kainuu", "Kainuun maakunta"))
-#'  is_region_name(c("Kainuu", "Kainuun maakunta"), allow_nonstandard_names = TRUE)
+#'  is_region_name(c("Kainuu", "Kainuun maakunta", "Kajjjaani"))
+#'  is_region_name(c("Kainuu", "Kainuun maakunta", "Kajjjaani"), allow_nonstandard_names = TRUE)
+#'
 #'
 is_region_name <- function(x,
                            region_level = NULL,

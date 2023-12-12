@@ -139,7 +139,8 @@ nonstandard_key <- c("koko maa" = "SSS",
                      "Kainuun maakunta" = "MK18",
                      "Lapin maakunta" = "MK19",
                      "Ahvenanmaa - Åland" = "MK21",
-                     "Maarianhamina - Mariehamn" = "KU478")
+                     "Maarianhamina - Mariehamn" = "KU478",
+                     "Kajjjaani" = "KU205")
 
 nonstandard_region_names_key <- data.frame(alue_name = names(nonstandard_key), alue_code = nonstandard_key)
 rownames(nonstandard_region_names_key) <- NULL

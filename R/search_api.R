@@ -53,9 +53,6 @@ search_keys <- function(..., as_localId = FALSE) {
   unique(output)
 }
 
-
-
-
 #' Search for classifications
 #'
 #' Searches and browses available classifications in the Classifications
@@ -96,17 +93,14 @@ search_classifications <- function(..., as_localId = FALSE){
   unique(output)
 }
 
-
-
 #' Filter search results
 #'
-#' @param results
-#' @param searchterms
+#' @param results character vector, the search field
+#' @param searchterms character vector search terms
 #'
-#' @return
+#' @return character vector of elements of input that match the search terms
 #' @export
 #'
-#' @examples
 filter_results <- function(results, searchterms) {
 
   # Filter results by the searchterms
