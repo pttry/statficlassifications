@@ -1,13 +1,14 @@
 Package: statficlassifications
 Title: Statistics Finland Statistical Classification API interface
 Version: 0.0.1.9001
-Authors@R: 
-    person(given = "Juho",
-           family = "Alasalmi",
+Authors@R: c(
+    person("Juho","Alasalmi",
            role = c("aut", "cre"),
-           email = "juho.alasalmi@ptt.fi",
-           comment = c(ORCID = "YOUR-ORCID-ID"))
-Description: statficlassifications` accesses to the classifications and 
+           email = "juho.alasalmi@ptt.fi"),
+    person("Janne", "Huovari",
+           role = c("ctb")),
+    person("Pellervo Economic Research PTT", role = "fnd"))
+Description: statficlassifications accesses to the classifications and 
    correspondence tables open classifications API of Statistics Finland. 
    Contains tools for checking and standardizing classifications. 
 License: MIT + file LICENSE
