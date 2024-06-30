@@ -21,8 +21,8 @@ Finland, see <https://www.stat.fi/en/luokitukset/info/>.
 To install and start using the package:
 
 ``` r
-install.packages("devtools")
-devtools::install_github("pttry/statficlassifications")
+#install.packages("devtools")
+#devtools::install_github("pttry/statficlassifications")
 library(statficlassifications)
 ```
 
@@ -40,30 +40,50 @@ To list all available classification keys (correspondence tables), use
 
 ``` r
 head(search_keys())
-#> [1] "kunta 2019 -> ely 2019"             "kunta 2022 -> hyvinvointialue 2022"
-#> [3] "kunta 2019 -> kuntaryhmitys 2019"   "kunta 2022 -> ely 2022"            
-#> [5] "ammatti 1987 -> ammatti 2001"       "kunta 2019 -> seutukunta 2019"
+#> [1] "kunta 2009 -> sairaanhoitop 2009" "kunta 2009 -> kuntaryhmitys 2009"
+#> [3] "kunta 2009 -> maakunta 2009"      "kunta 2009 -> seutukunta 2009"   
+#> [5] "kunta 2009 -> kielisuhde 2009"    "kunta 2009 -> laani 2009"
 ```
 
 Plug in search terms to search for available keys:
 
 ``` r
 search_keys("maakunta")
-#>  [1] "kunta 2007 -> maakunta 2007"      "kunta 2008 -> maakunta 2008"     
-#>  [3] "kunta 2009 -> maakunta 2009"      "kunta 2010 -> maakunta 2010"     
-#>  [5] "kunta 2011 -> maakunta 2011"      "kunta 2012 -> maakunta 2012"     
-#>  [7] "kunta 2013 -> maakunta 2013"      "kunta 2014 -> maakunta 2014"     
-#>  [9] "kunta 2015 -> maakunta 2015"      "maakunta 2007 -> suuralue 2003"  
-#> [11] "kunta 2016 -> maakunta 2016"      "maakunta 2010 -> avi 2010"       
-#> [13] "seutukunta 2009 -> maakunta 2009" "seutukunta 2007 -> maakunta 2007"
-#> [15] "maakunta 2012 -> seutukunta 2012" "maakunta 2012 -> suuralue 2012"  
-#> [17] "maakunta 2011 -> suuralue 2011"   "seutukunta 2010 -> maakunta 2010"
-#> [19] "seutukunta 2011 -> maakunta 2011" "maakunta 2016 -> suuralue 2016"  
-#> [21] "kunta 2017 -> maakunta 2017"      "kunta 2018 -> maakunta 2018"     
-#> [23] "kunta 2019 -> maakunta 2019"      "kunta 2020 -> maakunta 2020"     
-#> [25] "kunta 2021 -> maakunta 2021"      "maakunta 2021 -> suuralue 2021"  
-#> [27] "kunta 2022 -> maakunta 2022"      "maakunta 2022 -> suuralue 2022"  
-#> [29] "kunta 2023 -> maakunta 2023"
+#>  [1] "kunta 2009 -> maakunta 2009"      "kunta 2010 -> maakunta 2010"     
+#>  [3] "kunta 2011 -> maakunta 2011"      "kunta 2012 -> maakunta 2012"     
+#>  [5] "kunta 2013 -> maakunta 2013"      "kunta 2014 -> maakunta 2014"     
+#>  [7] "kunta 2015 -> maakunta 2015"      "kunta 2016 -> maakunta 2016"     
+#>  [9] "maakunta 1997 -> suuralue 1994"   "maakunta 1992 -> suuralue 1994"  
+#> [11] "maakunta 1995 -> suuralue 1994"   "maakunta 1997 -> laani 1997"     
+#> [13] "laani 1997 -> maakunta 2005"      "maakunta 1998 -> suuralue 1994"  
+#> [15] "maakunta 1997 -> suuralue 1997"   "maakunta 2005 -> suuralue 2003"  
+#> [17] "maakunta 2002 -> suuralue 2003"   "maakunta 2002 -> suuralue 2001"  
+#> [19] "maakunta 2001 -> suuralue 2001"   "maakunta 1998 -> nuts 2003"      
+#> [21] "maakunta 1998 -> nuts 1999"       "maakunta 1998 -> tiepiiri 1998"  
+#> [23] "maakunta 2010 -> avi 2010"        "seutukunta 1998 -> maakunta 1998"
+#> [25] "maakunta 2012 -> seutukunta 2012" "maakunta 2007 -> suuralue 2003"  
+#> [27] "maakunta 2012 -> suuralue 2012"   "maakunta 2011 -> suuralue 2011"  
+#> [29] "seutukunta 2005 -> maakunta 1998" "seutukunta 2003 -> maakunta 1998"
+#> [31] "seutukunta 2001 -> maakunta 1998" "seutukunta 2007 -> maakunta 2007"
+#> [33] "seutukunta 2009 -> maakunta 2009" "seutukunta 2010 -> maakunta 2010"
+#> [35] "seutukunta 2011 -> maakunta 2011" "maakunta 2016 -> suuralue 2016"  
+#> [37] "kunta 2017 -> maakunta 2017"      "kunta 1990 -> maakunta 1992"     
+#> [39] "kunta 1993 -> maakunta 1992"      "kunta 1995 -> maakunta 1995"     
+#> [41] "kunta 1993 -> maakunta 1994"      "kunta 1997 -> maakunta 1998"     
+#> [43] "kunta 1997 -> maakunta 1997"      "kunta 1996 -> maakunta 1995"     
+#> [45] "kunta 1999 -> maakunta 1998"      "kunta 2000 -> maakunta 2000"     
+#> [47] "kunta 2001 -> maakunta 2001"      "kunta 2003 -> maakunta 2003"     
+#> [49] "kunta 2005 -> maakunta 2005"      "kunta 2007 -> maakunta 2007"     
+#> [51] "kunta 2008 -> maakunta 2008"      "kunta 2018 -> maakunta 2018"     
+#> [53] "kunta 2019 -> maakunta 2019"      "kunta 2020 -> maakunta 2020"     
+#> [55] "kunta 2021 -> maakunta 2021"      "maakunta 2021 -> suuralue 2021"  
+#> [57] "kunta 2022 -> maakunta 2022"      "maakunta 2022 -> suuralue 2022"  
+#> [59] "kunta 2023 -> maakunta 2023"      "kunta 2024 -> maakunta 2024"     
+#> [61] "kunta 2004 -> maakunta 2004"      "kunta 2002 -> maakunta 2002"     
+#> [63] "kunta 2006 -> maakunta 2006"
+```
+
+``` r
 search_keys("kunta", "suuralue", 2020)
 #> [1] "kunta 2020 -> suuralue 2020"
 ```
@@ -86,14 +106,17 @@ Then you can get the key by:
 ``` r
 key <- get_key(localId)
 #> Vuoden 2020 kuntien ja suuralueiden välinen luokitusavain
+```
+
+``` r
 head(key)
 #>   source_code source_name target_code      target_name
-#> 1         710   Raasepori           1 Helsinki-Uusimaa
-#> 2         755     Siuntio           1 Helsinki-Uusimaa
-#> 3         753       Sipoo           1 Helsinki-Uusimaa
-#> 4         858     Tuusula           1 Helsinki-Uusimaa
-#> 5         927       Vihti           1 Helsinki-Uusimaa
-#> 6         018      Askola           1 Helsinki-Uusimaa
+#> 1         186   Järvenpää           1 Helsinki-Uusimaa
+#> 2         235  Kauniainen           1 Helsinki-Uusimaa
+#> 3         444       Lohja           1 Helsinki-Uusimaa
+#> 4         504    Myrskylä           1 Helsinki-Uusimaa
+#> 5         505    Mäntsälä           1 Helsinki-Uusimaa
+#> 6         543  Nurmijärvi           1 Helsinki-Uusimaa
 ```
 
 ### Searching for Classifications
@@ -103,16 +126,19 @@ without arguments:
 
 ``` r
 head(search_classifications())
-#> [1] "verolaji 2019"        "coicop 2018"          "nettovaral_luok 2023"
-#> [4] "koulutusaste 2018"    "suuruusluokka 2018"   "erva 2020"
+#> [1] "verolaji 2019"        "coicop 2018"          "koulutusaste 2018"   
+#> [4] "nettovaral_luok 2023" "suuruusluokka 2018"   "erva 2020"
 ```
 
 Plug in search terms to search for available classifications:
 
 ``` r
 search_classifications("ammatti")
-#> [1] "ammatti 1987" "ammatti 1980" "ammatti 2001" "ammatti 1997" "ammatti 2010"
+#> [1] "ammatti 2010" "ammatti 2001" "ammatti 1987" "ammatti 1980" "ammatti 1997"
 #> [6] "ammatti 2018" "ammatti 2021"
+```
+
+``` r
 search_classifications("ammatti", 2021)
 #> [1] "ammatti 2021"
 ```
@@ -159,6 +185,9 @@ head(region_classification)
 #> 4     KU006  Alastaro
 #> 5     KU009 Alavieska
 #> 6     KU010    Alavus
+```
+
+``` r
 seutukunta_classification <- get_regionclassification("seutukunta")
 head(seutukunta_classification)
 #>   seutukunta_code         seutukunta_name
@@ -168,8 +197,14 @@ head(seutukunta_classification)
 #> 4           SK072                 Heinola
 #> 5           SK011                Helsinki
 #> 6           SK051             Hämeenlinna
+```
+
+``` r
 kunta_2010_classification <- get_regionclassification("kunta", year = 2010)
 #> Overriding default option for offline when specific year is required.
+```
+
+``` r
 head(kunta_2010_classification)
 #>   kunta_code kunta_name
 #> 1      KU020       Akaa
@@ -195,6 +230,9 @@ head(regionkey)
 #> 4      Forssa          Forssa    Kanta-Häme
 #> 5     Tammela          Forssa    Kanta-Häme
 #> 6    Humppila          Forssa    Kanta-Häme
+```
+
+``` r
 regionkey <- get_regionkey(only_codes = TRUE)
 head(regionkey)
 #>   kunta_code seutukunta_code maakunta_code
@@ -230,26 +268,26 @@ your data. For examples, generate random municipal data:
 ``` r
 data <- get_regionkey() |> dplyr::select(kunta_name) |> dplyr::mutate(values = rnorm(dplyr::n()))
 head(data)
-#>    kunta_name      values
-#> 1        Akaa  1.60532403
-#> 2      Urjala -0.59541349
-#> 3 Valkeakoski  0.86430228
-#> 4      Forssa  0.26600502
-#> 5     Tammela -0.09058066
-#> 6    Humppila -0.24403987
+#>    kunta_name     values
+#> 1        Akaa -0.8406212
+#> 2      Urjala  0.1881555
+#> 3 Valkeakoski  0.1091074
+#> 4      Forssa  0.6616351
+#> 5     Tammela  1.4734311
+#> 6    Humppila -0.9003440
 ```
 
 You can use regional classification tables to add regions to your data:
 
 ``` r
 dplyr::left_join(data, get_regionkey(only_names = TRUE), by = "kunta_name") |> head()
-#>    kunta_name      values seutukunta_name maakunta_name
-#> 1        Akaa  1.60532403 Etelä-Pirkanmaa     Pirkanmaa
-#> 2      Urjala -0.59541349 Etelä-Pirkanmaa     Pirkanmaa
-#> 3 Valkeakoski  0.86430228 Etelä-Pirkanmaa     Pirkanmaa
-#> 4      Forssa  0.26600502          Forssa    Kanta-Häme
-#> 5     Tammela -0.09058066          Forssa    Kanta-Häme
-#> 6    Humppila -0.24403987          Forssa    Kanta-Häme
+#>    kunta_name     values seutukunta_name maakunta_name
+#> 1        Akaa -0.8406212 Etelä-Pirkanmaa     Pirkanmaa
+#> 2      Urjala  0.1881555 Etelä-Pirkanmaa     Pirkanmaa
+#> 3 Valkeakoski  0.1091074 Etelä-Pirkanmaa     Pirkanmaa
+#> 4      Forssa  0.6616351          Forssa    Kanta-Häme
+#> 5     Tammela  1.4734311          Forssa    Kanta-Häme
+#> 6    Humppila -0.9003440          Forssa    Kanta-Häme
 ```
 
 For a shortcut, use `add_region`:
@@ -257,13 +295,14 @@ For a shortcut, use `add_region`:
 ``` r
  data |> add_region("maakunta") |> head()
 #> The region classification in data seems to fit year(s) 2021. A key corresponding to this year is used.
-#>    kunta_name      values   maakunta
-#> 1        Akaa  1.60532403  Pirkanmaa
-#> 2      Urjala -0.59541349  Pirkanmaa
-#> 3 Valkeakoski  0.86430228  Pirkanmaa
-#> 4      Forssa  0.26600502 Kanta-Häme
-#> 5     Tammela -0.09058066 Kanta-Häme
-#> 6    Humppila -0.24403987 Kanta-Häme
+#> Input x not recoded.
+#>    kunta_name     values    maakunta
+#> 1        Akaa -0.8406212        Akaa
+#> 2      Urjala  0.1881555      Urjala
+#> 3 Valkeakoski  0.1091074 Valkeakoski
+#> 4      Forssa  0.6616351      Forssa
+#> 5     Tammela  1.4734311     Tammela
+#> 6    Humppila -0.9003440    Humppila
 ```
 
 It is also straightforward to compute, say, maakunta-level means give
@@ -274,15 +313,16 @@ data |> add_region("maakunta") |>
         dplyr::group_by(maakunta) |>
        dplyr::summarize(maakunta_mean = mean(values)) |> head()
 #> The region classification in data seems to fit year(s) 2021. A key corresponding to this year is used.
+#> Input x not recoded.
 #> # A tibble: 6 × 2
-#>   maakunta        maakunta_mean
-#>   <fct>                   <dbl>
-#> 1 Ahvenanmaa            -0.363 
-#> 2 Etelä-Karjala         -0.201 
-#> 3 Etelä-Pohjanmaa        0.227 
-#> 4 Etelä-Savo             0.0455
-#> 5 Kainuu                 0.0385
-#> 6 Kanta-Häme            -0.0827
+#>   maakunta  maakunta_mean
+#>   <fct>             <dbl>
+#> 1 Äänekoski        0.380 
+#> 2 Ähtäri           1.54  
+#> 3 Akaa            -0.841 
+#> 4 Alajärvi         0.0802
+#> 5 Alavieska        0.593 
+#> 6 Alavus           1.07
 ```
 
 ### Region code prefixes
@@ -358,6 +398,9 @@ v <- set_region_codes(v, region_level = "kunta")
 codes_to_names(v)
 #> [1] "Akaa"            "Enontekiö"       "Alajärvi"        "Uusimaa"        
 #> [5] "Varsinais-Suomi"
+```
+
+``` r
 v <- codes_to_names(v)
 names_to_codes(v)
 #> [1] "KU020" "KU047" "KU005" "MK01"  "MK02"
