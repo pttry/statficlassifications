@@ -126,9 +126,10 @@ check_region_names.factor <- function(x, lang = "fi", year = NULL, offline = TRU
 
 #' Check if region names and codes correspond as in regionkey.
 #'
-#' @param data data.frame
-#' @param region_name_var character the name of the regional name variable in the data
-#' @param region_code_var character the name of the regional code variable in the data
+#' @param region_names character, vector of region names.
+#' @param region_codes character, vector region codes.
+#' @param year year of classification used.
+#' @param lang language of classification used.
 #' @param offline logical, whether works offline with package data. Defaults to `TRUE`.
 #'
 #' @return logical

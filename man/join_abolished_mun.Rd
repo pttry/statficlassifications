@@ -9,7 +9,7 @@ join_abolished_mun(x, col = NULL)
 \arguments{
 \item{x}{an object containing municipality codes, a vector, a factor or a data.frame.}
 
-\item{col}{}
+\item{col}{name of column in case input is data.frame}
 }
 \value{
 vector, factor or data.frame, depending on input.

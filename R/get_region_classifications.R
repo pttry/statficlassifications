@@ -149,7 +149,6 @@ get_regionkey <- function(...,
 #'    Defaults to `"fi"`.
 #' @param as_named_vector logical, whether returns the key as a named vector rather than a
 #'    data.frame. Defaults `FALSE`.
-#' @param suppress_message logical, whether to suppress any messages the function might produce.
 #' @param only_codes logical, whether to return only the codes in the classification.
 #'     Defaults to `FALSE`.
 #' @param only_names logical, whether to return only the names in the classification.

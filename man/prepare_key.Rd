@@ -15,18 +15,21 @@ prepare_key(
 )
 }
 \arguments{
-\item{x}{vector}
+\item{x}{vector.}
 
-\item{key}{named vector, data.frame or a list}
+\item{key}{named vector, data.frame or a list.}
 
-\item{from}{source column in ky}
+\item{from}{source column in key.}
 
-\item{to}{target column in key}
+\item{to}{target column in key.}
 
-\item{x_name}{name of the source column to be decoded}
+\item{x_name}{name of the source column to be decoded.}
 
 \item{by}{\code{"names"}, \code{"values"} or \code{"all_values"}. Controls
-how x is matched to from column in key}
+how x is matched to from column in key.}
+
+\item{add}{whether to add (or replace) the original vector to be recoded.
+Defaults to \code{FALSE}.}
 }
 \value{
 list containing the prepared key, from-column name and to-column

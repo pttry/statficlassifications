@@ -5,7 +5,7 @@
 #' joined.
 #'
 #' @param x an object containing municipality codes, a vector, a factor or a data.frame.
-#' @param col
+#' @param col name of column in case input is data.frame
 #'
 #' @return vector, factor or data.frame, depending on input.
 #' @export

@@ -26,8 +26,8 @@ For further information about open classifications API of Statistics Finland, se
 
 To install and start using the package:
 
-```r
-install.packages("devtools")
+```{r}
+#install.packages("devtools")
 devtools::install_github("pttry/statficlassifications")
 library(statficlassifications)
 ```

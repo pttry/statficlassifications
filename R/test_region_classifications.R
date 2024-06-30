@@ -59,7 +59,7 @@ is_region_code_without_prefix <- function(x, region_level = NULL, year = NULL, o
   )
 
   # Remove prefixes from standard region codes and remove NAs
-  codes <- na.omit(as.double(sapply(codes, gsub, pattern = "[^0-9.-]", replacement = "")))
+  codes <- stats::na.omit(as.double(sapply(codes, gsub, pattern = "[^0-9.-]", replacement = "")))
 
   # Test if x is in the codes and return
   suppressWarnings(as.double(as.vector(x)) %in% codes)

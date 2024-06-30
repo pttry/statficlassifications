@@ -9,12 +9,12 @@ match_col(x, y, x_name = deparse(substitute(x)), by = "names")
 \arguments{
 \item{x}{vector, factor or data.frame.}
 
+\item{y}{data.frame where matcheds are found.}
+
 \item{x_name}{name of input (column) to tell which is the from column in key.}
 
 \item{by}{\code{"names"} or \code{"values"} whether to match columns by their names or
 by the values they contain.}
-
-\item{df}{data.frame where matcheds are found.}
 }
 \value{
 list with an element for each column in x. Each element of this list

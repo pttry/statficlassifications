@@ -2,7 +2,6 @@
 % Please edit documentation in R/set_region_codes.R
 \name{match_region_codes}
 \alias{match_region_codes}
-\alias{match_region_codes_internal}
 \title{Match to potential region codes}
 \usage{
 match_region_codes(
@@ -10,13 +9,6 @@ match_region_codes(
   year = NULL,
   region_level = NULL,
   offline = TRUE,
-  use_char_length_info = NULL
-)
-
-match_region_codes_internal(
-  x,
-  key,
-  region_level = NULL,
   use_char_length_info = NULL
 )
 }
@@ -52,8 +44,3 @@ are used.
 By setting \code{region_level} you can restrict the domain of potential matches
 to specific region levels.
 }
-\section{Functions}{
-\itemize{
-\item \code{match_region_codes_internal()}: Match single region code. For internal use.
-
-}}

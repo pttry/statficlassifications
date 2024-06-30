@@ -33,8 +33,6 @@ data.frame. Defaults \code{FALSE}.}
 Defaults to \code{"fi"}.}
 
 \item{offline}{logical, whether uses the key in the package data. Defaults \code{TRUE}.}
-
-\item{suppress_message}{logical, whether to suppress any messages the function might produce.}
 }
 \value{
 a data.frame or a named vector. A region code-name key.

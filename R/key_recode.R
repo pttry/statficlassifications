@@ -151,10 +151,22 @@ key_recode.factor <- function(x, key,
                               by = "names",
                               add = FALSE) {
 
-  key_recode.default(as.character(x), key, from, to, x_name, by, add)
+  factor(key_recode.default(as.character(x), key, from, to, x_name, by, add))
 
  # pkey <- prepare_key(x = levels(x), key = key, from = from, to = to, x_name = x_name, by = by, add = add)
  # key_recode_internal(x = x, pkey)
+}
+
+#' @describeIn Recode with key
+#' @export
+key_recode.tbl_df <- function(x, key,
+                           from = NULL, to = NULL,
+                           x_name = deparse(substitute(x)),
+                           by = "names",
+                           add = FALSE) {
+  tibble::tibble(key_recode.data.frame(x = x, key = key, from = from, to = to,
+                                       x_name = x_name, by = by, add = add))
+
 }
 
 #' @describeIn Recode with key
@@ -164,14 +176,13 @@ key_recode.data.frame <- function(x, key,
                                   x_name = deparse(substitute(x)),
                                   by = "names",
                                   add = FALSE) {
-
-  tibble::tibble(
       data.frame(
         lapply(names(x),
                \(name) {pkey <- prepare_key(x = x[[name]], key = key, from = from, to = to, x_name = name, by = by, add = add)
-                        setNames(data.frame(key_recode_internal(x = x[[name]], pkey)), pkey$to)}))
+                        stats::setNames(data.frame(key_recode_internal(x = x[[name]], pkey)), pkey$to)})
   )
 }
+
 
 
 #' @describeIn Recode with key
@@ -185,14 +196,12 @@ statfi_recode <- function(x, key, ...) {
 
 
 #' @describeIn Recode with key
-#' @export
 key_recode_internal <- function(x, pkey) {
 
   UseMethod("key_recode_internal")
 }
 
 #' @describeIn Recode with key
-#' @export
 key_recode_internal.default <- function(x, pkey) {
 
   if(length(pkey$key) == 0 | length(pkey$from) == 0) {
@@ -206,12 +215,12 @@ key_recode_internal.default <- function(x, pkey) {
     warning("Mapping not unique! First instance in key used.")
   }
 
-  pkey$key[pkey$to][match(x, pkey$key[[pkey$from]]),]
-
+  out <- pkey$key[pkey$to][match(x, pkey$key[[pkey$from]]),]
+  rownames(out) <- NULL
+  out
 }
 
 #' @describeIn Recode with key
-#' @export
 key_recode_internal.factor <- function(x, pkey) {
 
   levels(x) <- key_recode_internal(levels(x), pkey)
@@ -233,13 +242,15 @@ key_recode_internal.factor <- function(x, pkey) {
 #' rows may occur when keys with multiple levels (e.g. regional levels) are
 #' are used such that the from-column is some higher level.
 #'
-#' @param x vector
-#' @param key named vector, data.frame or a list
-#' @param from source column in ky
-#' @param to target column in key
-#' @param x_name name of the source column to be decoded
+#' @param x vector.
+#' @param key named vector, data.frame or a list.
+#' @param from source column in key.
+#' @param to target column in key.
+#' @param x_name name of the source column to be decoded.
 #' @param by `"names"`, `"values"` or `"all_values"`. Controls
-#'    how x is matched to from column in key
+#'    how x is matched to from column in key.
+#' @param add whether to add (or replace) the original vector to be recoded.
+#'     Defaults to `FALSE`.
 #'
 #' @return list containing the prepared key, from-column name and to-column
 #'    name(s).
@@ -297,7 +308,7 @@ prepare_key.default <- function(x = NULL, key,
 
   # if key is named vector then matching by name in key is not possible.
   # Match by values then. Also any from and to arguments will not make sense
-    key <- setNames(data.frame(names(key),key), paste(x_name, 1:2, sep = "."))
+    key <- stats::setNames(data.frame(names(key),key), paste(x_name, 1:2, sep = "."))
     by <- "values"
 
     pkey <- prepare_key.data.frame(x = x, key = key, from = from, to = to, x_name = x_name, by = by, add = add)
@@ -347,8 +358,8 @@ prepare_key.data.frame <- function(x = NULL, key,
 
     if(!from %in% names(key)) {
            stop(paste(from, "not in the key."))}
-    #if(from != x_name & by == "names") {
-     #      return(failure_return(x_name))}
+    if(from != x_name & by == "names") {
+           return(failure_return(x_name))}
     if(length(unlist(match_col(key[[from]], x, x_name = from, by = by))) > 1) {
            stop("Column to be recoded not automatically found.")}
 
@@ -403,7 +414,7 @@ failure_return <- function(x_name) {
 #' coding of (column of) x to (a column of) y that has the same coding.
 #'
 #' @param x vector, factor or data.frame.
-#' @param df data.frame where matcheds are found.
+#' @param y data.frame where matcheds are found.
 #' @param x_name name of input (column) to tell which is the from column in key.
 #' @param by `"names"` or `"values"` whether to match columns by their names or
 #'    by the values they contain.
@@ -508,24 +519,24 @@ match_col.data.frame <- function(x, y, x_name = deparse(substitute(x)), by = "na
 #' @describeIn Match columns to list elements
 #' @export
 match_col_by_values <- function(x, y, x_name = deparse(substitute(x))) {
-  if(!is.list(y)) y <- setNames(list(y), x_name)
+  if(!is.list(y)) y <- stats::setNames(list(y), x_name)
   z <- sapply(names(y), function(name) {sum(unique(x) %in% c(y[[name]], names(y[[name]])))})
-  if(max(z) == 0) return(setNames(list(character()), x_name))
-  setNames(list(names(y)[z == max(z)]), x_name)
+  if(max(z) == 0) return(stats::setNames(list(character()), x_name))
+  stats::setNames(list(names(y)[z == max(z)]), x_name)
 }
 
 #' @describeIn Match columns to list elements
 #' @export
 match_col_by_all_values <- function(x, y, x_name = deparse(substitute(x))) {
-  if(!is.list(y)) y <- setNames(list(y), x_name)
+  if(!is.list(y)) y <- stats::setNames(list(y), x_name)
   z <- sapply(names(y), function(name) {all(unique(x) %in% c(y[[name]], names(y[[name]])))})
-  if(all(!z)) return(setNames(list(character()), x_name))
-  setNames(list(names(y)[z]), x_name)
+  if(all(!z)) return(stats::setNames(list(character()), x_name))
+  stats::setNames(list(names(y)[z]), x_name)
 }
 
 #' @describeIn Match columns to list elements
 #' @export
 match_col_by_names <- function(x, y, x_name = deparse(substitute(x))) {
-  if(!is.list(y)) y <- setNames(list(y), x_name)
-  setNames(list(intersect(x_name, names(y))), x_name)
+  if(!is.list(y)) y <- stats::setNames(list(y), x_name)
+  stats::setNames(list(intersect(x_name, names(y))), x_name)
 }

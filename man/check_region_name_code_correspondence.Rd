@@ -13,13 +13,15 @@ check_region_name_code_correspondence(
 )
 }
 \arguments{
+\item{region_names}{character, vector of region names.}
+
+\item{region_codes}{character, vector region codes.}
+
+\item{year}{year of classification used.}
+
+\item{lang}{language of classification used.}
+
 \item{offline}{logical, whether works offline with package data. Defaults to \code{TRUE}.}
-
-\item{data}{data.frame}
-
-\item{region_name_var}{character the name of the regional name variable in the data}
-
-\item{region_code_var}{character the name of the regional code variable in the data}
 }
 \value{
 logical

@@ -207,7 +207,17 @@ match_region_codes <- function(x, year = NULL,
 
 }
 
-#'@describeIn match_region_codes Match single region code. For internal use.
+
+#' match_region_codes Match single region code. For internal use.
+#'
+#' @param x input code
+#' @param key data.frame or named vector, region key
+#' @param region_level character (vector) region level of the input codes
+#' @param use_char_length_info TRUE or named vector, whether to use code character length
+#'    information in determining their region level. Defaults to `NULL`.
+#'
+#' @return vector
+#' @export
 #'
 match_region_codes_internal <- function(x, key,
                                         region_level = NULL,
