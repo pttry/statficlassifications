@@ -2,6 +2,9 @@
 #'
 #' Given a key, recodes input.
 #'
+#' ISSUES: recoding levels of factors bring issues when the levels in input and
+#' key do not match.
+#'
 #' In most of the cases is able to recode an input
 #' given just a key. That is, given the information in input and in key is able
 #' to 1) determine which column in key corresponds to the input and thus from which
@@ -125,7 +128,6 @@ key_recode <- function(x, key,
 
 }
 
-#' @describeIn Recode with key
 #' @export
 key_recode.default <- function(x, key,
                                from = NULL, to = NULL,
@@ -137,14 +139,7 @@ key_recode.default <- function(x, key,
   key_recode_internal(x, pkey)
 }
 
-#' @describeIn Recode with key
-#'
-#' #' ISSUES: recoding levels of factors bring issues when the levels in input and
-#' key do not match.
-#'
 #' @export
-#'
-#'
 key_recode.factor <- function(x, key,
                               from = NULL, to = NULL,
                               x_name = deparse(substitute(x)),
@@ -157,7 +152,6 @@ key_recode.factor <- function(x, key,
  # key_recode_internal(x = x, pkey)
 }
 
-#' @describeIn Recode with key
 #' @export
 key_recode.tbl_df <- function(x, key,
                            from = NULL, to = NULL,
@@ -169,7 +163,6 @@ key_recode.tbl_df <- function(x, key,
 
 }
 
-#' @describeIn Recode with key
 #' @export
 key_recode.data.frame <- function(x, key,
                                   from = NULL, to = NULL,
@@ -185,9 +178,7 @@ key_recode.data.frame <- function(x, key,
 
 
 
-#' @describeIn Recode with key
-#'
-#' Here just for compatibility
+#' @rdname key_recode
 #'
 #' @export
 statfi_recode <- function(x, key, ...) {
@@ -195,13 +186,13 @@ statfi_recode <- function(x, key, ...) {
 }
 
 
-#' @describeIn Recode with key
+#' @rdname key_recode
 key_recode_internal <- function(x, pkey) {
 
   UseMethod("key_recode_internal")
 }
 
-#' @describeIn Recode with key
+#' @export
 key_recode_internal.default <- function(x, pkey) {
 
   if(length(pkey$key) == 0 | length(pkey$from) == 0) {
@@ -220,7 +211,7 @@ key_recode_internal.default <- function(x, pkey) {
   out
 }
 
-#' @describeIn Recode with key
+#' @export
 key_recode_internal.factor <- function(x, pkey) {
 
   levels(x) <- key_recode_internal(levels(x), pkey)
@@ -282,6 +273,17 @@ key_recode_internal.factor <- function(x, pkey) {
 #'    names(key)[1] <- "Genus"
 #'    prepare_key(iris, key, by = "values")
 #'
+#' v <- c("a", "b", "a", "c", "b", "b")
+#' df <- data.frame(var1 = v, y = rnorm(6))
+#'
+#' key <- data.frame(var1 = letters[1:4],
+#'                   var2 = c("first letter",
+#'                            "second letter",
+#'                            "third letter",
+#'                            "fourth letter"))
+#'
+#'
+#'
 prepare_key <- function(x = NULL, key,
                         from = NULL, to = NULL,
                         x_name = deparse(substitute(x)),
@@ -292,7 +294,6 @@ prepare_key <- function(x = NULL, key,
 
 }
 
-#' @describeIn Prepare key for recoding with key
 #' @export
 prepare_key.default <- function(x = NULL, key,
                                 from = NULL, to = NULL,
@@ -323,31 +324,7 @@ prepare_key.default <- function(x = NULL, key,
    pkey
 }
 
-#' @describeIn Prepare key for recoding with key
 #' @export
-#'
-#' @examples
-#'
-#' v <- c("a", "b", "a", "c", "b", "b")
-#' df <- data.frame(var1 = v, y = rnorm(6))
-#'
-#' key <- data.frame(var1 = letters[1:4],
-#'                   var2 = c("first letter",
-#'                            "second letter",
-#'                            "third letter",
-#'                            "fourth letter"))
-#'
-#' prepare_key.data.frame(df, key)
-#'
-#' key <- data.frame(var1 = letters[1:4],
-#'                   var3 = letters[4:1],
-#'                   var2 = c("first letter",
-#'                           "second letter",
-#'                           "third letter",
-#'                           "fourth letter"))
-#'
-#' prepare_key.data.frame(df, key)
-#'
 prepare_key.data.frame <- function(x = NULL, key,
                                    from = NULL, to = NULL,
                                    x_name = deparse(substitute(x)),
@@ -390,8 +367,7 @@ prepare_key.data.frame <- function(x = NULL, key,
 
 }
 
-#' @describeIn Prepare key for recoding with key
-#' @export
+#' @rdname prepare_key
 failure_return <- function(x_name) {
   list(key = character(0),
        from = character(0),
@@ -482,7 +458,6 @@ match_col <- function(x, y, x_name = deparse(substitute(x)), by = "names") {
   UseMethod("match_col")
 }
 
-#' @describeIn Match columns to list elements
 #' @export
 match_col.default <- function(x, y, x_name = deparse(substitute(x)), by = "names") {
 
@@ -502,21 +477,18 @@ match_col.default <- function(x, y, x_name = deparse(substitute(x)), by = "names
   }
 }
 
-#' @describeIn Match columns to list elements
 #' @export
 match_col.factor <- function(x, y, x_name = deparse(substitute(x)), by = "names") {
   match_col.default(levels(x), y = y, x_name = x_name, by)
 }
 
-#' @describeIn Match columns to list elements
 #' @export
 match_col.data.frame <- function(x, y, x_name = deparse(substitute(x)), by = "names") {
   x_names <- names(x)
   unlist(lapply(x_names, \(name) {match_col(x[[name]], y = y, x_name = name, by)}), recursive = FALSE)
 }
 
-
-#' @describeIn Match columns to list elements
+#' @rdname match_col
 #' @export
 match_col_by_values <- function(x, y, x_name = deparse(substitute(x))) {
   if(!is.list(y)) y <- stats::setNames(list(y), x_name)
@@ -525,7 +497,7 @@ match_col_by_values <- function(x, y, x_name = deparse(substitute(x))) {
   stats::setNames(list(names(y)[z == max(z)]), x_name)
 }
 
-#' @describeIn Match columns to list elements
+#' @rdname match_col
 #' @export
 match_col_by_all_values <- function(x, y, x_name = deparse(substitute(x))) {
   if(!is.list(y)) y <- stats::setNames(list(y), x_name)
@@ -534,7 +506,7 @@ match_col_by_all_values <- function(x, y, x_name = deparse(substitute(x))) {
   stats::setNames(list(names(y)[z]), x_name)
 }
 
-#' @describeIn Match columns to list elements
+#' @rdname match_col
 #' @export
 match_col_by_names <- function(x, y, x_name = deparse(substitute(x))) {
   if(!is.list(y)) y <- stats::setNames(list(y), x_name)

@@ -2,9 +2,20 @@
 % Please edit documentation in R/test_region_classifications.R
 \name{is_region_code}
 \alias{is_region_code}
+\alias{is_region_code_with_prefix}
+\alias{is_region_code_without_prefix}
 \title{Check if string is region code}
 \usage{
 is_region_code(x, region_level = NULL, year = NULL, offline = TRUE)
+
+is_region_code_with_prefix(x, region_level = NULL, year = NULL, offline = TRUE)
+
+is_region_code_without_prefix(
+  x,
+  region_level = NULL,
+  year = NULL,
+  offline = TRUE
+)
 }
 \arguments{
 \item{x}{vector, a potential region code.}

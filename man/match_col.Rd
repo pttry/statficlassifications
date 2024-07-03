@@ -2,9 +2,18 @@
 % Please edit documentation in R/key_recode.R
 \name{match_col}
 \alias{match_col}
+\alias{match_col_by_values}
+\alias{match_col_by_all_values}
+\alias{match_col_by_names}
 \title{Match columns to list elements}
 \usage{
 match_col(x, y, x_name = deparse(substitute(x)), by = "names")
+
+match_col_by_values(x, y, x_name = deparse(substitute(x)))
+
+match_col_by_all_values(x, y, x_name = deparse(substitute(x)))
+
+match_col_by_names(x, y, x_name = deparse(substitute(x)))
 }
 \arguments{
 \item{x}{vector, factor or data.frame.}

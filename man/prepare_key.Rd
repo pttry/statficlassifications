@@ -2,6 +2,7 @@
 % Please edit documentation in R/key_recode.R
 \name{prepare_key}
 \alias{prepare_key}
+\alias{failure_return}
 \title{Prepare key for recoding with key}
 \usage{
 prepare_key(
@@ -13,6 +14,8 @@ prepare_key(
   by = "names",
   add = FALSE
 )
+
+failure_return(x_name)
 }
 \arguments{
 \item{x}{vector.}
@@ -75,5 +78,16 @@ prepare_key(key = key, from = "var1", to = "var3")
 
    names(key)[1] <- "Genus"
    prepare_key(iris, key, by = "values")
+
+v <- c("a", "b", "a", "c", "b", "b")
+df <- data.frame(var1 = v, y = rnorm(6))
+
+key <- data.frame(var1 = letters[1:4],
+                  var2 = c("first letter",
+                           "second letter",
+                           "third letter",
+                           "fourth letter"))
+
+
 
 }

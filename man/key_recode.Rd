@@ -2,6 +2,8 @@
 % Please edit documentation in R/key_recode.R
 \name{key_recode}
 \alias{key_recode}
+\alias{statfi_recode}
+\alias{key_recode_internal}
 \title{Recode with key}
 \usage{
 key_recode(
@@ -13,6 +15,10 @@ key_recode(
   by = "names",
   add = FALSE
 )
+
+statfi_recode(x, key, ...)
+
+key_recode_internal(x, pkey)
 }
 \arguments{
 \item{x}{vector of elements to be recoded.}
@@ -44,6 +50,9 @@ vector or data.frame
 Given a key, recodes input.
 }
 \details{
+ISSUES: recoding levels of factors bring issues when the levels in input and
+key do not match.
+
 In most of the cases is able to recode an input
 given just a key. That is, given the information in input and in key is able
 to 1) determine which column in key corresponds to the input and thus from which

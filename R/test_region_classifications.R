@@ -34,7 +34,7 @@ is_region_code <- function(x, region_level = NULL, year = NULL, offline = TRUE) 
 
 }
 
-#' @describeIn Check if string is region code
+#' @rdname is_region_code
 #' @export
 #'
 is_region_code_with_prefix <- function(x, region_level = NULL, year = NULL, offline = TRUE) {
@@ -48,7 +48,7 @@ is_region_code_with_prefix <- function(x, region_level = NULL, year = NULL, offl
   as.vector(x) %in% codes
 }
 
-#' @describeIn Check if string is region code
+#' @rdname is_region_code
 #' @export
 #'
 is_region_code_without_prefix <- function(x, region_level = NULL, year = NULL, offline = TRUE) {

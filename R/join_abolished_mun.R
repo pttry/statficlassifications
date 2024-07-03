@@ -27,10 +27,7 @@ join_abolished_mun <- function(x, col = NULL) {
 
 }
 
-#' @describeIn Join abolished municipalities
-#'
 #' @export
-#'
 join_abolished_mun.default <- function(x) {
 
   if(!any(grepl("KU", x))) {
@@ -72,19 +69,14 @@ join_abolished_mun.default <- function(x) {
 
 }
 
-#' @describeIn Join abolished municipalities
-#'
 #' @export
-#'
 join_abolished_mun.factor <- function(x) {
   levels(x) <- join_abolished_mun.default(levels(x))
   x
 }
 
-#' @describeIn Join abolished municipalities
-#'
+
 #' @export
-#'
 join_abolished_mun.data.frame <- function(x, col) {
   x[[col]] <- join_abolished_mun(x[[col]])
   x
