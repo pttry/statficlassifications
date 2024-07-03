@@ -8,5 +8,5 @@
 #'   \item{joinee}{Code of joinee municipality}
 #'   ...
 #' }
-#' @source \url{"https://www.stat.fi/static/media/uploads/meta/luokitukset/lakkautetut_kunnat_aakkosjarj20_taul6.xlsx"}
+#' @source "https://www.stat.fi/static/media/uploads/meta/luokitukset/lakkautetut_kunnat_aakkosjarj20_taul6.xlsx"
 "abolished_mun_key"

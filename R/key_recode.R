@@ -181,9 +181,8 @@ key_recode.data.frame <- function(x, key,
 #' @rdname key_recode
 #'
 #' @export
-statfi_recode <- function(x, key, ...) {
-  key_recode(x, key, ...)
-}
+statfi_recode <- key_recode
+
 
 #' Recode with list containing key and source and target variable names
 #'

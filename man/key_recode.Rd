@@ -15,7 +15,15 @@ key_recode(
   add = FALSE
 )
 
-statfi_recode(x, key, ...)
+statfi_recode(
+  x,
+  key,
+  from = NULL,
+  to = NULL,
+  x_name = deparse(substitute(x)),
+  by = "names",
+  add = FALSE
+)
 }
 \arguments{
 \item{x}{vector of elements to be recoded.}
