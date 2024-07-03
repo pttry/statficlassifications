@@ -2,7 +2,7 @@
 title: "Tools for Regional Classifications"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{vignette_region_classifications}
+  %\VignetteIndexEntry{Tools for Regional Classifications}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

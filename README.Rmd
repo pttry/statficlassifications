@@ -16,6 +16,7 @@ knitr::opts_chunk$set(
 # statficlassifications
 
 <!-- badges: start -->
+[![R-CMD-check](https://github.com/pttry/statficlassifications/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/pttry/statficlassifications/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
 `statficlassifications` accesses the open classifications API of Statistics Finland at https://data.stat.fi/api/classifications/v2. `statficlassifications` contains tools for searching and importing classifications and classification conversion keys in an R-friendly format. The package also provides special tools for (re)classifying regions. 
@@ -44,3 +45,8 @@ library(statficlassifications)
 
 ```
 
+## Recode with keys
+
+```{r child = "vignettes/recode_with_key.Rmd"}
+
+```

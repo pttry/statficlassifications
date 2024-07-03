@@ -4,6 +4,8 @@
 # statficlassifications
 
 <!-- badges: start -->
+
+[![R-CMD-check](https://github.com/pttry/statficlassifications/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/pttry/statficlassifications/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
 `statficlassifications` accesses the open classifications API of
@@ -40,47 +42,50 @@ To list all available classification keys (correspondence tables), use
 
 ``` r
 head(search_keys())
-#> [1] "kunta 2009 -> sairaanhoitop 2009" "kunta 2009 -> kuntaryhmitys 2009"
-#> [3] "kunta 2009 -> maakunta 2009"      "kunta 2009 -> seutukunta 2009"   
-#> [5] "kunta 2009 -> kielisuhde 2009"    "kunta 2009 -> laani 2009"
+#> [1] "instit_sektori 1996 -> sektoriluokitus 2000"
+#> [2] "ammatti 2010 -> sosioekon_asema 2011"       
+#> [3] "ammatti 2001 -> ammatti 2010"               
+#> [4] "ammatti 1987 -> ammatti 2001"               
+#> [5] "ammatti 1980 -> ammatti 1987"               
+#> [6] "jate 2004 -> jateluokitus 2004"
 ```
 
 Plug in search terms to search for available keys:
 
 ``` r
 search_keys("maakunta")
-#>  [1] "kunta 2009 -> maakunta 2009"      "kunta 2010 -> maakunta 2010"     
-#>  [3] "kunta 2011 -> maakunta 2011"      "kunta 2012 -> maakunta 2012"     
-#>  [5] "kunta 2013 -> maakunta 2013"      "kunta 2014 -> maakunta 2014"     
-#>  [7] "kunta 2015 -> maakunta 2015"      "kunta 2016 -> maakunta 2016"     
-#>  [9] "maakunta 1997 -> suuralue 1994"   "maakunta 1992 -> suuralue 1994"  
-#> [11] "maakunta 1995 -> suuralue 1994"   "maakunta 1997 -> laani 1997"     
-#> [13] "laani 1997 -> maakunta 2005"      "maakunta 1998 -> suuralue 1994"  
-#> [15] "maakunta 1997 -> suuralue 1997"   "maakunta 2005 -> suuralue 2003"  
-#> [17] "maakunta 2002 -> suuralue 2003"   "maakunta 2002 -> suuralue 2001"  
-#> [19] "maakunta 2001 -> suuralue 2001"   "maakunta 1998 -> nuts 2003"      
-#> [21] "maakunta 1998 -> nuts 1999"       "maakunta 1998 -> tiepiiri 1998"  
-#> [23] "maakunta 2010 -> avi 2010"        "seutukunta 1998 -> maakunta 1998"
-#> [25] "maakunta 2012 -> seutukunta 2012" "maakunta 2007 -> suuralue 2003"  
-#> [27] "maakunta 2012 -> suuralue 2012"   "maakunta 2011 -> suuralue 2011"  
-#> [29] "seutukunta 2005 -> maakunta 1998" "seutukunta 2003 -> maakunta 1998"
-#> [31] "seutukunta 2001 -> maakunta 1998" "seutukunta 2007 -> maakunta 2007"
-#> [33] "seutukunta 2009 -> maakunta 2009" "seutukunta 2010 -> maakunta 2010"
-#> [35] "seutukunta 2011 -> maakunta 2011" "maakunta 2016 -> suuralue 2016"  
-#> [37] "kunta 2017 -> maakunta 2017"      "kunta 1990 -> maakunta 1992"     
-#> [39] "kunta 1993 -> maakunta 1992"      "kunta 1995 -> maakunta 1995"     
-#> [41] "kunta 1993 -> maakunta 1994"      "kunta 1997 -> maakunta 1998"     
-#> [43] "kunta 1997 -> maakunta 1997"      "kunta 1996 -> maakunta 1995"     
-#> [45] "kunta 1999 -> maakunta 1998"      "kunta 2000 -> maakunta 2000"     
-#> [47] "kunta 2001 -> maakunta 2001"      "kunta 2003 -> maakunta 2003"     
-#> [49] "kunta 2005 -> maakunta 2005"      "kunta 2007 -> maakunta 2007"     
-#> [51] "kunta 2008 -> maakunta 2008"      "kunta 2018 -> maakunta 2018"     
-#> [53] "kunta 2019 -> maakunta 2019"      "kunta 2020 -> maakunta 2020"     
-#> [55] "kunta 2021 -> maakunta 2021"      "maakunta 2021 -> suuralue 2021"  
-#> [57] "kunta 2022 -> maakunta 2022"      "maakunta 2022 -> suuralue 2022"  
-#> [59] "kunta 2023 -> maakunta 2023"      "kunta 2024 -> maakunta 2024"     
-#> [61] "kunta 2004 -> maakunta 2004"      "kunta 2002 -> maakunta 2002"     
-#> [63] "kunta 2006 -> maakunta 2006"
+#>  [1] "kunta 1990 -> maakunta 1992"      "kunta 1993 -> maakunta 1992"     
+#>  [3] "kunta 1993 -> maakunta 1994"      "kunta 1997 -> maakunta 1997"     
+#>  [5] "kunta 1995 -> maakunta 1995"      "kunta 1999 -> maakunta 1998"     
+#>  [7] "kunta 1997 -> maakunta 1998"      "kunta 2000 -> maakunta 2000"     
+#>  [9] "kunta 2002 -> maakunta 2002"      "kunta 2001 -> maakunta 2001"     
+#> [11] "kunta 2003 -> maakunta 2003"      "kunta 2006 -> maakunta 2006"     
+#> [13] "kunta 2004 -> maakunta 2004"      "kunta 2005 -> maakunta 2005"     
+#> [15] "kunta 2007 -> maakunta 2007"      "kunta 2008 -> maakunta 2008"     
+#> [17] "kunta 2009 -> maakunta 2009"      "kunta 2010 -> maakunta 2010"     
+#> [19] "kunta 2011 -> maakunta 2011"      "kunta 2012 -> maakunta 2012"     
+#> [21] "kunta 2013 -> maakunta 2013"      "kunta 2014 -> maakunta 2014"     
+#> [23] "kunta 2015 -> maakunta 2015"      "kunta 2016 -> maakunta 2016"     
+#> [25] "maakunta 1997 -> suuralue 1994"   "maakunta 1992 -> suuralue 1994"  
+#> [27] "maakunta 1995 -> suuralue 1994"   "maakunta 1997 -> laani 1997"     
+#> [29] "laani 1997 -> maakunta 2005"      "maakunta 1998 -> suuralue 1994"  
+#> [31] "maakunta 1997 -> suuralue 1997"   "maakunta 2005 -> suuralue 2003"  
+#> [33] "maakunta 2002 -> suuralue 2003"   "maakunta 2002 -> suuralue 2001"  
+#> [35] "maakunta 2001 -> suuralue 2001"   "maakunta 1998 -> nuts 2003"      
+#> [37] "maakunta 1998 -> nuts 1999"       "maakunta 1998 -> tiepiiri 1998"  
+#> [39] "maakunta 2010 -> avi 2010"        "seutukunta 1998 -> maakunta 1998"
+#> [41] "maakunta 2012 -> seutukunta 2012" "maakunta 2007 -> suuralue 2003"  
+#> [43] "maakunta 2012 -> suuralue 2012"   "maakunta 2011 -> suuralue 2011"  
+#> [45] "seutukunta 2005 -> maakunta 1998" "seutukunta 2003 -> maakunta 1998"
+#> [47] "seutukunta 2001 -> maakunta 1998" "seutukunta 2007 -> maakunta 2007"
+#> [49] "seutukunta 2009 -> maakunta 2009" "seutukunta 2010 -> maakunta 2010"
+#> [51] "seutukunta 2011 -> maakunta 2011" "maakunta 2016 -> suuralue 2016"  
+#> [53] "kunta 2017 -> maakunta 2017"      "kunta 2019 -> maakunta 2019"     
+#> [55] "kunta 2018 -> maakunta 2018"      "kunta 2020 -> maakunta 2020"     
+#> [57] "kunta 2021 -> maakunta 2021"      "maakunta 2021 -> suuralue 2021"  
+#> [59] "kunta 2022 -> maakunta 2022"      "maakunta 2022 -> suuralue 2022"  
+#> [61] "kunta 2023 -> maakunta 2023"      "kunta 2024 -> maakunta 2024"     
+#> [63] "kunta 1996 -> maakunta 1995"
 ```
 
 ``` r
@@ -111,12 +116,12 @@ key <- get_key(localId)
 ``` r
 head(key)
 #>   source_code source_name target_code      target_name
-#> 1         186   Järvenpää           1 Helsinki-Uusimaa
-#> 2         235  Kauniainen           1 Helsinki-Uusimaa
-#> 3         444       Lohja           1 Helsinki-Uusimaa
-#> 4         504    Myrskylä           1 Helsinki-Uusimaa
-#> 5         505    Mäntsälä           1 Helsinki-Uusimaa
-#> 6         543  Nurmijärvi           1 Helsinki-Uusimaa
+#> 1         407  Lapinjärvi           1 Helsinki-Uusimaa
+#> 2         504    Myrskylä           1 Helsinki-Uusimaa
+#> 3         505    Mäntsälä           1 Helsinki-Uusimaa
+#> 4         638      Porvoo           1 Helsinki-Uusimaa
+#> 5         755     Siuntio           1 Helsinki-Uusimaa
+#> 6         753       Sipoo           1 Helsinki-Uusimaa
 ```
 
 ### Searching for Classifications
@@ -126,8 +131,8 @@ without arguments:
 
 ``` r
 head(search_classifications())
-#> [1] "verolaji 2019"        "coicop 2018"          "koulutusaste 2018"   
-#> [4] "nettovaral_luok 2023" "suuruusluokka 2018"   "erva 2020"
+#> [1] "verolaji 2019"        "coicop 2018"          "nettovaral_luok 2023"
+#> [4] "koulutusaste 2018"    "suuruusluokka 2018"   "erva 2020"
 ```
 
 Plug in search terms to search for available classifications:
@@ -269,12 +274,12 @@ your data. For examples, generate random municipal data:
 data <- get_regionkey() |> dplyr::select(kunta_name) |> dplyr::mutate(values = rnorm(dplyr::n()))
 head(data)
 #>    kunta_name     values
-#> 1        Akaa -0.8406212
-#> 2      Urjala  0.1881555
-#> 3 Valkeakoski  0.1091074
-#> 4      Forssa  0.6616351
-#> 5     Tammela  1.4734311
-#> 6    Humppila -0.9003440
+#> 1        Akaa  1.6162003
+#> 2      Urjala -0.9998084
+#> 3 Valkeakoski  0.4579793
+#> 4      Forssa  0.2866772
+#> 5     Tammela  0.3237500
+#> 6    Humppila  0.5426492
 ```
 
 You can use regional classification tables to add regions to your data:
@@ -282,12 +287,12 @@ You can use regional classification tables to add regions to your data:
 ``` r
 dplyr::left_join(data, get_regionkey(only_names = TRUE), by = "kunta_name") |> head()
 #>    kunta_name     values seutukunta_name maakunta_name
-#> 1        Akaa -0.8406212 Etelä-Pirkanmaa     Pirkanmaa
-#> 2      Urjala  0.1881555 Etelä-Pirkanmaa     Pirkanmaa
-#> 3 Valkeakoski  0.1091074 Etelä-Pirkanmaa     Pirkanmaa
-#> 4      Forssa  0.6616351          Forssa    Kanta-Häme
-#> 5     Tammela  1.4734311          Forssa    Kanta-Häme
-#> 6    Humppila -0.9003440          Forssa    Kanta-Häme
+#> 1        Akaa  1.6162003 Etelä-Pirkanmaa     Pirkanmaa
+#> 2      Urjala -0.9998084 Etelä-Pirkanmaa     Pirkanmaa
+#> 3 Valkeakoski  0.4579793 Etelä-Pirkanmaa     Pirkanmaa
+#> 4      Forssa  0.2866772          Forssa    Kanta-Häme
+#> 5     Tammela  0.3237500          Forssa    Kanta-Häme
+#> 6    Humppila  0.5426492          Forssa    Kanta-Häme
 ```
 
 For a shortcut, use `add_region`:
@@ -297,12 +302,12 @@ For a shortcut, use `add_region`:
 #> The region classification in data seems to fit year(s) 2021. A key corresponding to this year is used.
 #> Input x not recoded.
 #>    kunta_name     values    maakunta
-#> 1        Akaa -0.8406212        Akaa
-#> 2      Urjala  0.1881555      Urjala
-#> 3 Valkeakoski  0.1091074 Valkeakoski
-#> 4      Forssa  0.6616351      Forssa
-#> 5     Tammela  1.4734311     Tammela
-#> 6    Humppila -0.9003440    Humppila
+#> 1        Akaa  1.6162003        Akaa
+#> 2      Urjala -0.9998084      Urjala
+#> 3 Valkeakoski  0.4579793 Valkeakoski
+#> 4      Forssa  0.2866772      Forssa
+#> 5     Tammela  0.3237500     Tammela
+#> 6    Humppila  0.5426492    Humppila
 ```
 
 It is also straightforward to compute, say, maakunta-level means give
@@ -317,12 +322,12 @@ data |> add_region("maakunta") |>
 #> # A tibble: 6 × 2
 #>   maakunta  maakunta_mean
 #>   <fct>             <dbl>
-#> 1 Äänekoski        0.380 
-#> 2 Ähtäri           1.54  
-#> 3 Akaa            -0.841 
-#> 4 Alajärvi         0.0802
-#> 5 Alavieska        0.593 
-#> 6 Alavus           1.07
+#> 1 Äänekoski        0.189 
+#> 2 Ähtäri           1.99  
+#> 3 Akaa             1.62  
+#> 4 Alajärvi         1.04  
+#> 5 Alavieska       -0.0937
+#> 6 Alavus           1.20
 ```
 
 ### Region code prefixes
@@ -404,4 +409,105 @@ codes_to_names(v)
 v <- codes_to_names(v)
 names_to_codes(v)
 #> [1] "KU020" "KU047" "KU005" "MK01"  "MK02"
+```
+
+## Recode with keys
+
+`statficlassifications` ships with a powerful tool to recode variables
+with keys and classifications. Recoding of categorical variables are
+often based on keys that map one classification of a categorical
+variable to an another classification of this same variable.
+`key_recode()` recodes an input given a such a key. The key can be in
+the form of a named vector or a data.frame. The inputs can be vectors,
+factors of data.frames.
+
+``` r
+var1 <- c("a", "b", "a", "c", "b", "b")
+
+key <- data.frame(var1 = letters[1:4],
+                  var2 = c("first letter",
+                           "second letter",
+                           "third letter",
+                           "fourth letter"),
+                  var3 = 1:4)
+```
+
+By default, the variable in key corresponding to the variable to be
+recoded is found by name:
+
+``` r
+key_recode(var1, key, to = "var2")
+#> [1] "first letter"  "second letter" "first letter"  "third letter" 
+#> [5] "second letter" "second letter"
+```
+
+The corresponding variable can however, be found using the values of
+variables as well:
+
+``` r
+v <- var1
+key_recode(v, key, to = "var2", by = "values")
+#> [1] "first letter"  "second letter" "first letter"  "third letter" 
+#> [5] "second letter" "second letter"
+```
+
+data.frames can be recoded as well:
+
+``` r
+df <- data.frame(var1 = var1,
+                 y = 1:6)
+key_recode(df, key, to = "var2")
+#> Input y not recoded.
+#>            var2 y
+#> 1  first letter 1
+#> 2 second letter 2
+#> 3  first letter 3
+#> 4  third letter 4
+#> 5 second letter 5
+#> 6 second letter 6
+```
+
+Without ‘to’-argument, recoding happens to all variable other than
+‘from’-variable in the key.
+
+``` r
+key_recode(var1, key)
+#>            var2 var3
+#> 1  first letter    1
+#> 2 second letter    2
+#> 3  first letter    1
+#> 4  third letter    3
+#> 5 second letter    2
+#> 6 second letter    2
+```
+
+Keys can be named vectors as well:
+
+``` r
+key <- c("a" = "first letter",
+         "b" = "second letter",
+         "c" = "third letter",
+         "d" = "fourth letter")
+```
+
+``` r
+key_recode(v, key)
+#> [1] "first letter"  "second letter" "first letter"  "third letter" 
+#> [5] "second letter" "second letter"
+```
+
+Note that with named vectors the function knows which way you are
+recoding:
+
+``` r
+v <- key_recode(v, key)
+v
+#> [1] "first letter"  "second letter" "first letter"  "third letter" 
+#> [5] "second letter" "second letter"
+```
+
+``` r
+v <- key_recode(v, key)
+v
+#> [1] "a" "b" "a" "c" "b" "b"
 ```

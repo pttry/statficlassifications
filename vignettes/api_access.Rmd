@@ -2,7 +2,7 @@
 title: "Accessing API"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{How to use}
+  %\VignetteIndexEntry{Accessing API}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
