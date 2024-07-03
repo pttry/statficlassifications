@@ -46,34 +46,26 @@ codes_to_names <- function(x, region_level = NULL,
                            offline = TRUE,
                            set_region_codes = FALSE) {
 
-  # If required, check if the the input contains region codes that are not
-  # in the standardized form
-  if(set_region_codes) {
-   if(any(!is_region_code_with_prefix(x))) {
-     message("Tried to add prefixes to your input codes.")
-     x <- set_region_codes(x, region_level = region_level,
-                           use_char_length_info = use_char_length_info)
-   }
-  }
-
-  args <- list(x = x, year = year, lang = lang, offline = offline)
-
-   if(is.vector(x)){
-      x <- do.call(codes_to_names_vct, args)
-   } else if(is.factor(x)) {
-      x <- do.call(codes_to_names_fct, args)
-   } else {
-     stop("Argument not a vector or factor.")
-   }
-
-   # Return
-   x
+    UseMethod("codes_to_names")
 }
 
 
-#' @describeIn codes_to_names Change region codes to region names. For internal use
-#'
-codes_to_names_vct <- function(x, year = NULL, lang = "fi", offline = TRUE) {
+#' @export
+codes_to_names.default <- function(x, year = NULL,
+                                   region_level = NULL,
+                                   use_char_length_info = NULL,
+                                   set_region_codes = FALSE,
+                                   lang = "fi", offline = TRUE) {
+
+  # If required, check if the the input contains region codes that are not
+  # in the standardized form
+  if(set_region_codes) {
+    if(any(!is_region_code_with_prefix(x))) {
+      message("Tried to add prefixes to your input codes.")
+      x <- set_region_codes(x, region_level = region_level,
+                            use_char_length_info = use_char_length_info)
+    }
+  }
 
   # Save potential names to add later back to output
   x_names <- names(x)
@@ -107,11 +99,14 @@ codes_to_names_vct <- function(x, year = NULL, lang = "fi", offline = TRUE) {
 
 }
 
-#' @describeIn codes_to_names Change region codes to region names. For internal use.
-#'
-codes_to_names_fct <- function(x, year = NULL, lang = "fi", offline = TRUE) {
+#' @export
+codes_to_names.factor <- function(x, year = NULL,
+                                  region_level = NULL,
+                                  use_char_length_info = NULL,
+                                  set_region_codes = FALSE,
+                                  lang = "fi", offline = TRUE) {
 
-levels(x) <- codes_to_names_vct(levels(x), year = year, lang = lang, offline = offline)
+levels(x) <- codes_to_names.default(levels(x), year = year, lang = lang, offline = offline)
 x
 
 }
@@ -138,21 +133,11 @@ x
 #'
 names_to_codes <- function(x, year = NULL, lang = "fi", offline = TRUE, region_level = NULL) {
 
-  args <- list(x, year = year, lang = lang, offline = offline, region_level = region_level)
-
-  if(is.vector(x)){
-    x <- do.call(names_to_codes_vct, args)
-  } else if(is.factor(x)) {
-    x <- do.call(names_to_codes_fct, args)
-  } else {
-    stop("Argument not a vector or factor.")
-  }
-  x
+  UseMethod("names_to_codes")
 }
 
-#' @describeIn Change region names to region codes
-#'
-names_to_codes_vct <- function(x,
+#' @export
+names_to_codes.default <- function(x,
                                year = NULL,
                                lang = "fi",
                                offline = TRUE,
@@ -191,11 +176,10 @@ names_to_codes_vct <- function(x,
   output
 }
 
-#' @describeIn Change region names to region codes
-#'
-names_to_codes_fct <- function(x, year = NULL, lang = "fi", offline = TRUE, region_level = NULL) {
+#' @export
+names_to_codes.factor <- function(x, year = NULL, lang = "fi", offline = TRUE, region_level = NULL) {
 
-  levels(x) <- names_to_codes_vct(levels(x), year = year, lang = lang,
+  levels(x) <- names_to_codes.default(levels(x), year = year, lang = lang,
                                   offline = offline, region_level = region_level)
   x
 

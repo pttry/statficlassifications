@@ -2,8 +2,6 @@
 % Please edit documentation in R/region_codes_and_names.R
 \name{codes_to_names}
 \alias{codes_to_names}
-\alias{codes_to_names_vct}
-\alias{codes_to_names_fct}
 \title{Change region codes to region names}
 \usage{
 codes_to_names(
@@ -15,10 +13,6 @@ codes_to_names(
   offline = TRUE,
   set_region_codes = FALSE
 )
-
-codes_to_names_vct(x, year = NULL, lang = "fi", offline = TRUE)
-
-codes_to_names_fct(x, year = NULL, lang = "fi", offline = TRUE)
 }
 \arguments{
 \item{x}{a character (vector) of region codes}
@@ -52,13 +46,6 @@ your region codes using \code{set_region_codes()}. \code{codes_to_names()},
 however can check if the region codes are standardized and applies \code{set_region_codes()}
 if they are not.
 }
-\section{Functions}{
-\itemize{
-\item \code{codes_to_names_vct()}: Change region codes to region names. For internal use
-
-\item \code{codes_to_names_fct()}: Change region codes to region names. For internal use.
-
-}}
 \examples{
 
   v <- c("SSS", "KU103", "KU061","SK213", "MK04")

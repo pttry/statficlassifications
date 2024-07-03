@@ -51,10 +51,7 @@ check_region_codes <- function(x, year = NULL, offline = TRUE) {
 
 }
 
-#' @describeIn check_region_codes
-#'
 #' @export
-#'
 check_region_codes.default <- function(x, year = NULL, offline = TRUE) {
 
   logical <- is_region_code_with_prefix(x, offline = offline, year = year)
@@ -69,10 +66,7 @@ check_region_codes.default <- function(x, year = NULL, offline = TRUE) {
   }
 }
 
-#' @describeIn check_region_codes
-#'
 #' @export
-#'
 check_region_codes.factor <- function(x, year = NULL, offline = TRUE) {
 
   check_region_codes(levels(x), offline = offline, year = year)
@@ -98,10 +92,7 @@ check_region_names <- function(x, lang = "fi", year = NULL, offline = TRUE) {
   UseMethod("check_region_names")
 }
 
-#' @describeIn Check region names
-#'
 #' @export
-#'
 check_region_names.default <- function(x, lang = "fi", year = NULL, offline = TRUE) {
 
   logical <- is_region_name(x, lang = lang, offline = offline, year = year)
@@ -116,10 +107,7 @@ check_region_names.default <- function(x, lang = "fi", year = NULL, offline = TR
   }
 }
 
-#' @describeIn Check region names
-#'
 #' @export
-#'
 check_region_names.factor <- function(x, lang = "fi", year = NULL, offline = TRUE) {
   check_region_names(levels(x), lang = lang, offline = offline, year = year)
 }
