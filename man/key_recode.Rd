@@ -3,7 +3,6 @@
 \name{key_recode}
 \alias{key_recode}
 \alias{statfi_recode}
-\alias{key_recode_internal}
 \title{Recode with key}
 \usage{
 key_recode(
@@ -17,8 +16,6 @@ key_recode(
 )
 
 statfi_recode(x, key, ...)
-
-key_recode_internal(x, pkey)
 }
 \arguments{
 \item{x}{vector of elements to be recoded.}

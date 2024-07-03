@@ -6,31 +6,31 @@
 \usage{
 codes_to_names(
   x,
+  year = NULL,
   region_level = NULL,
   use_char_length_info = NULL,
-  year = NULL,
+  set_region_codes = FALSE,
   lang = "fi",
-  offline = TRUE,
-  set_region_codes = FALSE
+  offline = TRUE
 )
 }
 \arguments{
 \item{x}{a character (vector) of region codes}
+
+\item{year}{integer, the year of the applied classification key.}
 
 \item{region_level}{character, optional region level of the input region codes}
 
 \item{use_char_length_info}{TRUE or named vector, whether to use code character length
 information in determining their region level. Defaults to NULL.}
 
-\item{year}{integer, the year of the applied classification key.}
+\item{set_region_codes}{logical, whether tries to set standard region codes.
+Defaults to \code{FALSE}.}
 
 \item{lang}{\code{"fi"}, \code{"sv"} or \code{"en"}. Language of output names.
 Defaults to \code{"fi"}.}
 
 \item{offline}{logical, whether works offline with package data. Defaults to \code{TRUE}.}
-
-\item{set_region_codes}{logical, whether tries to set standard region codes.
-Defaults to \code{FALSE}.}
 }
 \value{
 data.frame

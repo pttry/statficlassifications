@@ -185,8 +185,16 @@ statfi_recode <- function(x, key, ...) {
   key_recode(x, key, ...)
 }
 
-
-#' @rdname key_recode
+#' Recode with list containing key and source and target variable names
+#'
+#' For internal use
+#'
+#' @param x vector of elements to be recoded.
+#' @param pkey list, output of `prepare_key()`.
+#'
+#' @return data.frame or vector
+#' @export
+#'
 key_recode_internal <- function(x, pkey) {
 
   UseMethod("key_recode_internal")

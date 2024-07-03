@@ -14,7 +14,7 @@ A data frame with 660 rows and 2 variables:
 }
 }
 \source{
-\url{"https://www.stat.fi/static/media/uploads/meta/luokitukset/lakkautetut_kunnat_aakkosjarj20_taul6.xlsx"}
+\% \url{"https://www.stat.fi/static/media/uploads/meta/luokitukset/lakkautetut_kunnat_aakkosjarj20_taul6.xlsx"}
 }
 \usage{
 abolished_mun_key

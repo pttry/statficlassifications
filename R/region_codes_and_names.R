@@ -39,12 +39,11 @@
 #'   f <- factor(c("SSS", "KU103", "KU061","SK213", "MK04"))
 #'   codes_to_names(f)
 #'
-codes_to_names <- function(x, region_level = NULL,
+codes_to_names <- function(x, year = NULL,
+                           region_level = NULL,
                            use_char_length_info = NULL,
-                           year = NULL,
-                           lang = "fi",
-                           offline = TRUE,
-                           set_region_codes = FALSE) {
+                           set_region_codes = FALSE,
+                           lang = "fi", offline = TRUE) {
 
     UseMethod("codes_to_names")
 }
@@ -131,7 +130,11 @@ x
 #'   f <- factor(c("KOKO MAA", "Humppila","Ålands skärgård", "Satakunta"))
 #'   names_to_codes(f)
 #'
-names_to_codes <- function(x, year = NULL, lang = "fi", offline = TRUE, region_level = NULL) {
+names_to_codes <- function(x,
+                           year = NULL,
+                           lang = "fi",
+                           offline = TRUE,
+                           region_level = NULL) {
 
   UseMethod("names_to_codes")
 }

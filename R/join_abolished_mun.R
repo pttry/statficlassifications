@@ -28,7 +28,7 @@ join_abolished_mun <- function(x, col = NULL) {
 }
 
 #' @export
-join_abolished_mun.default <- function(x) {
+join_abolished_mun.default <- function(x, col = NULL) {
 
   if(!any(grepl("KU", x))) {
     stop("This function understands only prefixed municipality codes! Use set_region_codes() to standardize your codes")
@@ -70,14 +70,14 @@ join_abolished_mun.default <- function(x) {
 }
 
 #' @export
-join_abolished_mun.factor <- function(x) {
+join_abolished_mun.factor <- function(x, col = NULL) {
   levels(x) <- join_abolished_mun.default(levels(x))
   x
 }
 
 
 #' @export
-join_abolished_mun.data.frame <- function(x, col) {
+join_abolished_mun.data.frame <- function(x, col = NULL) {
   x[[col]] <- join_abolished_mun(x[[col]])
   x
 }
