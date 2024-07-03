@@ -56,24 +56,12 @@ set_region_codes <- function(x,
                              offline = TRUE,
                              use_char_length_info = NULL) {
 
-  args <- list(x, region_level = region_level,
-               year = year,
-               offline = offline,
-               use_char_length_info = use_char_length_info)
+  UseMethod("set_region_codes")
 
-  if(is.vector(x)){
-    x <- do.call(set_region_codes_vct, args)
-  } else if(is.factor(x)) {
-    x <- do.call(set_region_codes_fct, args)
-  } else {
-    stop("Argument not a vector or factor.")
-  }
-  x
 }
 
-#' @describeIn set_region_codes Standardize region codes with prefixes. For internal use
-#'
-set_region_codes_vct <- function(x,
+#' @export
+set_region_codes.default <- function(x,
                                  region_level = NULL,
                                  year = NULL,
                                  offline = TRUE,
@@ -139,15 +127,14 @@ set_region_codes_vct <- function(x,
 }
 
 
-#' @describeIn set_region_codes Standardize region codes with prefixes. For internal use
-#'
-set_region_codes_fct <- function(x,
+#' @export
+set_region_codes.factor <- function(x,
                                  region_level = NULL,
                                  year = NULL,
                                  offline = TRUE,
-                                 use_char_length_info = FALSE) {
+                                 use_char_length_info = NULL) {
 
-  levels(x) <- set_region_codes_vct(levels(x), region_level = region_level,
+  levels(x) <- set_region_codes.default(levels(x), region_level = region_level,
                                     year = year,
                                     offline = offline,
                                     use_char_length_info = use_char_length_info)
@@ -217,7 +204,6 @@ match_region_codes <- function(x, year = NULL,
 #'    information in determining their region level. Defaults to `NULL`.
 #'
 #' @return vector
-#' @export
 #'
 match_region_codes_internal <- function(x, key,
                                         region_level = NULL,
@@ -232,13 +218,16 @@ match_region_codes_internal <- function(x, key,
     if(x == "000") {return("SSS")}
 
   if(!is.null(use_char_length_info)) {
+
     if(is.logical(use_char_length_info)) {
-      if(use_char_length_info == TRUE) {
-        char_length_info <- c("maakunta" = 2, "kunta" = 3)
-      }
+
+      if(use_char_length_info)  char_length_info <- c("maakunta" = 2, "kunta" = 3)
+
     } else {
+
       char_length_info <- use_char_length_info
     }
+
     for(region in names(char_length_info)) {
       if(nchar(x) == char_length_info[region]) {
         region_level <- region
@@ -265,3 +254,4 @@ match_region_codes_internal <- function(x, key,
 
   key$alue_code[as.double(x) == key$number]
 }
+

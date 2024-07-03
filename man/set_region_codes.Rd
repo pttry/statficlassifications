@@ -2,8 +2,6 @@
 % Please edit documentation in R/set_region_codes.R
 \name{set_region_codes}
 \alias{set_region_codes}
-\alias{set_region_codes_vct}
-\alias{set_region_codes_fct}
 \title{Standardize region codes}
 \usage{
 set_region_codes(
@@ -12,22 +10,6 @@ set_region_codes(
   year = NULL,
   offline = TRUE,
   use_char_length_info = NULL
-)
-
-set_region_codes_vct(
-  x,
-  region_level = NULL,
-  year = NULL,
-  offline = TRUE,
-  use_char_length_info = NULL
-)
-
-set_region_codes_fct(
-  x,
-  region_level = NULL,
-  year = NULL,
-  offline = TRUE,
-  use_char_length_info = FALSE
 )
 }
 \arguments{
@@ -69,13 +51,6 @@ Thus, only real region codes can be set. The matching of inputs into
 potential region codes occurs in \code{match_region_codes_interal()} and
 \code{match_region_codes()}.
 }
-\section{Functions}{
-\itemize{
-\item \code{set_region_codes_vct()}: Standardize region codes with prefixes. For internal use
-
-\item \code{set_region_codes_fct()}: Standardize region codes with prefixes. For internal use
-
-}}
 \examples{
 
   v <- c("191", "047", "063")
