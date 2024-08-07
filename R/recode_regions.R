@@ -55,7 +55,7 @@ recode_region <- function(x, to, from = NULL, year = NULL, offline = TRUE) {
                                offline = offline)
 
   # Recode
-    key_recode(x, key = regionkey, from = from, to = to)
+    key_recode(x, key = regionkey, from = from, to = to, x_name = from)
 }
 
 #' Add regions to data
@@ -72,6 +72,11 @@ recode_region <- function(x, to, from = NULL, year = NULL, offline = TRUE) {
 #'
 #' @return data.frame
 #' @export
+#'
+#' @examples
+#'
+#'     data <- get_regionkey() |> dplyr::select(kunta_name) |> dplyr::mutate(values = rnorm(dplyr::n()))
+#'      data |> add_region("maakunta")
 #'
 #'
 add_region <- function(data, ..., from = NULL, year = NULL, offline = TRUE) {
