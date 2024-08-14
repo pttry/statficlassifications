@@ -6,11 +6,9 @@
 # joinees, a single joinee is arbitrarily selected. Different arbitrary selections may lead to
 # different final joinees.
 
-   # For the ease of use, (so that a whole vector of municipalities can be matches to their current
-   # municipalities) also add (the trivial correspondeces of) the municipalities that were
-   # never abolished.
-library(statficlassifications)
-library(dplyr)
+# For the ease of use, (so that a whole vector of municipalities can be matches to their current
+# municipalities) also add (the trivial correspondeces of) the municipalities that were
+# never abolished.
 
    df_key <- get_regionkey(from = "kunta", "seutukunta", offline = FALSE) |>
        dplyr::mutate(joiner = kunta_code, joinee = kunta_code) |>
@@ -24,12 +22,10 @@ library(dplyr)
       # df <- readxl::read_excel(tmp)
 
 
-      url2 <-  "https://www.stat.fi/static/media/uploads/meta/luokitukset/lakkautetut_kunnat_vuoteen_2022_asti.xlsx"
+      url2 <-  "https://www.stat.fi/static/media/uploads/meta/luokitukset/lakkautetut_kunnat_vuoteen_2024_asti.xlsx"
       tmp2 = tempfile(fileext = ".xlsx")
       download.file(url = url2, destfile = tmp2, mode="wb")
-      df2 <- readxl::read_excel(tmp2)
-
-
+      df2 <- readxl::read_excel(tmp2, skip = 2)
 
   # Poimitaan aineistosta lakkautettujen kuntien koodit ja niiden kuntien koodit, johon lakkautetut
   # kunnat ovat liittyneet
@@ -37,8 +33,7 @@ library(dplyr)
       # df <- dplyr::select(df, 1,4)
       # names(df) <- c("joiner", "joinee")
 
-      df2 <- df2[-(1:2),]
-      df2 <- dplyr::select(df2, 3,5)
+      df2 <- df2[c(3,5)]
       names(df2) <- c("joiner", "joinee")
 
 
@@ -63,7 +58,7 @@ library(dplyr)
     mun <- as.character(df$joiner[i])
     duplicated <- sum(as.double(mun == df$joiner)) > 1
 
-    # If i is separated and joined into multiple municipalities, simply choose
+    # If i is separated and joined into multiple municipalities, choose
     # the last one of these on the table.
     if(duplicated) {
      key_row <- tail(df[df$joiner == mun,], n = 1)
