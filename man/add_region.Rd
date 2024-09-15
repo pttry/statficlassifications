@@ -25,3 +25,10 @@ data.frame
 Uses get_regionkey- and recode-functions to provide a fast and simple way to
 add regions to data. Very pipe-friendly.
 }
+\examples{
+
+    data <- get_regionkey() |> dplyr::select(kunta_name) |> dplyr::mutate(values = rnorm(dplyr::n()))
+     data |> add_region("maakunta")
+
+
+}
