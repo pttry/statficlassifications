@@ -2,6 +2,9 @@
 % Please edit documentation in R/get_region_classifications.R
 \name{get_regionclassification}
 \alias{get_regionclassification}
+\alias{kunnat}
+\alias{seutukunnat}
+\alias{maakunnat}
 \title{Get region classifications / code-name keys}
 \usage{
 get_regionclassification(
@@ -13,6 +16,12 @@ get_regionclassification(
   lang = "fi",
   offline = TRUE
 )
+
+kunnat(year = NULL)
+
+seutukunnat(year = NULL)
+
+maakunnat(year = NULL)
 }
 \arguments{
 \item{...}{character(s), (vector), region(s) of required keys.}
