@@ -17,11 +17,11 @@ get_regionclassification(
   offline = TRUE
 )
 
-kunnat(year = NULL)
+kunnat(year = get_latest_year())
 
-seutukunnat(year = NULL)
+seutukunnat(year = get_latest_year())
 
-maakunnat(year = NULL)
+maakunnat(year = get_latest_year())
 }
 \arguments{
 \item{...}{character(s), (vector), region(s) of required keys.}
