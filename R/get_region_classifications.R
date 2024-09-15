@@ -257,16 +257,19 @@ get_regionclassification <- function(...,
 
 
 #' @rdname get_regionclassification
+#' @export
 kunnat <- function(year = NULL) {
   as.character(get_regionclassification("kunta", year = year, only_codes = TRUE))
 }
 
 #' @rdname get_regionclassification
+#' @export
 seutukunnat <- function(year = NULL) {
   as.character(get_regionclassification("seutukunta", year = year, only_codes = TRUE))
 }
 
 #' @rdname get_regionclassification
+#' @export
 maakunnat <- function(year = NULL) {
   as.character(get_regionclassification("maakunta", year = year, only_codes = TRUE))
 }
