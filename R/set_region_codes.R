@@ -108,8 +108,8 @@ set_region_codes.default <- function(x,
   # Join new names to the input vector.
   new_codes[not_set] <- NA
   join <- dplyr::left_join(data.frame(old_code = as.character(x)),
-                           data.frame(old_code = names(new_codes),
-                                      new_code = unlist(new_codes)),
+                           distinct(data.frame(old_code = names(new_codes),
+                                      new_code = unlist(new_codes))),
                            by = "old_code")
   join <- dplyr::mutate(join, new_code = ifelse(is.na(new_code), old_code, new_code))
   output <- join$new_code
