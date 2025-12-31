@@ -260,11 +260,11 @@ urls_as_localId_df <- function(urls) {
   if(grepl("v2/correspondenceTables", urls)) {
 
     urls <- as.data.frame(sapply(urls, stringr::str_remove,
-                                 paste0("https://data.stat.fi/api/classifications/v2/correspondenceTables/")))
+                                 "https://api.stat.fi/classificationservice/open/api/classifications/v2/correspondenceTables/"))
     nros <- as.data.frame(matrix(unlist(lapply(urls, stringr::str_extract_all, "_\\d+_")), ncol = 2, byrow = TRUE))
     names(nros) <- paste0("nro", 1:2)
     results <- tidyr::separate(urls, url, c("source", "temp_var", "date2"), sep = "_\\d+_") |>
-      tidyr::separate(temp_var, c("date1", "target"), sep = "#") |>
+               tidyr::separate(temp_var, c("date1", "target"), sep = "%23") |>
       dplyr::mutate(year1 = substring(date1, 1,4),
                     date1 = substring(date1, 5,8),
                     year2 = substring(date2, 1,4),
